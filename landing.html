@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary": "#3c522c",
+            "on-tertiary-container": "#f0ddc4",
+            "secondary-fixed-dim": "#b6cea0",
+            "primary-fixed": "#d0ebb9",
+            "surface-variant": "#e3e3dd",
+            "secondary-container": "#d1ebbb",
+            "on-error-container": "#93000a",
+            "secondary": "#4f653f",
+            "tertiary": "#564936",
+            "surface-bright": "#fbf9f3",
+            "surface-dim": "#dbdad4",
+            "surface-tint": "#4e653d",
+            "on-secondary-container": "#556b44",
+            "on-tertiary-fixed": "#231a0a",
+            "secondary-fixed": "#d1ebbb",
+            "on-primary-fixed": "#0d2002",
+            "outline": "#74796e",
+            "error-container": "#ffdad6",
+            "outline-variant": "#c4c8bc",
+            "on-tertiary-fixed-variant": "#514532",
+            "background": "#fbf9f3",
+            "surface-container-high": "#e9e8e2",
+            "primary-container": "#536a42",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-highest": "#e3e3dd",
+            "error": "#ba1a1a",
+            "tertiary-fixed": "#f3e0c6",
+            "surface-container": "#efeee8",
+            "tertiary-container": "#6f614d",
+            "surface": "#fbf9f3",
+            "on-surface-variant": "#44483f",
+            "on-primary-container": "#cee9b7",
+            "inverse-on-surface": "#f2f1eb",
+            "on-tertiary": "#ffffff",
+            "on-primary-fixed-variant": "#374d28",
+            "on-error": "#ffffff",
+            "inverse-surface": "#30312d",
+            "on-background": "#1b1c19",
+            "surface-container-low": "#f5f4ee",
+            "on-primary": "#ffffff",
+            "on-secondary": "#ffffff",
+            "on-secondary-fixed-variant": "#384c29",
+            "tertiary-fixed-dim": "#d6c4ab",
+            "primary-fixed-dim": "#b4cf9e",
+            "on-surface": "#1b1c19",
+            "on-secondary-fixed": "#0e2003",
+            "inverse-primary": "#b4cf9e"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "md": "24px",
+            "lg": "48px",
+            "container-max": "1100px",
+            "xs": "4px",
+            "sidebar-width": "280px",
+            "sm": "12px",
+            "base": "8px",
+            "xl": "80px"
+          },
+          "fontFamily": {
+            "h3": ["Inter"],
+            "h2": ["Inter"],
+            "code": ["monospace"],
+            "body-sm": ["Inter"],
+            "h1": ["Inter"],
+            "label-md": ["Inter"],
+            "body-lg": ["Inter"],
+            "body-md": ["Inter"]
+          },
+          "fontSize": {
+            "h3": ["24px", { "lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "600" }],
+            "h2": ["32px", { "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "code": ["14px", { "lineHeight": "1.6", "fontWeight": "400" }],
+            "body-sm": ["14px", { "lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400" }],
+            "h1": ["40px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "label-md": ["14px", { "lineHeight": "1", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "body-lg": ["18px", { "lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400" }],
+            "body-md": ["16px", { "lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+
+    .atmospheric-shadow {
+      box-shadow: 0 24px 48px -12px rgba(83, 106, 66, 0.08);
+    }
+  </style>
+</head>
+
+<body class="bg-surface text-on-surface antialiased">
+  <!-- TopAppBar -->
+  <header
+    class="bg-[#f5f5f0] dark:bg-stone-900 font-inter antialiased text-sm font-medium docked full-width top-0 border-b border-stone-200 dark:border-stone-800 flat no shadows flex justify-between items-center w-full px-6 h-14 z-40 fixed">
+    <div class="flex items-center gap-4">
+      <span class="text-lg font-bold tracking-tight text-[#536A42] dark:text-[#8ba870]">Lumina Markdown</span>
+    </div>
+    <div class="hidden md:flex flex-1 justify-end items-center gap-6">
+      <nav class="flex gap-4">
+        <a class="text-[#536A42] dark:text-[#8ba870] border-b-2 border-[#536A42]" href="#">Home</a>
+        <a class="text-stone-500 dark:text-stone-400 hover:bg-stone-200/50 dark:hover:bg-stone-800/50 transition-colors px-2 py-1 rounded"
+          href="#">Features</a>
+        <a class="text-stone-500 dark:text-stone-400 hover:bg-stone-200/50 dark:hover:bg-stone-800/50 transition-colors px-2 py-1 rounded"
+          href="#">Pricing</a>
+      </nav>
+      <div class="flex items-center gap-3 ml-4">
+        <button
+          class="material-symbols-outlined text-stone-500 hover:bg-stone-200/50 p-1.5 rounded-full transition-colors"
+          data-icon="notifications">notifications</button>
+        <button
+          class="material-symbols-outlined text-stone-500 hover:bg-stone-200/50 p-1.5 rounded-full transition-colors"
+          data-icon="settings">settings</button>
+        <button
+          class="bg-primary text-on-primary px-4 py-1.5 rounded-lg font-label-md transition-all active:scale-[0.98]">Login</button>
+      </div>
+    </div>
+  </header>
+  <main class="pt-14 overflow-x-hidden">
+    <!-- Hero Section -->
+    <section class="relative min-h-[870px] flex items-center justify-center bg-surface py-xl px-md">
+      <div class="max-w-[1100px] w-full text-center z-10">
+        <div class="mb-sm flex justify-center">
+          <span
+            class="bg-secondary-container text-on-secondary-container px-4 py-1 rounded-full text-label-md inline-flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px]" data-icon="auto_awesome">auto_awesome</span>
+            Now with Contextual AI Assistance
+          </span>
+        </div>
+        <h1 class="font-h1 text-h1 text-on-surface mb-md max-w-3xl mx-auto leading-tight">
+          Cultivate deep thoughts in a <span class="text-primary">serene</span> digital study space.
+        </h1>
+        <p class="font-body-lg text-body-lg text-on-surface-variant mb-lg max-w-2xl mx-auto">
+          Lumina Markdown strips away the noise, providing a paper-like experience for scholars, lifelong learners, and
+          thinkers who value cognitive ease.
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+          <button onclick="location.href='login.html'"
+            class="bg-primary text-on-primary px-8 py-4 rounded-xl font-label-md text-lg shadow-lg hover:shadow-xl transition-all active:scale-[0.98]">
+            Start Learning
+          </button>
+          <button
+            class="border border-outline-variant bg-surface-container-low text-primary px-8 py-4 rounded-xl font-label-md text-lg hover:bg-surface-container-high transition-all active:scale-[0.98]">
+            Login to Workspace
+          </button>
+        </div>
+      </div>
+      <!-- Background Decorative Elements -->
+      <div class="absolute inset-0 overflow-hidden pointer-events-none opacity-20">
+        <div class="absolute -top-20 -right-20 w-96 h-96 bg-secondary-container rounded-full blur-[100px]"></div>
+        <div class="absolute -bottom-20 -left-20 w-96 h-96 bg-primary-fixed rounded-full blur-[100px]"></div>
+      </div>
+    </section>
+    <!-- Product Preview (Bento Grid) -->
+    <section class="py-xl px-md bg-surface-container-low">
+      <div class="max-w-[1100px] mx-auto">
+        <div class="mb-lg text-center">
+          <h2 class="font-h2 text-h2 text-on-surface">Designed for Deep Work</h2>
+          <p class="font-body-md text-on-surface-variant">A minimalist toolkit that respects your focus.</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-md">
+          <!-- Main Feature: Editor -->
+          <div
+            class="md:col-span-8 bg-surface-container-lowest rounded-xl border border-outline-variant p-lg atmospheric-shadow">
+            <div class="flex items-center gap-3 mb-md">
+              <span class="material-symbols-outlined text-primary" data-icon="edit_note">edit_note</span>
+              <h3 class="font-h3 text-h3">Chrome-less Markdown</h3>
+            </div>
+            <p class="font-body-md text-on-surface-variant mb-md">
+              Our editor is designed to fade away. Tools only appear when you need them, keeping your eyes on your ideas
+              and your mind in the zone.
+            </p>
+            <div class="bg-surface rounded-lg p-md border border-outline-variant/30 font-code text-code">
+              <p class="text-primary mb-2"># The Architecture of Memory</p>
+              <p class="text-on-surface-variant">Building a sustainable digital garden requires more than just notes. It
+                requires context...</p>
+              <div class="mt-4 flex gap-2">
+                <span class="bg-secondary-container/30 px-2 py-0.5 rounded text-[12px] text-primary">Focused</span>
+                <span class="bg-secondary-container/30 px-2 py-0.5 rounded text-[12px] text-primary">Academic</span>
+              </div>
+            </div>
+          </div>
+          <!-- Side Feature: AI -->
+          <div class="md:col-span-4 bg-primary text-on-primary rounded-xl p-lg flex flex-col justify-between">
+            <div>
+              <div class="w-12 h-12 bg-on-primary-container/20 rounded-full flex items-center justify-center mb-md">
+                <span class="material-symbols-outlined text-white" data-icon="smart_toy">smart_toy</span>
+              </div>
+              <h3 class="font-h3 text-h3 mb-sm">AI Co-Pilot</h3>
+              <p class="font-body-sm opacity-90">
+                Contextual help that understands your study goals without being intrusive.
+              </p>
+            </div>
+            <div class="mt-md pt-md border-t border-white/10">
+              <div class="flex items-center gap-2 text-label-md">
+                <span class="material-symbols-outlined text-[18px]" data-icon="check_circle">check_circle</span>
+                Semantic Search
+              </div>
+              <div class="flex items-center gap-2 text-label-md mt-2">
+                <span class="material-symbols-outlined text-[18px]" data-icon="check_circle">check_circle</span>
+                Auto-Citation
+              </div>
+            </div>
+          </div>
+          <!-- Asymmetric Bottom Row -->
+          <div class="md:col-span-5 bg-tertiary-fixed rounded-xl p-lg border border-outline-variant/30">
+            <div class="flex items-center gap-3 mb-md">
+              <span class="material-symbols-outlined text-tertiary" data-icon="emoji_events">emoji_events</span>
+              <h3 class="font-h3 text-h3 text-tertiary">Goal Tracking</h3>
+            </div>
+            <div class="w-full bg-surface-container rounded-full h-2 mt-4 overflow-hidden">
+              <div class="bg-primary h-full w-[65%]"></div>
+            </div>
+            <p class="font-body-sm text-tertiary-container mt-sm">Thesis Research: 65% Complete</p>
+          </div>
+          <div class="md:col-span-7 overflow-hidden rounded-xl border border-outline-variant relative min-h-[200px]">
+            <img class="absolute inset-0 w-full h-full object-cover"
+              data-alt="A serene and minimalist study desk setting with a high-end laptop open to a clean markdown editor. The room is flooded with soft morning sunlight casting gentle shadows. The palette is dominated by off-white, light wood textures, and a small green potted plant, creating a calm and intellectual atmosphere in a modern corporate style."
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuDk1IV7EvBIUwRwilvMPZWMfaOnf-X6Vo1RV6WrdSP9g29cCL5MAJg2o2KVvwl0Or2FAgQV7shze_S8eYGOjfksoE5ntqIc9vhY5qNur4ZGewRG5MZ3FTD6lR85KGFRVsg19pcxjp4qPbQQ8SXiZDhwRn8x5HssQO1ARQ21rIYbGcDtDCS8Is5NXkACxE3n-wu0InaWwGsZXu57qjTfXzE_paQ8aa6v8sJFyIxVAFylMhkOmyRmNkkEqv8L91hqtr26dwjzFyH7QxM" />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-lg">
+              <p class="text-white font-body-lg font-medium">Your personal digital garden awaits.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Centered Content Section -->
+    <section class="py-xl px-md bg-surface">
+      <div class="max-w-[1100px] mx-auto grid md:grid-cols-2 gap-lg items-center">
+        <div class="order-2 md:order-1">
+          <h2 class="font-h2 text-h2 mb-md text-on-surface">The "Zen" Environment</h2>
+          <ul class="space-y-6">
+            <li class="flex gap-4">
+              <div class="flex-shrink-0 w-8 h-8 bg-secondary-container rounded-full flex items-center justify-center">
+                <span class="material-symbols-outlined text-primary text-[20px]"
+                  data-icon="visibility_off">visibility_off</span>
+              </div>
+              <div>
+                <h4 class="font-h3 text-[18px] text-on-surface">Distraction-Free</h4>
+                <p class="font-body-sm text-on-surface-variant">Hide navigation and formatting tools with a single
+                  keystroke to enter Deep Work mode.</p>
+              </div>
+            </li>
+            <li class="flex gap-4">
+              <div class="flex-shrink-0 w-8 h-8 bg-secondary-container rounded-full flex items-center justify-center">
+                <span class="material-symbols-outlined text-primary text-[20px]"
+                  data-icon="history_edu">history_edu</span>
+              </div>
+              <div>
+                <h4 class="font-h3 text-[18px] text-on-surface">Physical Texture</h4>
+                <p class="font-body-sm text-on-surface-variant">High-quality typography and paper-like backgrounds
+                  reduce digital eye strain during long sessions.</p>
+              </div>
+            </li>
+            <li class="flex gap-4">
+              <div class="flex-shrink-0 w-8 h-8 bg-secondary-container rounded-full flex items-center justify-center">
+                <span class="material-symbols-outlined text-primary text-[20px]"
+                  data-icon="cloud_sync">cloud_sync</span>
+              </div>
+              <div>
+                <h4 class="font-h3 text-[18px] text-on-surface">Seamless Sync</h4>
+                <p class="font-body-sm text-on-surface-variant">Your documents are encrypted and synchronized across all
+                  your devices instantly.</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="order-1 md:order-2">
+          <div class="bg-surface-container rounded-3xl p-6 atmospheric-shadow border border-outline-variant">
+            <img class="rounded-2xl shadow-sm border border-outline-variant/20"
+              data-alt="A close-up of a high-resolution tablet screen displaying a sophisticated, minimalist markdown document with clean typography and forest green accents. The surrounding environment is a softly blurred modern office with warm, ambient lighting and natural textures like linen and oak, emphasizing a quiet and focused workspace."
+              src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7em_JMqJiBgouVX_KFRBB5Gq6dSKr7-hpAvwCpK6DuiuUkkth2i9rR37VIfnc1jDv91I70TApuvYwNObE29y35pOEJ2-2KjuXOO3dzyMYZXVcH_xn8mlZIxySxLPSwS4baqW77gaIOJalG1LE2zdYxt5KOFgb1ZHSwji4MXhScgwpeYWKcMnHKPMsW1JikkjyVxavY9req0aIAT2vjnz5EVPHvqimGx-eb4xXYr4V5wlAtRTK_hZwUrJkeFWtFszPbH4lW8ZSc2A" />
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- CTA Section -->
+    <section class="py-xl px-md bg-secondary text-on-secondary text-center">
+      <div class="max-w-2xl mx-auto">
+        <h2 class="font-h2 text-h2 mb-md">Ready to reclaim your focus?</h2>
+        <p class="font-body-lg opacity-80 mb-lg">
+          Join 50,000+ researchers and students who have transformed their study habits with Lumina Markdown.
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+          <button
+            class="bg-primary-fixed text-on-primary-fixed px-10 py-4 rounded-xl font-label-md text-lg hover:bg-primary-fixed-dim transition-all">
+            Create Free Account
+          </button>
+          <button
+            class="border border-white/30 text-white px-10 py-4 rounded-xl font-label-md text-lg hover:bg-white/10 transition-all">
+            View Demo Workspace
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+  <!-- Footer -->
+  <footer class="bg-surface-container-high py-lg px-md">
+    <div class="max-w-[1100px] mx-auto flex flex-col md:flex-row justify-between items-start gap-lg">
+      <div class="max-w-xs">
+        <span class="text-lg font-bold tracking-tight text-primary block mb-sm">Lumina Markdown</span>
+        <p class="font-body-sm text-on-surface-variant">
+          Providing a tactile, paper-like digital experience for the modern intellect.
+        </p>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-xl w-full md:w-auto">
+        <div>
+          <h5 class="font-label-md text-primary mb-md">Product</h5>
+          <ul class="space-y-2 font-body-sm text-on-surface-variant">
+            <li><a class="hover:text-primary transition-colors" href="#">Features</a></li>
+            <li><a class="hover:text-primary transition-colors" href="#">Markdown Guide</a></li>
+            <li><a class="hover:text-primary transition-colors" href="#">AI Assistant</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5 class="font-label-md text-primary mb-md">Company</h5>
+          <ul class="space-y-2 font-body-sm text-on-surface-variant">
+            <li><a class="hover:text-primary transition-colors" href="#">About Us</a></li>
+            <li><a class="hover:text-primary transition-colors" href="#">Philosophy</a></li>
+            <li><a class="hover:text-primary transition-colors" href="#">Privacy</a></li>
+          </ul>
+        </div>
+        <div class="col-span-2 md:col-span-1">
+          <h5 class="font-label-md text-primary mb-md">Newsletter</h5>
+          <div class="flex gap-2">
+            <input class="bg-surface border-none focus:ring-1 focus:ring-primary rounded-lg px-4 py-2 text-sm w-full"
+              placeholder="Email address" type="email" />
+            <button class="bg-primary text-on-primary p-2 rounded-lg material-symbols-outlined"
+              data-icon="arrow_forward">arrow_forward</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="max-w-[1100px] mx-auto border-t border-outline-variant mt-lg pt-md flex justify-between items-center text-[12px] text-on-surface-variant">
+      <p>© 2024 Lumina Markdown. All rights reserved.</p>
+      <div class="flex gap-4">
+        <a class="hover:text-primary" href="#">Twitter</a>
+        <a class="hover:text-primary" href="#">LinkedIn</a>
+      </div>
+    </div>
+  </footer>
+  <!-- BottomNavBar (Hidden on desktop, simplified for landing) -->
+  <nav
+    class="md:hidden fixed bottom-6 left-1/2 -translate-x-1/2 bg-stone-900 rounded-full px-6 py-3 w-auto flex gap-8 items-center z-50 shadow-xl border border-white/10">
+    <div class="bg-[#536A42] text-white rounded-full p-2 flex flex-col items-center">
+      <span class="material-symbols-outlined" data-icon="home">home</span>
+    </div>
+    <div class="text-stone-400 p-2 flex flex-col items-center">
+      <span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+    </div>
+    <a href="login.html" class="text-stone-400 p-2 flex flex-col items-center hover:text-stone-200 transition-colors cursor-pointer" title="로그인">
+      <span class="material-symbols-outlined" data-icon="login">login</span>
+    </a>
+  </nav>
+</body>
+
+</html>

@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+    rel="stylesheet" />
+  <!-- Marked.js for Markdown Rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/marked@4.3.0/marked.min.js"></script>
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary": "#3c522c",
+            "on-tertiary-container": "#f0ddc4",
+            "secondary-fixed-dim": "#b6cea0",
+            "primary-fixed": "#d0ebb9",
+            "surface-variant": "#e3e3dd",
+            "secondary-container": "#d1ebbb",
+            "on-error-container": "#93000a",
+            "secondary": "#4f653f",
+            "tertiary": "#564936",
+            "surface-bright": "#fbf9f3",
+            "surface-dim": "#dbdad4",
+            "surface-tint": "#4e653d",
+            "on-secondary-container": "#556b44",
+            "on-tertiary-fixed": "#231a0a",
+            "secondary-fixed": "#d1ebbb",
+            "on-primary-fixed": "#0d2002",
+            "outline": "#74796e",
+            "error-container": "#ffdad6",
+            "outline-variant": "#c4c8bc",
+            "on-tertiary-fixed-variant": "#514532",
+            "background": "#fbf9f3",
+            "surface-container-high": "#e9e8e2",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-highest": "#e3e3dd",
+            "error": "#ba1a1a",
+            "tertiary-fixed": "#f3e0c6",
+            "surface-container": "#efeee8",
+            "tertiary-container": "#6f614d",
+            "surface": "#fbf9f3",
+            "on-surface-variant": "#44483f",
+            "on-primary-container": "#cee9b7",
+            "inverse-on-surface": "#f2f1eb",
+            "on-tertiary": "#ffffff",
+            "on-primary-fixed-variant": "#374d28",
+            "on-error": "#ffffff",
+            "inverse-surface": "#30312d",
+            "on-background": "#1b1c19",
+            "surface-container-low": "#f5f4ee",
+            "on-primary": "#ffffff",
+            "on-secondary": "#ffffff",
+            "on-secondary-fixed-variant": "#384c29",
+            "tertiary-fixed-dim": "#d6c4ab",
+            "primary-fixed-dim": "#b4cf9e",
+            "on-surface": "#1b1c19",
+            "on-secondary-fixed": "#0e2003",
+            "inverse-primary": "#b4cf9e"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "md": "24px",
+            "lg": "48px",
+            "container-max": "1100px",
+            "xs": "4px",
+            "sidebar-width": "280px",
+            "sm": "12px",
+            "base": "8px",
+            "xl": "80px"
+          },
+          "fontFamily": {
+            "h3": ["Inter"],
+            "h2": ["Inter"],
+            "code": ["monospace"],
+            "body-sm": ["Inter"],
+            "h1": ["Inter"],
+            "label-md": ["Inter"],
+            "body-lg": ["Inter"],
+            "body-md": ["Inter"]
+          },
+          "fontSize": {
+            "h3": ["24px", { "lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "600" }],
+            "h2": ["32px", { "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "code": ["14px", { "lineHeight": "1.6", "fontWeight": "400" }],
+            "body-sm": ["14px", { "lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400" }],
+            "h1": ["40px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "label-md": ["14px", { "lineHeight": "1", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "body-lg": ["18px", { "lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400" }],
+            "body-md": ["16px", { "lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400" }]
+          }
+        },
+      },
+    }
+  </script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      line-height: 1;
+      text-transform: none;
+      letter-spacing: normal;
+      word-wrap: normal;
+      white-space: nowrap;
+      direction: ltr;
+    }
+    .paper-gradient {
+      background: linear-gradient(to bottom, #fbf9f3 0%, #f5f4ee 100%);
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #d1ebbb;
+      border-radius: 10px;
+    }
+    .sidebar-hidden {
+      transform: translateX(-100%);
+      opacity: 0;
+      pointer-events: none;
+    }
+    .sidebar-right-hidden {
+      transform: translateX(100%);
+      opacity: 0;
+      pointer-events: none;
+    }
+    nav.sidebar-transition,
+    aside.sidebar-transition {
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    /* ── 커스텀 마크다운 에디터 ── */
+    #md-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      padding: 8px 14px;
+      background: #f0e8d8;
+      border-bottom: 1px solid #ddd0bb;
+      flex-wrap: wrap;
+      flex-shrink: 0;
+    }
+    #md-toolbar button {
+      background: transparent;
+      border: none;
+      color: #4a4035;
+      padding: 5px 9px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 13px;
+      font-family: monospace;
+      transition: background 0.15s, color 0.15s;
+      line-height: 1;
+    }
+    #md-toolbar button:hover {
+      background: #ddd0bb;
+      color: #2d2015;
+    }
+    #md-toolbar .tb-sep {
+      width: 1px;
+      height: 20px;
+      background: #ccc0aa;
+      margin: 0 4px;
+      flex-shrink: 0;
+    }
+    #md-toolbar .tb-bold  { font-weight: 800; }
+    #md-toolbar .tb-italic { font-style: italic; }
+    #md-toolbar .tb-strike { text-decoration: line-through; }
+    /* 색상 팔레트 */
+    #color-palette {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      background: #fdf5e6;
+      border: 1px solid #ddd0bb;
+      border-radius: 10px;
+      padding: 10px;
+      display: none;
+      gap: 8px;
+      z-index: 200;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+    #color-palette.open { display: flex; }
+    #color-palette button {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      border: 2px solid transparent;
+      cursor: pointer;
+      transition: transform 0.15s, border-color 0.15s;
+      padding: 0;
+    }
+    #color-palette button:hover {
+      transform: scale(1.2);
+      border-color: #fff;
+    }
+    #md-body {
+      display: flex;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+      position: relative;
+    }
+    #md-input {
+      position: absolute;
+      inset: 0;
+      background: transparent;
+      color: transparent;
+      caret-color: #536a42;   /* 커서만 보이게 */
+      border: none;
+      resize: none;
+      outline: none;
+      z-index: 10;
+      font-size: 15px;
+      line-height: 1.9;
+      padding: 40px 56px;
+      font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+      cursor: text;
+    }
+    #md-preview {
+      position: absolute;
+      inset: 0;
+      padding: 40px 56px;
+      overflow-y: auto;
+      background: #FFF8EC;
+      font-size: 15px;
+      line-height: 1.9;
+      color: #2d2d2d;
+      font-family: 'Inter', sans-serif;
+      pointer-events: none;   /* 클릭이 textarea로 통과 */
+    }
+    /* 프리뷰 타이포그래피 */
+    #md-preview h1 { font-size: 2em; font-weight: 800; color: #1a1a1a; border-bottom: 2px solid #d9c8a8; padding-bottom: 8px; margin-bottom: 16px; }
+    #md-preview h2 { font-size: 1.5em; font-weight: 700; color: #2a2a2a; margin-top: 24px; }
+    #md-preview h3 { font-size: 1.2em; font-weight: 600; color: #3a3a3a; margin-top: 16px; }
+    #md-preview strong { color: #3c522c; font-weight: 700; }
+    #md-preview em { color: #564936; font-style: italic; }
+    #md-preview code { background: #ede0c8; color: #3c522c; padding: 2px 6px; border-radius: 4px; font-family: monospace; font-size: 13px; }
+    #md-preview pre { background: #ede0c8; border-radius: 8px; padding: 16px; overflow-x: auto; border-left: 3px solid #536a42; }
+    #md-preview pre code { background: none; padding: 0; color: #3c522c; }
+    #md-preview blockquote { border-left: 3px solid #536a42; padding: 8px 16px; margin: 16px 0; color: #5a4e3a; background: #f5edda; border-radius: 0 8px 8px 0; }
+    #md-preview ul, #md-preview ol { padding-left: 24px; }
+    #md-preview li { margin: 4px 0; color: #2d2d2d; }
+    #md-preview hr { border: none; border-top: 1px solid #d9c8a8; margin: 24px 0; }
+    #md-preview a { color: #3c522c; text-decoration: underline; }
+    #md-preview p { margin: 10px 0; color: #2d2d2d; }
+  </style>
+  <script>
+    let leftSidebarOpen = true;
+    let rightSidebarOpen = true;
+
+    function toggleLeftSidebar() {
+      const leftSidebar = document.getElementById('leftSidebar');
+      const mainContent = document.querySelector('section');
+      leftSidebarOpen = !leftSidebarOpen;
+      if (leftSidebarOpen) {
+        leftSidebar.classList.remove('sidebar-hidden');
+        mainContent.classList.remove('ml-0');
+        mainContent.classList.add('ml-64');
+      } else {
+        leftSidebar.classList.add('sidebar-hidden');
+        mainContent.classList.remove('ml-64');
+        mainContent.classList.add('ml-0');
+      }
+    }
+
+    function toggleRightSidebar() {
+      const rightSidebar = document.getElementById('rightSidebar');
+      const mainContent = document.querySelector('section');
+      rightSidebarOpen = !rightSidebarOpen;
+      if (rightSidebarOpen) {
+        rightSidebar.classList.remove('sidebar-right-hidden');
+        mainContent.classList.remove('mr-0');
+        mainContent.classList.add('mr-80');
+      } else {
+        rightSidebar.classList.add('sidebar-right-hidden');
+        mainContent.classList.remove('mr-80');
+        mainContent.classList.add('mr-0');
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', function () {
+      const COLORS = [
+        { label: '빨강', value: '#ef4444' },
+        { label: '주황', value: '#f97316' },
+        { label: '노랑', value: '#eab308' },
+        { label: '초록', value: '#22c55e' },
+        { label: '파랑', value: '#3b82f6' },
+        { label: '보라', value: '#a855f7' },
+        { label: '분홍', value: '#ec4899' },
+      ];
+
+      const input   = document.getElementById('md-input');
+      const preview = document.getElementById('md-preview');
+      const palette = document.getElementById('color-palette');
+
+      // 초기 렌더
+      preview.innerHTML = marked.parse(input.value);
+
+      // 실시간 프리뷰
+      input.addEventListener('input', () => {
+        preview.innerHTML = marked.parse(input.value);
+      });
+
+      function wrap(before, after) {
+        after = (after !== undefined) ? after : before;
+        const s = input.selectionStart, e = input.selectionEnd;
+        input.value = input.value.slice(0, s) + before + input.value.slice(s, e) + after + input.value.slice(e);
+        input.focus();
+        input.setSelectionRange(s + before.length, e + before.length);
+        preview.innerHTML = marked.parse(input.value);
+      }
+
+      function insert(snippet) {
+        const s = input.selectionStart;
+        input.value = input.value.slice(0, s) + snippet + input.value.slice(s);
+        input.focus();
+        input.setSelectionRange(s + snippet.length, s + snippet.length);
+        preview.innerHTML = marked.parse(input.value);
+      }
+
+      document.querySelectorAll('#md-toolbar button[data-action]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const a = btn.dataset.action;
+          if      (a === 'bold')      wrap('**');
+          else if (a === 'italic')    wrap('*');
+          else if (a === 'strike')    wrap('~~');
+          else if (a === 'code')      wrap('`');
+          else if (a === 'h1')        insert('\n# ');
+          else if (a === 'h2')        insert('\n## ');
+          else if (a === 'h3')        insert('\n### ');
+          else if (a === 'hr')        insert('\n---\n');
+          else if (a === 'ul')        insert('\n- ');
+          else if (a === 'ol')        insert('\n1. ');
+          else if (a === 'quote')     insert('\n> ');
+          else if (a === 'codeblock') wrap('\n```\n', '\n```\n');
+          else if (a === 'link')      wrap('[', '](url)');
+        });
+      });
+
+      document.getElementById('btn-color').addEventListener('click', (e) => {
+        e.stopPropagation();
+        palette.classList.toggle('open');
+      });
+      document.addEventListener('click', () => palette.classList.remove('open'));
+
+      COLORS.forEach(c => {
+        const btn = document.createElement('button');
+        btn.title = c.label;
+        btn.style.background = c.value;
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          wrap(`<span style="color:${c.value}">`, '</span>');
+          palette.classList.remove('open');
+        });
+        palette.appendChild(btn);
+      });
+    });
+  </script>
+</head>
+<body
+  class="bg-background text-on-background font-body-md selection:bg-secondary-container selection:text-on-secondary-container h-screen overflow-hidden">
+
+  <!-- Top AppBar -->
+  <header
+    class="bg-[#f5f5f0] dark:bg-stone-900 border-b border-stone-200 dark:border-stone-800 flex justify-between items-center w-full px-6 h-14 z-40 fixed top-0">
+    <div class="flex items-center gap-4">
+      <span class="text-lg font-bold tracking-tight text-[#536A42] dark:text-[#8ba870] font-inter">Lumina Markdown</span>
+      <span class="text-stone-400 font-label-md">/</span>
+      <!-- [FIX 5] 깨진 마크다운 링크 → 일반 텍스트 -->
+      <span class="text-on-surface font-body-sm font-medium">The Philosophy of Learning.md</span>
+    </div>
+    <div class="flex items-center gap-2">
+      <div class="relative mr-4 hidden md:block">
+        <input
+          class="bg-surface-container-low border-none rounded-full px-4 py-1.5 text-sm focus:ring-1 focus:ring-primary w-48 transition-all"
+          placeholder="Search..." type="text" />
+      </div>
+      <button class="p-2 text-stone-500 hover:bg-stone-200/50 dark:hover:bg-stone-800/50 rounded-full transition-colors">
+        <span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+      </button>
+      <button class="p-2 text-stone-500 hover:bg-stone-200/50 dark:hover:bg-stone-800/50 rounded-full transition-colors">
+        <span class="material-symbols-outlined" data-icon="settings">settings</span>
+      </button>
+      <div class="w-8 h-8 rounded-full ml-2 bg-primary-container overflow-hidden border border-primary/20">
+        <img alt="User profile" class="w-full h-full object-cover"
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkC4wlni8WqhPGOzxtW-PIpXYVw1M00VvNBHlEfpHq-trfkLQ5oULdfNe3d0xWKBK7EfUkuQzZbpg6X_zh4V-USQK9JzprfBbhZO30ME1p9KBdFMZv4puCWLBmoj0pEXqPHajNawd8hiufONi9zyjXc5WA_QWhY6FCbW6AtIVSptA60i7r7uQQ4hMQ-jy7Tq6jJqxpWSQchyE9JP52tXYyYOb_B---ufQDhJrmQnHngl521vJ7zkOtV7t3-u_1uog7Ch5U3tER40o" />
+      </div>
+    </div>
+  </header>
+
+  <main class="flex h-full pt-14 pb-20">
+    <!-- Left Sidebar -->
+    <nav
+      id="leftSidebar"
+      class="fixed left-0 top-14 flex flex-col p-4 z-30 bg-[#ecece4] dark:bg-stone-950 h-[calc(100vh-56px)] w-64 border-r border-stone-200/50 sidebar-transition">
+      <div class="mb-8 px-2">
+        <div class="flex items-center gap-3 mb-1">
+          <div class="w-8 h-8 rounded bg-primary flex items-center justify-center text-white font-bold">L</div>
+          <div class="flex flex-col">
+            <span class="text-sm font-black uppercase text-stone-400 tracking-wider">Study Workspace</span>
+            <span class="text-[10px] text-stone-500">Deep Work Mode</span>
+          </div>
+        </div>
+      </div>
+      <div class="flex flex-col gap-1 flex-1">
+        <a class="flex items-center gap-3 px-3 py-2 text-stone-600 dark:text-stone-400 hover:bg-stone-200/70 dark:hover:bg-stone-800/70 rounded-lg transition-all duration-300" href="dashboard.html">
+          <span class="material-symbols-outlined text-xl">dashboard</span>
+          <span class="font-inter text-sm tracking-wide">Dashboard</span>
+        </a>
+        <a class="flex items-center gap-3 px-3 py-2 text-[#536A42] dark:text-[#8ba870] font-bold bg-stone-200 dark:bg-stone-800 rounded-lg transition-all duration-300" href="#">
+          <span class="material-symbols-outlined text-xl">description</span>
+          <span class="font-inter text-sm tracking-wide">Documents</span>
+        </a>
+        <a class="flex items-center gap-3 px-3 py-2 text-stone-600 dark:text-stone-400 hover:bg-stone-200/70 dark:hover:bg-stone-800/70 rounded-lg transition-all duration-300" href="#">
+          <span class="material-symbols-outlined text-xl">emoji_events</span>
+          <span class="font-inter text-sm tracking-wide">Goals</span>
+        </a>
+      </div>
+      <div class="mt-auto border-t border-stone-300/30 pt-4 flex flex-col gap-1">
+        <a class="flex items-center gap-3 px-3 py-2 text-stone-600 dark:text-stone-400 hover:bg-stone-200/70 dark:hover:bg-stone-800/70 rounded-lg transition-all" href="#">
+          <span class="material-symbols-outlined text-xl">archive</span>
+          <span class="font-inter text-sm tracking-wide">Archive</span>
+        </a>
+        <a class="flex items-center gap-3 px-3 py-2 text-stone-600 dark:text-stone-400 hover:bg-stone-200/70 dark:hover:bg-stone-800/70 rounded-lg transition-all" href="#">
+          <span class="material-symbols-outlined text-xl">delete</span>
+          <span class="font-inter text-sm tracking-wide">Trash</span>
+        </a>
+      </div>
+    </nav>
+
+    <!-- Main Content: 커스텀 마크다운 에디터 -->
+    <section class="flex-1 ml-64 mr-80 overflow-hidden flex flex-col" style="height: calc(100vh - 56px - 80px);">
+
+      <!-- 툴바 -->
+      <div id="md-toolbar">
+        <button class="tb-bold"   data-action="bold"      title="볼드">B</button>
+        <button class="tb-italic" data-action="italic"    title="이탤릭">I</button>
+        <button class="tb-strike" data-action="strike"    title="취소선">S̶</button>
+        <button                   data-action="code"      title="인라인 코드">`</button>
+        <div class="tb-sep"></div>
+        <button                   data-action="h1"        title="제목 1">H1</button>
+        <button                   data-action="h2"        title="제목 2">H2</button>
+        <button                   data-action="h3"        title="제목 3">H3</button>
+        <div class="tb-sep"></div>
+        <button                   data-action="ul"        title="목록">≡</button>
+        <button                   data-action="ol"        title="번호 목록">1.</button>
+        <button                   data-action="quote"     title="인용문">❝</button>
+        <button                   data-action="codeblock" title="코드 블록">&lt;/&gt;</button>
+        <button                   data-action="hr"        title="구분선">—</button>
+        <button                   data-action="link"      title="링크">🔗</button>
+        <div class="tb-sep"></div>
+        <!-- 색상 버튼 -->
+        <div style="position:relative;">
+          <button id="btn-color" title="글자 색상" style="display:flex;align-items:center;gap:5px;">
+            <span style="font-size:15px;">A</span>
+            <span style="display:inline-block;width:12px;height:4px;border-radius:2px;background:linear-gradient(90deg,#ef4444,#3b82f6,#a855f7);"></span>
+          </button>
+          <div id="color-palette"></div>
+        </div>
+      </div>
+
+      <!-- 에디터 / 프리뷰 -->
+      <div id="md-body">
+        <textarea id="md-input" spellcheck="false"># The Philosophy of Learning
+
+Education is not the learning of facts, but the training of the mind to think. In the digital age, where information is abundant, the skill of **critical synthesis** becomes our most valuable asset.
+
+## The Quiet Revolution of Deep Work
+
+Cal Newport's concept of "Deep Work" suggests that the ability to focus without distraction on a cognitively demanding task is a superpower. In our current environment of persistent notifications, this state is increasingly rare and valuable.
+
+> "The depth of your thought is directly proportional to the stillness of your environment."
+
+- **Environment:** Curating a physical and digital space that minimizes visual noise.
+- **Intent:** Defining the goal of the learning session before opening the book.
+- **Feedback:** Testing knowledge through active recall rather than passive reading.
+
+As we transition into more automated learning environments, the role of AI is not to replace the student, but to act as a *Socratic Mirror*, reflecting our thoughts back to us and challenging our assumptions.</textarea>
+        <div id="md-preview"></div>
+      </div>
+
+    </section>
+
+    <!-- Right Sidebar (AI Assistant) -->
+    <aside
+      id="rightSidebar"
+      class="fixed right-0 top-14 flex flex-col p-6 z-30 bg-[#f5f5f0] dark:bg-stone-900 h-[calc(100vh-56px)] w-80 border-l border-stone-200/50 shadow-[0_24px_48px_-12px_rgba(83,106,66,0.08)] sidebar-transition">
+      <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-[#536A42]">smart_toy</span>
+          <div>
+            <h3 class="font-inter text-xs font-semibold text-[#536A42]">Co-Pilot</h3>
+            <p class="text-[10px] text-stone-400">Contextual Help</p>
+          </div>
+        </div>
+        <button class="p-1.5 hover:bg-stone-200 rounded-md transition-colors text-stone-400">
+          <span class="material-symbols-outlined text-lg">close_fullscreen</span>
+        </button>
+      </div>
+      <div class="flex-1 overflow-y-auto custom-scrollbar flex flex-col gap-4 mb-4">
+        <div class="bg-white dark:bg-stone-800 p-3 rounded-xl rounded-tl-none border border-stone-200/50">
+          <p class="text-xs text-stone-700 dark:text-stone-300 leading-relaxed">
+            I've analyzed your text. You've mentioned "Deep Work" — would you like me to suggest some related concepts
+            from <span class="text-primary font-medium">Cognitive Psychology</span> to strengthen your argument?
+          </p>
+        </div>
+        <div class="flex flex-col gap-1 px-2 border-l-2 border-primary/20">
+          <span class="text-[10px] text-stone-400 uppercase font-bold tracking-tighter">Current Selection</span>
+          <p class="text-xs italic text-stone-500 truncate">"...training of the mind to think..."</p>
+        </div>
+        <div class="flex flex-wrap gap-2 pt-2">
+          <button class="text-[10px] px-3 py-1.5 rounded-full border border-primary/30 text-primary hover:bg-primary/5 transition-colors font-medium">Synthesize Sources</button>
+          <button class="text-[10px] px-3 py-1.5 rounded-full border border-primary/30 text-primary hover:bg-primary/5 transition-colors font-medium">Find Counter-argument</button>
+          <button class="text-[10px] px-3 py-1.5 rounded-full border border-primary/30 text-primary hover:bg-primary/5 transition-colors font-medium">Simplify Syntax</button>
+        </div>
+      </div>
+      <div class="mt-auto">
+        <div class="relative">
+          <textarea
+            class="w-full bg-stone-200/50 dark:bg-stone-800 border-none rounded-xl p-3 text-xs focus:ring-1 focus:ring-primary h-24 resize-none placeholder:text-stone-400"
+            placeholder="Ask Co-Pilot..."></textarea>
+          <button class="absolute bottom-2 right-2 p-1.5 bg-primary text-white rounded-lg hover:scale-105 active:scale-95 transition-all">
+            <span class="material-symbols-outlined text-sm">send</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Bottom Control Bar -->
+  <nav
+    class="fixed bottom-8 left-1/2 -translate-x-1/2 flex gap-8 items-center z-50 bg-stone-900 dark:bg-black rounded-full px-6 py-3 w-auto shadow-2xl border border-white/10">
+    <button
+      onclick="toggleLeftSidebar()"
+      class="flex items-center gap-2 group p-2 text-stone-400 hover:scale-110 hover:text-white transition-transform">
+      <span class="material-symbols-outlined text-xl">left_panel_open</span>
+      <span class="font-inter text-[10px] uppercase font-bold tracking-widest hidden group-hover:block">Layout</span>
+    </button>
+    <button
+      onclick="toggleRightSidebar()"
+      class="flex items-center gap-2 bg-[#536A42] text-white rounded-full px-4 py-2 hover:scale-110 transition-transform shadow-lg shadow-primary/20">
+      <span class="material-symbols-outlined text-xl">right_panel_open</span>
+      <span class="font-inter text-[10px] uppercase font-bold tracking-widest">AI Chat</span>
+    </button>
+    <button
+      class="flex items-center gap-2 group p-2 text-stone-400 hover:scale-110 hover:text-white transition-transform">
+      <span class="material-symbols-outlined text-xl">save</span>
+      <span class="font-inter text-[10px] uppercase font-bold tracking-widest hidden group-hover:block">Save</span>
+    </button>
+  </nav>
+</body>
+</html>

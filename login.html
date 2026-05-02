@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <title>Login - Lumina Markdown</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary": "#3c522c",
+            "on-tertiary-container": "#f0ddc4",
+            "secondary-fixed-dim": "#b6cea0",
+            "primary-fixed": "#d0ebb9",
+            "surface-variant": "#e3e3dd",
+            "secondary-container": "#d1ebbb",
+            "on-error-container": "#93000a",
+            "secondary": "#4f653f",
+            "tertiary": "#564936",
+            "surface-bright": "#fbf9f3",
+            "surface-dim": "#dbdad4",
+            "surface-tint": "#4e653d",
+            "on-secondary-container": "#556b44",
+            "on-tertiary-fixed": "#231a0a",
+            "secondary-fixed": "#d1ebbb",
+            "on-primary-fixed": "#0d2002",
+            "outline": "#74796e",
+            "error-container": "#ffdad6",
+            "outline-variant": "#c4c8bc",
+            "on-tertiary-fixed-variant": "#514532",
+            "background": "#fbf9f3",
+            "surface-container-high": "#e9e8e2",
+            "primary-container": "#536a42",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-highest": "#e3e3dd",
+            "error": "#ba1a1a",
+            "tertiary-fixed": "#f3e0c6",
+            "surface-container": "#efeee8",
+            "tertiary-container": "#6f614d",
+            "surface": "#fbf9f3",
+            "on-surface-variant": "#44483f",
+            "on-primary-container": "#cee9b7",
+            "inverse-on-surface": "#f2f1eb",
+            "on-tertiary": "#ffffff",
+            "on-primary-fixed-variant": "#374d28",
+            "on-error": "#ffffff",
+            "inverse-surface": "#30312d",
+            "on-background": "#1b1c19",
+            "surface-container-low": "#f5f4ee",
+            "on-primary": "#ffffff",
+            "on-secondary": "#ffffff",
+            "on-secondary-fixed-variant": "#384c29",
+            "tertiary-fixed-dim": "#d6c4ab",
+            "primary-fixed-dim": "#b4cf9e",
+            "on-surface": "#1b1c19",
+            "on-secondary-fixed": "#0e2003",
+            "inverse-primary": "#b4cf9e"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "md": "24px",
+            "lg": "48px",
+            "container-max": "1100px",
+            "xs": "4px",
+            "sidebar-width": "280px",
+            "sm": "12px",
+            "base": "8px",
+            "xl": "80px"
+          },
+          "fontFamily": {
+            "h3": ["Inter"],
+            "h2": ["Inter"],
+            "code": ["monospace"],
+            "body-sm": ["Inter"],
+            "h1": ["Inter"],
+            "label-md": ["Inter"],
+            "body-lg": ["Inter"],
+            "body-md": ["Inter"]
+          },
+          "fontSize": {
+            "h3": ["24px", { "lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "600" }],
+            "h2": ["32px", { "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "code": ["14px", { "lineHeight": "1.6", "fontWeight": "400" }],
+            "body-sm": ["14px", { "lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400" }],
+            "h1": ["40px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "label-md": ["14px", { "lineHeight": "1", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "body-lg": ["18px", { "lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400" }],
+            "body-md": ["16px", { "lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400" }]
+          }
+        },
+      },
+    }
+  </script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+  </style>
+</head>
+
+<body class="bg-background font-body-md text-on-background selection:bg-secondary-container">
+  <!-- Top Navigation Hidden for Focused Transactional Flow -->
+  <main class="min-h-screen flex items-center justify-center p-md md:p-lg">
+    <!-- Login Card -->
+    <div
+      class="w-full max-w-[440px] bg-surface-container-lowest rounded-xl border border-outline-variant shadow-[0_24px_48px_-12px_rgba(83,106,66,0.08)] p-md md:p-xl transition-all hover:border-outline">
+      <header class="flex flex-col items-center gap-base mb-lg text-center">
+        <div class="h-12 w-12 bg-primary-container rounded-lg flex items-center justify-center mb-base">
+          <span class="material-symbols-outlined text-white text-2xl" data-icon="auto_stories">auto_stories</span>
+        </div>
+        <h1 class="font-h2 text-h2 text-primary tracking-tight">Lumina Markdown</h1>
+        <p class="font-body-sm text-body-sm text-on-surface-variant max-w-[280px]">
+          Return to your focused learning environment and resume your deep work.
+        </p>
+      </header>
+      <form class="space-y-md">
+        <!-- Email Field -->
+        <div class="space-y-xs">
+          <label class="font-label-md text-label-md text-on-surface-variant ml-1" for="email">Email</label>
+          <div class="relative">
+            <input
+              class="w-full h-12 bg-surface-container-low border-b-2 border-outline-variant focus:border-primary focus:ring-0 px-md py-base transition-all font-body-md outline-none rounded-t-lg"
+              id="email" placeholder="name@university.edu" type="email" />
+          </div>
+        </div>
+        <!-- Password Field -->
+        <div class="space-y-xs">
+          <div class="flex justify-between items-center ml-1">
+            <label class="font-label-md text-label-md text-on-surface-variant" for="password">Password</label>
+            <a class="font-label-md text-label-md text-primary hover:underline decoration-2 underline-offset-4"
+              href="#">Forgot password?</a>
+          </div>
+          <div class="relative">
+            <input
+              class="w-full h-12 bg-surface-container-low border-b-2 border-outline-variant focus:border-primary focus:ring-0 px-md py-base transition-all font-body-md outline-none rounded-t-lg"
+              id="password" placeholder="••••••••" type="password" />
+          </div>
+        </div>
+        <!-- Login Button -->
+        <button
+          class="w-full h-14 bg-primary text-on-primary font-h3 text-h3 rounded-lg hover:bg-primary-container active:scale-[0.98] transition-all flex items-center justify-center gap-base mt-lg"
+          type="button"
+          onclick="window.location.href='dashboard.html'">
+          Login
+          <span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+        </button>
+      </form>
+      <footer class="mt-xl pt-lg border-t border-outline-variant text-center">
+        <p class="font-body-sm text-body-sm text-on-surface-variant">
+          New to the workspace?
+          <a class="text-primary font-label-md ml-xs hover:underline decoration-2 underline-offset-4" href="#">Sign
+            up</a>
+        </p>
+      </footer>
+    </div>
+  </main>
+  <!-- Side Illustration Background (Decorative atmospheric element) -->
+  <div class="fixed top-0 right-0 w-1/3 h-full -z-10 pointer-events-none hidden lg:block opacity-40">
+    <div class="absolute inset-0 bg-gradient-to-l from-secondary-container/20 to-transparent"></div>
+    <img alt="Minimalist study environment" class="h-full w-full object-cover"
+      data-alt="A serene and minimalist study environment featuring a clean wooden desk with a single open journal and a high-end fountain pen. The lighting is soft and natural, coming from a large window off-camera, creating long, gentle shadows across a textured sand-colored wall. The overall mood is academic, focused, and incredibly peaceful, with a color palette of soft greens, beiges, and muted whites that promote deep cognitive work."
+      src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcJpfBu3DAcC3F5XCJHkdHpRM75-CSbRtAX7TsaAHBPu_oyhscHSrNjrEWUV24oiD9EDZ3DZXs90gDpUQulW1fQu5dbW-8XpNhEwrvRAHAch4bfaS0qAYTDHNPDHckhXa5RDzrqIwlvY335MLqlmvBc4v54IuPSaTD4lmwi8cX2ljPe7njd3MBT3U46i46Mel-jbT1klpNb-ZhextuMSYQDsIXT7tl4kSTKm8mzBqxG_3NKNe-B4xks9QSoz-bOp_u5AR89VRK7cE" />
+  </div>
+  <div class="fixed bottom-0 left-0 w-1/3 h-1/2 -z-10 pointer-events-none hidden lg:block opacity-30">
+    <div class="absolute inset-0 bg-gradient-to-tr from-primary-fixed/30 to-transparent"></div>
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap"
+    rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap"
+    rel="stylesheet" />
+  <script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "primary": "#3c522c",
+            "on-tertiary-container": "#f0ddc4",
+            "secondary-fixed-dim": "#b6cea0",
+            "primary-fixed": "#d0ebb9",
+            "surface-variant": "#e3e3dd",
+            "secondary-container": "#d1ebbb",
+            "on-error-container": "#93000a",
+            "secondary": "#4f653f",
+            "tertiary": "#564936",
+            "surface-bright": "#fbf9f3",
+            "surface-dim": "#dbdad4",
+            "surface-tint": "#4e653d",
+            "on-secondary-container": "#556b44",
+            "on-tertiary-fixed": "#231a0a",
+            "secondary-fixed": "#d1ebbb",
+            "on-primary-fixed": "#0d2002",
+            "outline": "#74796e",
+            "error-container": "#ffdad6",
+            "outline-variant": "#c4c8bc",
+            "on-tertiary-fixed-variant": "#514532",
+            "background": "#fbf9f3",
+            "surface-container-high": "#e9e8e2",
+            "primary-container": "#536a42",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-highest": "#e3e3dd",
+            "error": "#ba1a1a",
+            "tertiary-fixed": "#f3e0c6",
+            "surface-container": "#efeee8",
+            "tertiary-container": "#6f614d",
+            "surface": "#fbf9f3",
+            "on-surface-variant": "#44483f",
+            "on-primary-container": "#cee9b7",
+            "inverse-on-surface": "#f2f1eb",
+            "on-tertiary": "#ffffff",
+            "on-primary-fixed-variant": "#374d28",
+            "on-error": "#ffffff",
+            "inverse-surface": "#30312d",
+            "on-background": "#1b1c19",
+            "surface-container-low": "#f5f4ee",
+            "on-primary": "#ffffff",
+            "on-secondary": "#ffffff",
+            "on-secondary-fixed-variant": "#384c29",
+            "tertiary-fixed-dim": "#d6c4ab",
+            "primary-fixed-dim": "#b4cf9e",
+            "on-surface": "#1b1c19",
+            "on-secondary-fixed": "#0e2003",
+            "inverse-primary": "#b4cf9e"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "md": "24px",
+            "lg": "48px",
+            "container-max": "1100px",
+            "xs": "4px",
+            "sidebar-width": "280px",
+            "sm": "12px",
+            "base": "8px",
+            "xl": "80px"
+          },
+          "fontFamily": {
+            "h3": ["Inter"],
+            "h2": ["Inter"],
+            "code": ["monospace"],
+            "body-sm": ["Inter"],
+            "h1": ["Inter"],
+            "label-md": ["Inter"],
+            "body-lg": ["Inter"],
+            "body-md": ["Inter"]
+          },
+          "fontSize": {
+            "h3": ["24px", { "lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "600" }],
+            "h2": ["32px", { "lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "code": ["14px", { "lineHeight": "1.6", "fontWeight": "400" }],
+            "body-sm": ["14px", { "lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400" }],
+            "h1": ["40px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "label-md": ["14px", { "lineHeight": "1", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "body-lg": ["18px", { "lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400" }],
+            "body-md": ["16px", { "lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400" }]
+          }
+        },
+      },
+    }
+  </script>
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+
+    body {
+      background-color: #fbf9f3;
+    }
+
+    .atmospheric-shadow {
+      box-shadow: 0 24px 48px -12px rgba(83, 106, 66, 0.08);
+    }
+
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #d1ebbb;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+
+<body class="font-body-md text-on-background selection:bg-secondary-container selection:text-on-secondary-container">
+  <!-- Top AppBar Integration -->
+  <header
+    class="fixed top-0 left-0 right-0 h-14 bg-[#f5f5f0] border-b border-stone-200 flex justify-between items-center px-6 z-40">
+    <div class="flex items-center gap-4">
+      <a href="landing.html" class="text-lg font-bold tracking-tight text-[#536A42] hover:opacity-80 transition-opacity">Lumina Markdown</a>
+    </div>
+    <div class="flex items-center gap-3">
+      <div class="relative hidden md:block">
+        <input
+          class="bg-surface-container-low border-none rounded-full px-4 py-1.5 text-sm w-64 focus:ring-1 focus:ring-primary-container"
+          placeholder="Search resources..." type="text" />
+      </div>
+      <button class="p-2 rounded-full hover:bg-stone-200/50 transition-colors">
+        <span class="material-symbols-outlined text-stone-600">notifications</span>
+      </button>
+      <button class="p-2 rounded-full hover:bg-stone-200/50 transition-colors">
+        <span class="material-symbols-outlined text-stone-600">settings</span>
+      </button>
+      <div class="w-8 h-8 rounded-full bg-primary-container overflow-hidden ml-2 border border-outline-variant">
+        <img class="w-full h-full object-cover"
+          data-alt="A professional headshot of a woman with a warm, intellectual expression, set against a soft-focus library background. The lighting is natural and diffuse, emphasizing a serene, academic atmosphere consistent with a deep-work learning environment. The image uses a natural palette of soft creams and muted greens."
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4Z9x1gcVzVNc3GtWjx-puiHG_0MM4GEFSaoVpTcMEatsuU7CIJxjBf2b1_E-Dc2o2BxJFPIvhKAHDIPKQWTEWQLIU3kRw8r7yBIwME2h222_usxLIYNi5gv_kFRa5M-nYjZ_CFbdyET6akkdz1o5Q_3kT27rimAdIRSvGRvf08t2oZ8fOk7SEvTO2F8bbQRy2fDFXylTh24-CdcE7_gDsMizRBZBiG1ewgdjzVLHEYOX9zpVmov9mRlcXG0rWX2ejy3AjZaREOnc" />
+      </div>
+    </div>
+  </header>
+  <!-- SideNavBar Integration -->
+  <aside class="fixed left-0 top-14 bottom-0 w-64 bg-[#ecece4] border-r border-stone-200 p-4 z-30 flex flex-col">
+    <div class="mb-8 px-2">
+      <div class="flex items-center gap-3 mb-1">
+        <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center text-white">
+          <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">auto_stories</span>
+        </div>
+        <div>
+          <h2 class="text-sm font-black uppercase text-stone-400 tracking-tighter">Study Workspace</h2>
+          <p class="text-[10px] text-stone-500 font-medium">Deep Work Mode</p>
+        </div>
+      </div>
+    </div>
+    <nav class="flex-1 space-y-1">
+      <a class="flex items-center gap-3 px-3 py-2.5 text-[#536A42] font-bold bg-stone-200 rounded-lg transition-all duration-300"
+        href="dashboard.html">
+        <span class="material-symbols-outlined">dashboard</span>
+        <span class="font-inter text-sm tracking-wide">Dashboard</span>
+      </a>
+      <a class="flex items-center gap-3 px-3 py-2.5 text-stone-600 hover:bg-stone-200/70 rounded-lg transition-all duration-300"
+        href="#">
+        <span class="material-symbols-outlined">description</span>
+        <span class="font-inter text-sm tracking-wide">Documents</span>
+      </a>
+      <a class="flex items-center gap-3 px-3 py-2.5 text-stone-600 hover:bg-stone-200/70 rounded-lg transition-all duration-300"
+        href="#">
+        <span class="material-symbols-outlined">emoji_events</span>
+        <span class="font-inter text-sm tracking-wide">Goals</span>
+      </a>
+    </nav>
+    <div class="mt-auto pt-6 border-t border-stone-300/50 space-y-1">
+      <button
+        onclick="location.href='presetting.html'"
+        class="w-full flex items-center justify-center gap-2 bg-primary text-white py-3 rounded-xl font-label-md text-sm hover:opacity-90 transition-all atmospheric-shadow mb-4">
+        <span class="material-symbols-outlined text-sm">add_circle</span>
+        Set Learning Goals
+      </button>
+      <a class="flex items-center gap-3 px-3 py-2 text-stone-600 hover:bg-stone-200/70 rounded-lg transition-all text-sm"
+        href="#">
+        <span class="material-symbols-outlined text-sm">archive</span>
+        Archive
+      </a>
+      <a class="flex items-center gap-3 px-3 py-2 text-stone-600 hover:bg-stone-200/70 rounded-lg transition-all text-sm"
+        href="#">
+        <span class="material-symbols-outlined text-sm">delete</span>
+        Trash
+      </a>
+    </div>
+  </aside>
+  <!-- Main Content Canvas -->
+  <main class="ml-64 mt-14 p-lg min-h-screen">
+    <div class="max-w-container-max mx-auto">
+      <!-- Header Section -->
+      <div class="mb-lg">
+        <h1 class="font-h1 text-h1 text-on-background mb-2">Welcome back, Scholar</h1>
+        <p class="font-body-lg text-on-surface-variant max-w-2xl">Your cognitive performance is at its peak today. Here
+          is a summary of your deep work sessions and upcoming milestones.</p>
+      </div>
+      <!-- Metric Cards (The "Sage Green Accents" Grid) -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-md mb-lg">
+        <div
+          class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant atmospheric-shadow group hover:border-secondary-container transition-all duration-300">
+          <div class="flex justify-between items-start mb-4">
+            <div
+              class="w-10 h-10 rounded-lg bg-secondary-container flex items-center justify-center text-on-secondary-container">
+              <span class="material-symbols-outlined">schedule</span>
+            </div>
+            <span class="text-xs font-bold text-secondary px-2 py-1 bg-secondary-container/30 rounded-full">+12% vs
+              yesterday</span>
+          </div>
+          <p class="font-label-md text-on-surface-variant uppercase tracking-widest text-[10px] mb-1">Daily Learning
+            Time</p>
+          <h3 class="font-h2 text-h2 text-on-background">4h 20m</h3>
+          <div class="mt-4 w-full bg-surface-container h-1 rounded-full overflow-hidden">
+            <div class="bg-secondary h-full rounded-full" style="width: 75%;"></div>
+          </div>
+        </div>
+        <div
+          class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant atmospheric-shadow group hover:border-secondary-container transition-all duration-300">
+          <div class="flex justify-between items-start mb-4">
+            <div
+              class="w-10 h-10 rounded-lg bg-tertiary-fixed flex items-center justify-center text-on-tertiary-fixed-variant">
+              <span class="material-symbols-outlined">calendar_today</span>
+            </div>
+            <span class="text-xs font-bold text-tertiary-fixed-dim px-2 py-1 bg-tertiary-fixed/30 rounded-full">On
+              track</span>
+          </div>
+          <p class="font-label-md text-on-surface-variant uppercase tracking-widest text-[10px] mb-1">Weekly Learning
+            Time</p>
+          <h3 class="font-h2 text-h2 text-on-background">28h 45m</h3>
+          <div class="mt-4 w-full bg-surface-container h-1 rounded-full overflow-hidden">
+            <div class="bg-primary h-full rounded-full" style="width: 60%;"></div>
+          </div>
+        </div>
+        <div
+          class="bg-surface-container-lowest p-md rounded-xl border border-outline-variant atmospheric-shadow group hover:border-secondary-container transition-all duration-300">
+          <div class="flex justify-between items-start mb-4">
+            <div
+              class="w-10 h-10 rounded-lg bg-primary-fixed flex items-center justify-center text-on-primary-fixed-variant">
+              <span class="material-symbols-outlined">all_inclusive</span>
+            </div>
+            <span class="text-xs font-bold text-primary px-2 py-1 bg-primary-fixed/30 rounded-full">Lifetime
+              Achievement</span>
+          </div>
+          <p class="font-label-md text-on-surface-variant uppercase tracking-widest text-[10px] mb-1">Total Learning
+            Time</p>
+          <h3 class="font-h2 text-h2 text-on-background">1,240h</h3>
+          <div class="mt-4 w-full bg-surface-container h-1 rounded-full overflow-hidden">
+            <div class="bg-primary-container h-full rounded-full" style="width: 90%;"></div>
+          </div>
+        </div>
+      </div>
+      <!-- Activity Graph & Focus Section -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-md">
+        <div
+          class="lg:col-span-2 bg-surface-container-lowest p-md rounded-xl border border-outline-variant atmospheric-shadow h-96">
+          <div class="flex justify-between items-center mb-6">
+            <h3 class="font-h3 text-h3 text-on-surface">Weekly Focus Intensity</h3>
+            <div class="flex gap-2">
+              <span class="flex items-center gap-1 text-xs text-on-surface-variant"><span
+                  class="w-2 h-2 rounded-full bg-primary"></span> Deep Work</span>
+              <span class="flex items-center gap-1 text-xs text-on-surface-variant"><span
+                  class="w-2 h-2 rounded-full bg-secondary-container"></span> Review</span>
+            </div>
+          </div>
+          <!-- Simplified Visual Graph Placeholder -->
+          <div class="flex items-end justify-between h-56 gap-4 px-2">
+            <div class="flex flex-col items-center gap-2 w-full">
+              <div class="w-full bg-secondary-container rounded-t-lg" style="height: 40%;"></div>
+              <div class="w-full bg-primary rounded-t-lg" style="height: 60%;"></div>
+              <span class="text-[10px] font-bold text-stone-400">MON</span>
+            </div>
+            <div class="flex flex-col items-center gap-2 w-full">
+              <div class="w-full bg-secondary-container rounded-t-lg" style="height: 30%;"></div>
+              <div class="w-full bg-primary rounded-t-lg" style="height: 85%;"></div>
+              <span class="text-[10px] font-bold text-stone-400">TUE</span>
+            </div>
+            <div class="flex flex-col items-center gap-2 w-full">
+              <div class="w-full bg-secondary-container rounded-t-lg" style="height: 50%;"></div>
+              <div class="w-full bg-primary rounded-t-lg" style="height: 40%;"></div>
+              <span class="text-[10px] font-bold text-stone-400">WED</span>
+            </div>
+            <div class="flex flex-col items-center gap-2 w-full">
+              <div class="w-full bg-secondary-container rounded-t-lg" style="height: 20%;"></div>
+              <div class="w-full bg-primary rounded-t-lg" style="height: 70%;"></div>
+              <span class="text-[10px] font-bold text-stone-400">THU</span>
+            </div>
+            <div class="flex flex-col items-center gap-2 w-full">
+              <div class="w-full bg-secondary-container rounded-t-lg" style="height: 45%;"></div>
+              <div class="w-full bg-primary rounded-t-lg" style="height: 95%;"></div>
+              <span class="text-[10px] font-bold text-stone-400">FRI</span>
+            </div>
+            <div class="flex flex-col items-center gap-2 w-full">
+              <div class="w-full bg-secondary-container rounded-t-lg" style="height: 15%;"></div>
+              <div class="w-full bg-primary rounded-t-lg" style="height: 30%;"></div>
+              <span class="text-[10px] font-bold text-stone-400">SAT</span>
+            </div>
+            <div class="flex flex-col items-center gap-2 w-full">
+              <div class="w-full bg-secondary-container rounded-t-lg" style="height: 10%;"></div>
+              <div class="w-full bg-primary rounded-t-lg" style="height: 20%;"></div>
+              <span class="text-[10px] font-bold text-stone-400">SUN</span>
+            </div>
+          </div>
+        </div>
+        <!-- Bento Style Side Card -->
+        <div class="bg-primary p-md rounded-xl text-white atmospheric-shadow relative overflow-hidden">
+          <div class="relative z-10">
+            <span class="material-symbols-outlined text-4xl mb-4 opacity-50">lightbulb</span>
+            <h3 class="font-h3 text-h3 mb-2 leading-tight">Keep the momentum going.</h3>
+            <p class="font-body-sm opacity-80 mb-6">You're only 15 minutes away from hitting your daily goal for the 5th
+              day in a row.</p>
+            <button
+              class="bg-white text-primary px-4 py-2 rounded-lg font-label-md text-sm hover:bg-stone-100 transition-colors">
+              Start Session
+            </button>
+          </div>
+          <!-- Decorative background graphic -->
+          <div class="absolute -right-12 -bottom-12 w-48 h-48 bg-white/10 rounded-full blur-3xl"></div>
+        </div>
+      </div>
+      <!-- Recent Resources / Airy Layout -->
+      <div class="mt-lg">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="font-h3 text-h3 text-on-surface">Continue Learning</h3>
+          <button class="text-primary font-label-md flex items-center gap-1 hover:underline">
+            View All <span class="material-symbols-outlined text-sm">arrow_forward</span>
+          </button>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-md">
+          <div
+            class="flex gap-4 p-4 bg-surface-container-low rounded-xl border border-outline-variant hover:bg-surface-container transition-colors cursor-pointer group">
+            <div class="w-24 h-24 rounded-lg overflow-hidden flex-shrink-0">
+              <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                data-alt="A clean, minimalist workspace featuring a high-resolution tablet displaying architectural diagrams. The setting is bright and airy with natural wood textures and a small succulent in a ceramic pot. The aesthetic is serene, professional, and optimized for cognitive focus, with soft greens and neutral beige tones."
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCuKNrJkK9R1SYEfS23-sEbeWxfjMOKeCIg9WJJavLE7gPCDezJLVrpCAYi0hIjDHlGNyyD5z7TaMGhUWC4Q_rgOJnTlwVsTqTyvLWyuR42Od5nUuqimjpQaqjYklAegchFbWyUry_xUaB0pPVU0JIOqE2DDQklMmTIjgvP-eBfgHAqJqAS4TftwKr4IcxBhQEDEBGS13vJVtYsEK2AH3stoFGk5g2R2jB0fv0DZYk0AlnuIsEFaikfKcMywaBCDIQC_03DdyaHEtU" />
+            </div>
+            <div class="flex flex-col justify-center">
+              <span class="text-[10px] font-bold text-secondary uppercase tracking-widest mb-1">Markdown Mastery</span>
+              <h4 class="font-bold text-on-surface mb-1">Advanced Syntax &amp; Formatting</h4>
+              <p class="text-xs text-on-surface-variant line-clamp-1">Explore nested lists, mathematical notation, and
+                mermaid diagrams.</p>
+              <div class="mt-3 flex items-center gap-4">
+                <span class="text-[10px] text-stone-500 flex items-center gap-1"><span
+                    class="material-symbols-outlined text-[12px]">timer</span> 45 min left</span>
+                <span class="text-[10px] text-stone-500 flex items-center gap-1"><span
+                    class="material-symbols-outlined text-[12px]">trending_up</span> Hard</span>
+              </div>
+            </div>
+          </div>
+          <div
+            class="flex gap-4 p-4 bg-surface-container-low rounded-xl border border-outline-variant hover:bg-surface-container transition-colors cursor-pointer group">
+            <div class="w-24 h-24 rounded-lg overflow-hidden flex-shrink-0">
+              <img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                data-alt="An open notebook with neat handwriting and a technical fountain pen lying across the center. The background is a soft-focus wooden table in a sunlit room, creating a peaceful and studious atmosphere. The color palette is composed of organic browns, soft creams, and hints of sage green, embodying a high-quality physical study experience."
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDA7i3Xb5pBkGaFY9vXJVjCuZHRa1JG_aCvOcCaN7TezzipWUZFGpYr2B0cxCTOGElqjD5akW-7Zh5ejgxAwBxnBu5EvY-9MmKtTTtpjwHYyxTtBwIHXAT_64l-_cfPBky7bujrLNClh359qsAmJDo0jPvGL4HG3PBD_CFu5BZFauMqNZTHdGls0xpm_wjjrn3V3Qk9_bRp9CqUT-e29gqRFfQBQ6S_Anv05CuOpa75cYgSTqLj-Q8UezSTH-9ar5v6IERiCzWPQPo" />
+            </div>
+            <div class="flex flex-col justify-center">
+              <span class="text-[10px] font-bold text-secondary uppercase tracking-widest mb-1">Neuroscience</span>
+              <h4 class="font-bold text-on-surface mb-1">Cognitive Load Theory</h4>
+              <p class="text-xs text-on-surface-variant line-clamp-1">Understanding the limits of working memory in
+                digital environments.</p>
+              <div class="mt-3 flex items-center gap-4">
+                <span class="text-[10px] text-stone-500 flex items-center gap-1"><span
+                    class="material-symbols-outlined text-[12px]">timer</span> 12 min left</span>
+                <span class="text-[10px] text-stone-500 flex items-center gap-1"><span
+                    class="material-symbols-outlined text-[12px]">trending_up</span> Medium</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <!-- Right-side Co-Pilot Sidebar (Hidden initially on mobile) -->
+</body>
+
+</html>
