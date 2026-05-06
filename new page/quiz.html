@@ -1,0 +1,95 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>AI 퀴즈 · MarkLearn</title>
+<link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --pink:#fcd5d5; --green-1:#7dc89a; --green-2:#a9d68b; --olive:#c5d27a;
+  --gray:#dcdcdc; --ink:#1f2937; --sub:#4b5563;
+  --primary:#2438d6; --primary-2:#3b4dff; --bg:#f7f8fa; --line:#e5e7eb;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{font-family:'Pretendard','Apple SD Gothic Neo',system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+
+.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.9);backdrop-filter:blur(10px);border-bottom:1px solid #eee}
+.nav-inner{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:14px 24px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px}
+.logo-mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--green-1),var(--olive));display:grid;place-items:center;color:#fff;font-weight:800;font-size:14px;box-shadow:0 4px 12px rgba(125,200,154,.4)}
+.nav-menu{display:flex;gap:28px;font-weight:600;color:var(--sub);font-size:15px}
+.nav-menu a:hover,.nav-menu a.active{color:var(--ink)}
+.nav-menu a.active{color:var(--primary)}
+.nav-cta{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:999px;background:var(--ink);color:#fff;font-weight:700;font-size:14px}
+.nav-cta:hover{background:#000}
+
+footer{background:var(--pink);padding:30px 24px;text-align:center;color:#7a3b3b;font-size:13.5px;margin-top:80px}
+footer .row{display:flex;justify-content:center;gap:22px;margin-bottom:8px;font-weight:600}
+
+.container{max-width:1180px;margin:0 auto;padding:32px 24px}
+.page-title{font-size:28px;font-weight:800;letter-spacing:-.5px;margin-bottom:6px}
+.page-sub{color:var(--sub);margin-bottom:28px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;font-weight:700;font-size:14px;transition:transform .15s ease}
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:var(--primary-2);transform:translateY(-1px)}
+.btn-ghost{background:#fff;border:1px solid var(--line);color:var(--ink)}
+.btn-ghost:hover{background:#f3f4f6}
+input[type=text],input[type=email],textarea,select{width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:10px;font-family:inherit;font-size:14px;background:#fff;color:var(--ink);outline:none}
+input:focus,textarea:focus,select:focus{border-color:var(--primary)}
+
+.quiz-wrap{max-width:760px;margin:0 auto}
+.progress{height:8px;background:#e5e7eb;border-radius:999px;overflow:hidden;margin-bottom:8px}
+.progress > div{height:100%;width:40%;background:linear-gradient(90deg,var(--green-1),var(--olive));border-radius:999px;transition:width .3s ease}
+.progress-meta{display:flex;justify-content:space-between;font-size:13px;color:var(--sub);margin-bottom:24px}
+.q-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:32px;margin-bottom:18px}
+.q-tag{display:inline-block;font-size:12px;font-weight:700;padding:4px 10px;border-radius:6px;background:#fef3c7;color:#92400e;margin-bottom:14px}
+.q-text{font-size:19px;font-weight:700;line-height:1.5;margin-bottom:24px}
+.choice{display:flex;align-items:center;gap:12px;padding:14px 18px;border:1.5px solid var(--line);border-radius:12px;margin-bottom:10px;cursor:pointer;transition:all .15s ease}
+.choice:hover{border-color:var(--primary);background:#fafbff}
+.choice.selected{border-color:var(--primary);background:#eef0ff}
+.choice.correct{border-color:#16a34a;background:#f0fdf4}
+.choice.wrong{border-color:#dc2626;background:#fef2f2}
+.choice .idx{width:28px;height:28px;border-radius:50%;background:#f3f4f6;display:grid;place-items:center;font-weight:700;font-size:13px;color:var(--sub);flex-shrink:0}
+.choice.selected .idx{background:var(--primary);color:#fff}
+.feedback{background:#f0fdf4;border:1px solid #86efac;border-radius:14px;padding:20px;margin-bottom:18px}
+.feedback h4{font-size:14px;color:#15803d;font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.feedback p{font-size:14px;color:#166534;line-height:1.6}
+.q-actions{display:flex;justify-content:space-between;gap:10px}
+</style></head><body>
+<nav class="nav"><div class="nav-inner">
+  <a href="index.html" class="logo"><div class="logo-mark">M</div><span>MarkLearn</span></a>
+  <div class="nav-menu">
+    <a href="notes.html" class="">노트</a>
+    <a href="quiz.html" class="active">퀴즈</a>
+    <a href="stats.html" class="">통계</a>
+    <a href="mypage.html" class="">마이페이지</a>
+  </div>
+  <a class="nav-cta" href="login.html">로그인</a>
+</div></nav>
+
+<div class="container quiz-wrap">
+  <div class="page-title">AI 퀴즈</div>
+  <div class="page-sub">노트 「DFS와 BFS 정리」 기반 자동 생성 문제</div>
+  <div class="progress"><div></div></div>
+  <div class="progress-meta"><span>4 / 10 문제</span><span>⏱ 02:34</span></div>
+  <div class="q-card">
+    <span class="q-tag">개념 이해</span>
+    <div class="q-text">Q4. 다음 중 BFS(너비 우선 탐색)에 대한 설명으로 <u>옳은 것</u>은?</div>
+    <div class="choice"><div class="idx">1</div><div>스택을 이용해 구현하며, 가장 최근 방문한 노드부터 탐색한다.</div></div>
+    <div class="choice selected correct"><div class="idx">2</div><div>큐를 이용해 구현하며, 간선 가중치가 동일할 때 최단 경로를 보장한다.</div></div>
+    <div class="choice"><div class="idx">3</div><div>음수 가중치 그래프에서도 항상 최단 경로를 찾을 수 있다.</div></div>
+    <div class="choice"><div class="idx">4</div><div>시간복잡도는 항상 O(V²)이다.</div></div>
+  </div>
+  <div class="feedback">
+    <h4>✅ 정답입니다!</h4>
+    <p>BFS는 큐(FIFO)를 사용하여 시작 노드로부터 가까운 노드부터 차례로 탐색합니다. 모든 간선의 가중치가 동일한 경우 최단 경로를 보장하지만, 음수 가중치가 포함된 그래프에서는 다익스트라나 벨만-포드 알고리즘을 사용해야 합니다.</p>
+  </div>
+  <div class="q-actions">
+    <button class="btn btn-ghost">← 이전 문제</button>
+    <button class="btn btn-primary">다음 문제 →</button>
+  </div>
+</div>
+
+<footer><div class="row"><a href="#">이용약관</a><a href="#">개인정보처리방침</a><a href="#">GitHub</a></div>
+<div>© 2026 MarkLearn — 영남대학교 컴퓨터공학과 졸업작품</div></footer>
+</body></html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>노트 편집 · MarkLearn</title>
+<link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--pink:#fcd5d5;--green-1:#7dc89a;--olive:#c5d27a;--ink:#1f2937;--sub:#4b5563;--primary:#2438d6;--line:#e5e7eb;--teal:#2ca6a4;--orange:#e88a2a;--lavender:#c7c5e8;--leaf:#7cb342}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{font-family:'Pretendard','Apple SD Gothic Neo',system-ui,sans-serif;color:var(--ink);background:#eaeaea;line-height:1.55;height:100%}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+
+.app{position:relative;height:100vh;overflow:hidden;background:#d8d8d8}
+
+/* 상단 핑크바 */
+.topbar{position:absolute;top:0;left:0;right:0;height:54px;background:var(--pink);display:flex;align-items:center;justify-content:space-between;padding:0 28px;z-index:30}
+.path{display:flex;align-items:center;gap:6px;font-size:14.5px;color:#7a3b3b;font-weight:600}
+.path .dir{color:#a86464}
+.path .sep{color:#c89090}
+.path input{font:inherit;color:#7a3b3b;background:transparent;border:none;border-bottom:1px dashed transparent;outline:none;padding:2px 4px;font-weight:700;min-width:120px}
+.path input:hover{border-bottom-color:#a86464}
+.path input:focus{border-bottom-color:#7a3b3b;background:rgba(255,255,255,.4)}
+.path .ext{color:#a86464}
+.back{font-size:14px;color:#7a3b3b;font-weight:600}
+.back:hover{text-decoration:underline}
+
+/* 마크다운 툴바 (teal) */
+.toolbar{position:absolute;top:74px;left:50%;transform:translateX(-50%);height:44px;background:var(--teal);border-radius:6px;display:flex;align-items:center;gap:2px;padding:0 10px;box-shadow:0 4px 12px rgba(44,166,164,.3);z-index:25;width:min(640px,80%)}
+.toolbar button{color:#fff;padding:6px 10px;border-radius:4px;font-size:14px;font-weight:600;opacity:.92;min-width:32px}
+.toolbar button:hover{background:rgba(255,255,255,.2);opacity:1}
+.toolbar .div{width:1px;height:18px;background:rgba(255,255,255,.4);margin:0 4px}
+.toolbar .label{margin-left:auto;font-size:12px;color:rgba(255,255,255,.85);font-weight:600;letter-spacing:.5px}
+
+/* 본문 영역 */
+.workspace{position:absolute;top:140px;bottom:90px;left:0;right:0;display:flex;transition:padding .3s ease}
+.workspace.l-open{padding-left:280px}
+.workspace.r-open{padding-right:280px}
+.editor-area,.preview-area{flex:1;height:100%;overflow:auto;padding:32px 48px}
+.editor-area textarea{width:100%;height:100%;border:none;outline:none;resize:none;background:transparent;font-family:'JetBrains Mono','Consolas',monospace;font-size:15px;line-height:1.8;color:#374151}
+.preview-area{display:none;background:#f3f3f3;border-left:1px solid #c4c4c4}
+.app.preview .editor-area{display:none}
+.app.preview .preview-area{display:block;flex:1}
+.app.split .preview-area{display:block;border-left:1px solid #c4c4c4;background:#f3f3f3}
+.preview-area h1{font-size:26px;font-weight:800;margin-bottom:14px;border-bottom:1px solid #cfcfcf;padding-bottom:10px}
+.preview-area h2{font-size:20px;font-weight:700;margin:20px 0 10px}
+.preview-area p{margin:10px 0;color:#374151}
+.preview-area code{background:#dde0ff;color:var(--primary);padding:2px 6px;border-radius:4px;font-size:13px;font-family:'JetBrains Mono',monospace}
+.preview-area pre{background:#1f2937;color:#e5e7eb;padding:16px;border-radius:10px;overflow:auto;font-size:13px;font-family:'JetBrains Mono',monospace;line-height:1.6;margin:14px 0}
+.preview-area ul{margin:10px 0 10px 22px}
+
+/* 좌/우 사이드바 (열렸을 때만) */
+.lside,.rside{position:absolute;top:54px;bottom:0;width:280px;padding:30px 20px;overflow:auto;z-index:15;transform:translateX(0);transition:transform .3s ease;border-radius:0 22px 0 0}
+.lside{left:0;background:var(--lavender);border-radius:0 22px 22px 0}
+.rside{right:0;background:var(--leaf);border-radius:22px 0 0 22px}
+.lside.hidden{transform:translateX(-100%)}
+.rside.hidden{transform:translateX(100%)}
+.lside h4,.rside h4{font-size:12px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;margin-bottom:14px;opacity:.75}
+.lside h4{color:#3a366b}
+.rside h4{color:#2d4a14}
+.lside ul,.rside ul{list-style:none;display:flex;flex-direction:column;gap:6px}
+.lside li,.rside li{padding:9px 12px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px}
+.lside li{color:#312e5f;background:rgba(255,255,255,.35)}
+.lside li:hover,.lside li.active{background:rgba(255,255,255,.7)}
+.rside li{color:#1f3309;background:rgba(255,255,255,.3)}
+.rside li:hover{background:rgba(255,255,255,.55)}
+.rside .toc-h2{padding-left:24px;font-weight:500;font-size:13px}
+
+/* 하단 버튼 라벨 */
+.dock-labels{position:absolute;bottom:78px;left:50%;transform:translateX(-50%);display:flex;gap:14px;z-index:20;pointer-events:none}
+.dock-labels span{width:60px;text-align:center;font-size:14px;font-weight:800;color:var(--primary);transition:opacity .2s ease}
+.app.l-open .dock-labels span:nth-child(1),
+.app.r-open .dock-labels span:nth-child(2){opacity:0}
+
+/* 하단 도크 (오렌지 알약) */
+.dock{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:var(--orange);border-radius:999px;padding:10px 16px;display:flex;gap:14px;box-shadow:0 8px 24px rgba(232,138,42,.4);z-index:20}
+.dock button{width:36px;height:36px;border-radius:50%;background:var(--primary);transition:transform .15s ease, box-shadow .15s ease;position:relative}
+.dock button:hover{transform:translateY(-2px);box-shadow:0 4px 10px rgba(36,56,214,.5)}
+.dock button.on{background:#16a34a;box-shadow:0 0 0 3px rgba(22,163,74,.25)}
+.dock button .tip{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#1f2937;color:#fff;font-size:11px;font-weight:600;padding:4px 8px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s}
+.dock button:hover .tip{opacity:1}
+
+@media(max-width:780px){
+  .lside,.rside{width:240px}
+  .workspace.l-open{padding-left:240px}
+  .workspace.r-open{padding-right:240px}
+  .editor-area,.preview-area{padding:20px 22px}
+}
+</style></head><body>
+
+<div class="app" id="app">
+
+  <!-- 상단 -->
+  <div class="topbar">
+    <div class="path">
+      <span class="dir">📁 알고리즘</span>
+      <span class="sep">/</span>
+      <input type="text" value="DFS와 BFS 정리" id="filename"/>
+      <span class="ext">.md</span>
+    </div>
+    <a class="back" href="notes.html">✕ 취소하고 돌아가기</a>
+  </div>
+
+  <!-- 툴바 -->
+  <div class="toolbar">
+    <button title="굵게"><b>B</b></button>
+    <button title="기울임"><i>I</i></button>
+    <button title="취소선"><s>S</s></button>
+    <span class="div"></span>
+    <button title="제목 1">H1</button>
+    <button title="제목 2">H2</button>
+    <button title="인용">❝</button>
+    <span class="div"></span>
+    <button title="목록">• 목록</button>
+    <button title="번호 목록">1.</button>
+    <button title="체크박스">☐</button>
+    <span class="div"></span>
+    <button title="링크">🔗</button>
+    <button title="이미지">🖼</button>
+    <button title="코드">{ }</button>
+    <span class="label">마크다운 툴바</span>
+  </div>
+
+  <!-- 좌측 사이드바: 디렉토리/파일 -->
+  <aside class="lside hidden" id="lside">
+    <h4>📂 디렉토리</h4>
+    <ul>
+      <li class="active">📁 알고리즘</li>
+      <li>📁 React</li>
+      <li>📁 Python</li>
+      <li>📁 자료구조</li>
+    </ul>
+    <h4 style="margin-top:22px">📄 파일</h4>
+    <ul>
+      <li class="active">DFS와 BFS 정리</li>
+      <li>다익스트라</li>
+      <li>이분 탐색</li>
+      <li>+ 새 파일</li>
+    </ul>
+  </aside>
+
+  <!-- 우측 사이드바: 목차 -->
+  <aside class="rside hidden" id="rside">
+    <h4>📑 목차</h4>
+    <ul>
+      <li>DFS와 BFS 정리</li>
+      <li class="toc-h2">DFS (깊이 우선 탐색)</li>
+      <li class="toc-h2">BFS (너비 우선 탐색)</li>
+      <li class="toc-h2">시간복잡도 비교</li>
+    </ul>
+    <h4 style="margin-top:22px">🏷 태그</h4>
+    <ul>
+      <li>#알고리즘</li>
+      <li>#그래프</li>
+      <li>#시험범위</li>
+    </ul>
+  </aside>
+
+  <!-- 본문 -->
+  <div class="workspace" id="workspace">
+    <div class="editor-area">
+      <textarea spellcheck="false" id="md"># DFS와 BFS 정리
+
+그래프 탐색의 두 가지 기본 알고리즘.
+
+## DFS (깊이 우선 탐색)
+
+스택 또는 재귀로 구현한다. 한 경로를 끝까지 파고든 뒤 되돌아온다.
+
+```python
+def dfs(graph, v, visited):
+    visited[v] = True
+    for u in graph[v]:
+        if not visited[u]:
+            dfs(graph, u, visited)
+```
+
+## BFS (너비 우선 탐색)
+
+큐를 사용해 가까운 노드부터 방문한다. **최단 경로**(간선 가중치 동일) 탐색에 적합.
+
+## 시간복잡도 비교
+
+- 시간복잡도: `O(V + E)`
+- 공간복잡도: `O(V)`
+</textarea>
+    </div>
+    <div class="preview-area" id="preview">
+      <h1>DFS와 BFS 정리</h1>
+      <p>그래프 탐색의 두 가지 기본 알고리즘.</p>
+      <h2>DFS (깊이 우선 탐색)</h2>
+      <p>스택 또는 재귀로 구현한다. 한 경로를 끝까지 파고든 뒤 되돌아온다.</p>
+      <pre><code>def dfs(graph, v, visited):
+    visited[v] = True
+    for u in graph[v]:
+        if not visited[u]:
+            dfs(graph, u, visited)</code></pre>
+      <h2>BFS (너비 우선 탐색)</h2>
+      <p>큐를 사용해 가까운 노드부터 방문한다. <strong>최단 경로</strong>(간선 가중치 동일) 탐색에 적합.</p>
+      <h2>시간복잡도 비교</h2>
+      <ul><li>시간복잡도: <code>O(V + E)</code></li><li>공간복잡도: <code>O(V)</code></li></ul>
+    </div>
+  </div>
+
+  <!-- 하단 도크 -->
+  <div class="dock">
+    <button id="btn-l" title="L 사이드바"><span class="tip">L 사이드바</span></button>
+    <button id="btn-r" title="R 사이드바"><span class="tip">R 사이드바</span></button>
+    <button id="btn-edit" title="편집/미리보기"><span class="tip">편집 ↔ 미리보기</span></button>
+    <button id="btn-send" title="전송 (저장)"><span class="tip">저장 / 전송</span></button>
+  </div>
+</div>
+
+<script>
+const app = document.getElementById('app');
+const ws = document.getElementById('workspace');
+const lside = document.getElementById('lside');
+const rside = document.getElementById('rside');
+
+document.getElementById('btn-l').addEventListener('click', e=>{
+  const open = lside.classList.toggle('hidden') === false;
+  e.currentTarget.classList.toggle('on', open);
+  ws.classList.toggle('l-open', open);
+  app.classList.toggle('l-open', open);
+});
+document.getElementById('btn-r').addEventListener('click', e=>{
+  const open = rside.classList.toggle('hidden') === false;
+  e.currentTarget.classList.toggle('on', open);
+  ws.classList.toggle('r-open', open);
+  app.classList.toggle('r-open', open);
+});
+document.getElementById('btn-edit').addEventListener('click', e=>{
+  const states = ['', 'preview', 'split'];
+  const cur = states.findIndex(s => app.classList.contains(s) || s==='');
+  let idx = 0;
+  if(app.classList.contains('split')) idx = 0;
+  else if(app.classList.contains('preview')) idx = 2;
+  else idx = 1;
+  app.classList.remove('preview','split');
+  if(states[idx]) app.classList.add(states[idx]);
+  e.currentTarget.classList.toggle('on', idx!==0);
+});
+document.getElementById('btn-send').addEventListener('click', e=>{
+  e.currentTarget.classList.add('on');
+  setTimeout(()=>{
+    alert('💾 저장되었습니다');
+    e.currentTarget.classList.remove('on');
+  }, 150);
+});
+</script>
+</body></html>
