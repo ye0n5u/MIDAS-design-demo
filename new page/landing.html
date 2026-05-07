@@ -9,16 +9,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&family=Inter:wght@600;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --pink:#fcd5d5;
-    --green-1:#7dc89a;
-    --green-2:#a9d68b;
-    --olive:#c5d27a;
-    --gray:#dcdcdc;
+    --pink:#3B9E85;
+    --green-1:#5CBD9E;
+    --green-2:#8DD6B6;
+    --olive:#8DD6B6;
+    --gray:#F0FAF6;
     --ink:#1f2937;
     --sub:#4b5563;
-    --primary:#2438d6;
-    --primary-2:#3b4dff;
-    --accent:#16a34a;
+    --primary:#3B9E85;
+    --primary-2:#2E8A72;
+    --accent:#2E8A72;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{font-family:'Pretendard','Apple SD Gothic Neo',system-ui,-apple-system,sans-serif;color:var(--ink);background:#fff;line-height:1.55;-webkit-font-smoothing:antialiased}
@@ -31,7 +31,7 @@
     padding:10px 16px;
     font-size:14px;
     font-weight:600;
-    color:#7a3b3b;
+    color:rgba(255,255,255,.9);
     letter-spacing:-.2px;
   }
 
@@ -54,7 +54,7 @@
     width:30px;height:30px;border-radius:8px;
     background:linear-gradient(135deg,var(--green-1),var(--olive));
     display:grid;place-items:center;color:#fff;font-family:'Inter',sans-serif;font-weight:800;font-size:14px;
-    box-shadow:0 4px 12px rgba(125,200,154,.4);
+    box-shadow:0 4px 12px rgba(59,158,133,.4);
   }
   .nav-menu{display:flex;gap:28px;font-weight:600;color:var(--sub);font-size:15px}
   .nav-menu a:hover{color:var(--ink)}
@@ -68,7 +68,7 @@
 
   /* HERO */
   .hero{
-    background:linear-gradient(180deg,var(--green-1) 0%, #8fcf9f 100%);
+    background:linear-gradient(180deg,var(--green-1) 0%, #8DD6B6 100%);
     padding:96px 24px 120px;
     text-align:center;
     position:relative;overflow:hidden;
@@ -76,8 +76,8 @@
   .hero::before,.hero::after{
     content:"";position:absolute;border-radius:50%;filter:blur(40px);opacity:.5;
   }
-  .hero::before{width:380px;height:380px;background:#bfe6cc;top:-120px;left:-120px}
-  .hero::after{width:320px;height:320px;background:#d8e89a;bottom:-100px;right:-80px}
+  .hero::before{width:380px;height:380px;background:#A8DFCE;top:-120px;left:-120px}
+  .hero::after{width:320px;height:320px;background:#8DD6B6;bottom:-100px;right:-80px}
   .hero-inner{position:relative;max-width:880px;margin:0 auto}
   .eyebrow{
     display:inline-block;padding:6px 14px;border-radius:999px;
@@ -96,10 +96,10 @@
     margin-top:36px;display:inline-flex;align-items:center;gap:10px;
     padding:16px 34px;border-radius:999px;
     background:var(--primary);color:#fff;font-weight:700;font-size:17px;
-    box-shadow:0 12px 28px rgba(36,56,214,.35);
+    box-shadow:0 12px 28px rgba(59,158,133,.35);
     transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
   }
-  .hero-cta:hover{background:var(--primary-2);transform:translateY(-2px);box-shadow:0 16px 32px rgba(36,56,214,.42)}
+  .hero-cta:hover{background:var(--primary-2);transform:translateY(-2px);box-shadow:0 16px 32px rgba(59,158,133,.42)}
   .hero-cta svg{width:18px;height:18px}
 
   /* 섹션 공통 */
@@ -113,9 +113,9 @@
   .about-grid{
     display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;
   }
-  .about-card h2{font-size:30px;font-weight:800;letter-spacing:-.6px;color:#2c3a14}
-  .about-card .tag{font-size:13px;font-weight:700;color:#5a6b2a;margin-bottom:8px;letter-spacing:.4px;text-transform:uppercase}
-  .about-card p{margin-top:14px;color:#3b4719;font-size:16px;line-height:1.7}
+  .about-card h2{font-size:30px;font-weight:800;letter-spacing:-.6px;color:#1a3d32}
+  .about-card .tag{font-size:13px;font-weight:700;color:#2d5a4a;margin-bottom:8px;letter-spacing:.4px;text-transform:uppercase}
+  .about-card p{margin-top:14px;color:#1f3d30;font-size:16px;line-height:1.7}
   .about-right{text-align:right}
   @media (max-width:780px){.about-grid{grid-template-columns:1fr;gap:36px}.about-right{text-align:left}}
 
@@ -150,7 +150,7 @@
   /* 푸터 */
   footer{
     background:var(--pink);padding:36px 24px;text-align:center;
-    color:#7a3b3b;font-size:13.5px;
+    color:rgba(255,255,255,.85);font-size:13.5px;
   }
   footer .row{display:flex;justify-content:center;gap:22px;margin-bottom:10px;font-weight:600}
   footer .row a:hover{text-decoration:underline}
@@ -171,7 +171,7 @@
         <a href="#features">기능</a>
         <a href="#how">방법</a>
       </div>
-      <a class="nav-cta" href="#login">
+      <a class="nav-cta" href="login.html">
         <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 .5C5.73.5.99 5.24.99 11.51c0 4.85 3.14 8.96 7.5 10.41.55.1.75-.24.75-.53 0-.26-.01-.95-.01-1.86-3.05.66-3.69-1.47-3.69-1.47-.5-1.27-1.22-1.6-1.22-1.6-1-.68.07-.66.07-.66 1.1.08 1.68 1.13 1.68 1.13.98 1.68 2.57 1.19 3.2.91.1-.71.38-1.2.7-1.47-2.43-.28-4.99-1.22-4.99-5.43 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.4.11-2.92 0 0 .92-.3 3.02 1.13.88-.24 1.82-.36 2.76-.36.94 0 1.88.12 2.76.36 2.1-1.43 3.02-1.13 3.02-1.13.6 1.52.22 2.64.11 2.92.7.77 1.13 1.75 1.13 2.95 0 4.22-2.57 5.15-5.01 5.42.39.34.74 1.01.74 2.04 0 1.47-.01 2.66-.01 3.02 0 .29.2.64.76.53 4.36-1.45 7.49-5.56 7.49-10.41C23.01 5.24 18.27.5 12 .5z"/></svg>
         GitHub 로그인
       </a>
@@ -184,7 +184,7 @@
       <div class="eyebrow">🎓 졸업 작품 프로젝트</div>
       <h1>마크다운으로 기록하고,<br/><span>AI와 함께 복습하세요</span></h1>
       <p class="sub">학습자 상태 인식 기반 AI 코딩 교육 도우미.<br/>노트 작성부터 퀴즈 피드백, 학습 통계까지 한 번에.</p>
-      <a class="hero-cta" id="login" href="#">
+      <a class="hero-cta" id="login" href="login.html">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.99 5.24.99 11.51c0 4.85 3.14 8.96 7.5 10.41.55.1.75-.24.75-.53 0-.26-.01-.95-.01-1.86-3.05.66-3.69-1.47-3.69-1.47-.5-1.27-1.22-1.6-1.22-1.6-1-.68.07-.66.07-.66 1.1.08 1.68 1.13 1.68 1.13.98 1.68 2.57 1.19 3.2.91.1-.71.38-1.2.7-1.47-2.43-.28-4.99-1.22-4.99-5.43 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.4.11-2.92 0 0 .92-.3 3.02 1.13.88-.24 1.82-.36 2.76-.36.94 0 1.88.12 2.76.36 2.1-1.43 3.02-1.13 3.02-1.13.6 1.52.22 2.64.11 2.92.7.77 1.13 1.75 1.13 2.95 0 4.22-2.57 5.15-5.01 5.42.39.34.74 1.01.74 2.04 0 1.47-.01 2.66-.01 3.02 0 .29.2.64.76.53 4.36-1.45 7.49-5.56 7.49-10.41C23.01 5.24 18.27.5 12 .5z"/></svg>
         GitHub으로 시작하기
       </a>

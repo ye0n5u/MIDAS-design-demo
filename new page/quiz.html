@@ -3,9 +3,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --pink:#fcd5d5; --green-1:#7dc89a; --green-2:#a9d68b; --olive:#c5d27a;
-  --gray:#dcdcdc; --ink:#1f2937; --sub:#4b5563;
-  --primary:#2438d6; --primary-2:#3b4dff; --bg:#f7f8fa; --line:#e5e7eb;
+  --pink:#3B9E85; --green-1:#5CBD9E; --green-2:#8DD6B6; --olive:#8DD6B6;
+  --gray:#F0FAF6; --ink:#1f2937; --sub:#4b5563;
+  --primary:#3B9E85; --primary-2:#2E8A72; --bg:#F2F9F6; --line:#e5e7eb;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{font-family:'Pretendard','Apple SD Gothic Neo',system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased}
@@ -15,14 +15,14 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.9);backdrop-filter:blur(10px);border-bottom:1px solid #eee}
 .nav-inner{max-width:1180px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:14px 24px}
 .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px}
-.logo-mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--green-1),var(--olive));display:grid;place-items:center;color:#fff;font-weight:800;font-size:14px;box-shadow:0 4px 12px rgba(125,200,154,.4)}
+.logo-mark{width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,var(--green-1),var(--olive));display:grid;place-items:center;color:#fff;font-weight:800;font-size:14px;box-shadow:0 4px 12px rgba(59,158,133,.4)}
 .nav-menu{display:flex;gap:28px;font-weight:600;color:var(--sub);font-size:15px}
 .nav-menu a:hover,.nav-menu a.active{color:var(--ink)}
 .nav-menu a.active{color:var(--primary)}
 .nav-cta{display:inline-flex;align-items:center;gap:8px;padding:9px 18px;border-radius:999px;background:var(--ink);color:#fff;font-weight:700;font-size:14px}
 .nav-cta:hover{background:#000}
 
-footer{background:var(--pink);padding:30px 24px;text-align:center;color:#7a3b3b;font-size:13.5px;margin-top:80px}
+footer{background:var(--pink);padding:30px 24px;text-align:center;color:rgba(255,255,255,.85);font-size:13.5px;margin-top:80px}
 footer .row{display:flex;justify-content:center;gap:22px;margin-bottom:8px;font-weight:600}
 
 .container{max-width:1180px;margin:0 auto;padding:32px 24px}
@@ -42,26 +42,27 @@ input:focus,textarea:focus,select:focus{border-color:var(--primary)}
 .progress > div{height:100%;width:40%;background:linear-gradient(90deg,var(--green-1),var(--olive));border-radius:999px;transition:width .3s ease}
 .progress-meta{display:flex;justify-content:space-between;font-size:13px;color:var(--sub);margin-bottom:24px}
 .q-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:32px;margin-bottom:18px}
-.q-tag{display:inline-block;font-size:12px;font-weight:700;padding:4px 10px;border-radius:6px;background:#fef3c7;color:#92400e;margin-bottom:14px}
+.q-tag{display:inline-block;font-size:12px;font-weight:700;padding:4px 10px;border-radius:6px;background:#D6F5EA;color:#1a3d32;margin-bottom:14px}
 .q-text{font-size:19px;font-weight:700;line-height:1.5;margin-bottom:24px}
 .choice{display:flex;align-items:center;gap:12px;padding:14px 18px;border:1.5px solid var(--line);border-radius:12px;margin-bottom:10px;cursor:pointer;transition:all .15s ease}
-.choice:hover{border-color:var(--primary);background:#fafbff}
-.choice.selected{border-color:var(--primary);background:#eef0ff}
+.choice:hover{border-color:var(--primary);background:#EBF9F3}
+.choice.selected{border-color:var(--primary);background:#D6F5EA}
 .choice.correct{border-color:#16a34a;background:#f0fdf4}
 .choice.wrong{border-color:#dc2626;background:#fef2f2}
 .choice .idx{width:28px;height:28px;border-radius:50%;background:#f3f4f6;display:grid;place-items:center;font-weight:700;font-size:13px;color:var(--sub);flex-shrink:0}
 .choice.selected .idx{background:var(--primary);color:#fff}
+
 .feedback{background:#f0fdf4;border:1px solid #86efac;border-radius:14px;padding:20px;margin-bottom:18px}
 .feedback h4{font-size:14px;color:#15803d;font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:6px}
 .feedback p{font-size:14px;color:#166534;line-height:1.6}
 .q-actions{display:flex;justify-content:space-between;gap:10px}
 </style></head><body>
 <nav class="nav"><div class="nav-inner">
-  <a href="index.html" class="logo"><div class="logo-mark">M</div><span>MarkLearn</span></a>
+  <a href="landing.html" class="logo"><div class="logo-mark">M</div><span>MarkLearn</span></a>
   <div class="nav-menu">
-    <a href="notes.html" class="">노트</a>
+    <a href="directory.html" class="">노트</a>
     <a href="quiz.html" class="active">퀴즈</a>
-    <a href="stats.html" class="">통계</a>
+    <a href="dashboard.html" class="">통계</a>
     <a href="mypage.html" class="">마이페이지</a>
   </div>
   <a class="nav-cta" href="login.html">로그인</a>
