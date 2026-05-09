@@ -214,14 +214,16 @@ const app = document.getElementById('app');
 const ws = document.getElementById('workspace');
 const lside = document.getElementById('lside');
 const rside = document.getElementById('rside');
+const btnL = document.getElementById('btn-l');
+const btnR = document.getElementById('btn-r');
 
-document.getElementById('btn-l').addEventListener('click', e=>{
+btnL.addEventListener('click', e=>{
   const open = lside.classList.toggle('hidden') === false;
   e.currentTarget.classList.toggle('on', open);
   ws.classList.toggle('l-open', open);
   app.classList.toggle('l-open', open);
 });
-document.getElementById('btn-r').addEventListener('click', e=>{
+btnR.addEventListener('click', e=>{
   const open = rside.classList.toggle('hidden') === false;
   e.currentTarget.classList.toggle('on', open);
   ws.classList.toggle('r-open', open);
@@ -239,6 +241,18 @@ document.getElementById('btn-edit').addEventListener('click', e=>{
   e.currentTarget.classList.toggle('on', idx!==0);
 });
 document.getElementById('btn-send').addEventListener('click', e=>{
+  if(!lside.classList.contains('hidden')){
+    lside.classList.add('hidden');
+    ws.classList.remove('l-open');
+    app.classList.remove('l-open');
+    btnL.classList.remove('on');
+  }
+  if(rside.classList.contains('hidden')){
+    rside.classList.remove('hidden');
+  }
+  ws.classList.add('r-open');
+  app.classList.add('r-open');
+  btnR.classList.add('on');
   e.currentTarget.classList.add('on');
   setTimeout(()=>{
     alert('💾 저장되었습니다');
