@@ -11,16 +11,16 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 
 .app{position:relative;height:100vh;overflow:hidden;background:#F4FBF9}
 
-/* 상단 핑크바 */
-.topbar{position:absolute;top:0;left:0;right:0;height:54px;background:var(--pink);display:flex;align-items:center;justify-content:space-between;padding:0 28px;z-index:30}
-.path{display:flex;align-items:center;gap:6px;font-size:14.5px;color:rgba(255,255,255,.9);font-weight:600}
-.path .dir{color:rgba(255,255,255,.75)}
-.path .sep{color:rgba(255,255,255,.5)}
-.path input{font:inherit;color:rgba(255,255,255,.9);background:transparent;border:none;border-bottom:1px dashed transparent;outline:none;padding:2px 4px;font-weight:700;min-width:120px}
-.path input:hover{border-bottom-color:rgba(255,255,255,.6)}
-.path input:focus{border-bottom-color:rgba(255,255,255,.9);background:rgba(255,255,255,.15)}
-.path .ext{color:rgba(255,255,255,.75)}
-.back{font-size:14px;color:rgba(255,255,255,.85);font-weight:600}
+/* 상단 헤더 */
+.topbar{position:absolute;top:0;left:0;right:0;height:54px;background:transparent;display:flex;align-items:center;justify-content:space-between;padding:0 28px;z-index:30}
+.path{display:flex;align-items:center;gap:6px;font-size:14.5px;color:var(--pink);font-weight:600}
+.path .dir{color:var(--pink)}
+.path .sep{color:var(--pink)}
+.path input{font:inherit;color:var(--pink);background:transparent;border:none;border-bottom:1px dashed transparent;outline:none;padding:2px 4px;font-weight:700;min-width:120px}
+.path input:hover{border-bottom-color:rgba(77,189,163,.6)}
+.path input:focus{border-bottom-color:rgba(77,189,163,.9);background:rgba(77,189,163,.12)}
+.path .ext{color:var(--pink)}
+.back{font-size:14px;color:var(--pink);font-weight:600}
 .back:hover{text-decoration:underline}
 
 /* 마크다운 툴바 (teal) */
