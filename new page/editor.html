@@ -3,7 +3,7 @@
 <title>노트 편집 · MarkLearn</title>
 <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-:root{--pink:#4DBDA3;--green-1:#7ACDB8;--olive:#A8E0CD;--ink:#1f2937;--sub:#4b5563;--primary:#4DBDA3;--line:#e5e7eb;--teal:#4DBDA3;--orange:#7ACDB8;--lavender:#A8E0CD;--leaf:#4DBDA3}
+:root{--pink:#4DBDA3;--green-1:#7ACDB8;--olive:#A8E0CD;--ink:#1f2937;--sub:#4b5563;--primary:#4DBDA3;--line:#e5e7eb;--teal:#4DBDA3;--orange:#7ACDB8;--lavender:#A8E0CD;--leaf:#4DBDA3;--rside-width:280px}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{font-family:'Pretendard','Apple SD Gothic Neo',system-ui,sans-serif;color:var(--ink);background:#F4FBF9;line-height:1.55;height:100%}
 a{color:inherit;text-decoration:none}
@@ -33,7 +33,7 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 /* 본문 영역 */
 .workspace{position:absolute;top:140px;bottom:90px;left:0;right:0;display:flex;transition:padding .3s ease}
 .workspace.l-open{padding-left:280px}
-.workspace.r-open{padding-right:280px}
+.workspace.r-open{padding-right:var(--rside-width)}
 .editor-area,.preview-area{flex:1;height:100%;overflow:auto;padding:32px 48px}
 .editor-area textarea{width:100%;height:100%;border:none;outline:none;resize:none;background:transparent;font-family:'JetBrains Mono','Consolas',monospace;font-size:15px;line-height:1.8;color:#374151}
 .preview-area{display:none;background:#f3f3f3;border-left:1px solid #c4c4c4}
@@ -50,19 +50,40 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 /* 좌/우 사이드바 (열렸을 때만) */
 .lside,.rside{position:absolute;top:54px;bottom:0;width:280px;padding:30px 20px;overflow:auto;z-index:15;transform:translateX(0);transition:transform .3s ease;border-radius:0 22px 0 0}
 .lside{left:0;background:var(--lavender);border-radius:0 22px 22px 0}
-.rside{right:0;background:var(--leaf);border-radius:22px 0 0 22px}
+.rside{right:0;background:#EEEEEE;border-radius:22px 0 0 22px;display:flex;flex-direction:column;width:var(--rside-width)}
 .lside.hidden{transform:translateX(-100%)}
 .rside.hidden{transform:translateX(100%)}
 .lside h4,.rside h4{font-size:12px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;margin-bottom:14px;opacity:.75}
 .lside h4{color:#1a3d32}
-.rside h4{color:rgba(255,255,255,.8)}
+.rside h4{color:#1F6F5F}
 .lside ul,.rside ul{list-style:none;display:flex;flex-direction:column;gap:6px}
 .lside li,.rside li{padding:9px 12px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px}
 .lside li{color:#1a3d32;background:rgba(255,255,255,.35)}
 .lside li:hover,.lside li.active{background:rgba(255,255,255,.7)}
-.rside li{color:rgba(255,255,255,.9);background:rgba(255,255,255,.15)}
-.rside li:hover{background:rgba(255,255,255,.55)}
+.rside li{color:#1F6F5F;background:rgba(47,160,132,.15)}
+.rside li:hover{background:rgba(47,160,132,.28)}
 .rside .toc-h2{padding-left:24px;font-weight:500;font-size:13px}
+/* 우측 사이드바: 토글 + 채팅 */
+.rside .mode-switch{position:sticky;top:0;background:#EEEEEE;padding-bottom:12px;margin-bottom:10px;z-index:2}
+.mode-toggle{width:100%;height:38px;border-radius:999px;background:#dfe7e4;padding:4px;display:flex;align-items:center;gap:6px;box-shadow:inset 0 0 0 1px rgba(31,111,95,.2)}
+.mode-toggle button{flex:1;height:30px;border-radius:999px;font-size:13px;font-weight:800;color:#1F6F5F;background:transparent;transition:background .2s ease,color .2s ease}
+.mode-toggle button.active{background:#2FA084;color:#fff}
+.quiz-panel,.tutor-panel{display:none}
+.rside.mode-quiz .quiz-panel{display:block}
+.rside.mode-tutor .tutor-panel{display:flex;flex-direction:column;flex:1;min-height:0}
+.tutor-head{display:flex;align-items:center;justify-content:space-between;margin:8px 0 12px}
+.tutor-head .title{font-weight:800;color:#1F6F5F}
+.tutor-head .back{color:#1F6F5F;font-size:14px}
+.chat-window{background:transparent;border-radius:18px;padding:14px;min-height:320px;display:flex;flex-direction:column;gap:12px;flex:1;overflow:auto}
+.bubble{max-width:78%;padding:12px 14px;border-radius:16px;font-size:13px;line-height:1.5;box-shadow:0 6px 14px rgba(31,111,95,.08)}
+.bubble .time{display:block;font-size:11px;opacity:.6;margin-top:6px}
+.bubble.left{align-self:flex-start;background:#ffffff;color:#1F6F5F;border:1px solid rgba(31,111,95,.08)}
+.bubble.right{align-self:flex-end;background:#2FA084;color:#fff}
+.chat-input{margin-top:auto;display:flex;align-items:center;gap:8px;background:#ffffff;border-radius:999px;padding:10px 12px;border:1px solid rgba(31,111,95,.12)}
+.chat-input input{flex:1;border:none;outline:none;background:transparent;font-size:13px;color:#1F6F5F}
+.chat-input button{width:32px;height:32px;border-radius:50%;background:#6FCF97;color:#fff;font-weight:800}
+.rside-resizer{position:absolute;left:0;top:0;bottom:0;width:8px;cursor:ew-resize;background:transparent}
+.rside-resizer:after{content:"";position:absolute;left:3px;top:16px;bottom:16px;width:2px;border-radius:2px;background:rgba(31,111,95,.25)}
 
 /* 하단 버튼 라벨 */
 .dock-labels{position:absolute;bottom:78px;left:50%;transform:translateX(-50%);display:flex;gap:14px;z-index:20;pointer-events:none}
@@ -137,21 +158,45 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
     </ul>
   </aside>
 
-  <!-- 우측 사이드바: 목차 -->
-  <aside class="rside hidden" id="rside">
-    <h4>📑 목차</h4>
-    <ul>
-      <li>DFS와 BFS 정리</li>
-      <li class="toc-h2">DFS (깊이 우선 탐색)</li>
-      <li class="toc-h2">BFS (너비 우선 탐색)</li>
-      <li class="toc-h2">시간복잡도 비교</li>
-    </ul>
-    <h4 style="margin-top:22px">🏷 태그</h4>
-    <ul>
-      <li>#알고리즘</li>
-      <li>#그래프</li>
-      <li>#시험범위</li>
-    </ul>
+  <!-- 우측 사이드바: 퀴즈/AI 튜터 -->
+  <aside class="rside hidden mode-tutor" id="rside">
+    <div class="rside-resizer" id="rside-resizer" aria-hidden="true"></div>
+    <div class="mode-switch">
+      <div class="mode-toggle" role="tablist" aria-label="오른쪽 패널 모드">
+        <button type="button" id="btn-quiz" role="tab" aria-selected="false">퀴즈</button>
+        <button type="button" id="btn-tutor" role="tab" aria-selected="true" class="active">AI 튜터</button>
+      </div>
+    </div>
+
+    <section class="quiz-panel" aria-hidden="true">
+      <!-- 퀴즈 레이아웃은 다른 페이지에서 불러올 예정 -->
+    </section>
+
+    <section class="tutor-panel" aria-hidden="false">
+      <div class="tutor-head">
+        <span class="title">AI Tutor</span>
+        <span class="back">‹</span>
+      </div>
+      <div class="chat-window">
+        <div class="bubble left">
+          Hello there? sup?
+          <span class="time">19:30</span>
+        </div>
+        <div class="bubble right">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+          sed do eiusmod tempor
+          <span class="time">19:30</span>
+        </div>
+        <div class="bubble right">
+          PINGGG !!!
+          <span class="time">19:32</span>
+        </div>
+      </div>
+      <div class="chat-input">
+        <input type="text" placeholder="type something" />
+        <button type="button">↻</button>
+      </div>
+    </section>
   </aside>
 
   <!-- 본문 -->
@@ -216,6 +261,10 @@ const lside = document.getElementById('lside');
 const rside = document.getElementById('rside');
 const btnL = document.getElementById('btn-l');
 const btnR = document.getElementById('btn-r');
+const btnQuiz = document.getElementById('btn-quiz');
+const btnTutor = document.getElementById('btn-tutor');
+const rsideResizer = document.getElementById('rside-resizer');
+let resizingRside = false;
 
 btnL.addEventListener('click', e=>{
   const open = lside.classList.toggle('hidden') === false;
@@ -258,6 +307,49 @@ document.getElementById('btn-send').addEventListener('click', e=>{
     alert('💾 저장되었습니다');
     e.currentTarget.classList.remove('on');
   }, 150);
+});
+
+btnQuiz.addEventListener('click', ()=>{
+  rside.classList.add('mode-quiz');
+  rside.classList.remove('mode-tutor');
+  btnQuiz.classList.add('active');
+  btnTutor.classList.remove('active');
+  btnQuiz.setAttribute('aria-selected', 'true');
+  btnTutor.setAttribute('aria-selected', 'false');
+  document.querySelector('.quiz-panel').setAttribute('aria-hidden', 'false');
+  document.querySelector('.tutor-panel').setAttribute('aria-hidden', 'true');
+});
+btnTutor.addEventListener('click', ()=>{
+  rside.classList.add('mode-tutor');
+  rside.classList.remove('mode-quiz');
+  btnTutor.classList.add('active');
+  btnQuiz.classList.remove('active');
+  btnTutor.setAttribute('aria-selected', 'true');
+  btnQuiz.setAttribute('aria-selected', 'false');
+  document.querySelector('.tutor-panel').setAttribute('aria-hidden', 'false');
+  document.querySelector('.quiz-panel').setAttribute('aria-hidden', 'true');
+});
+
+rsideResizer.addEventListener('mousedown', e=>{
+  e.preventDefault();
+  resizingRside = true;
+  document.body.style.cursor = 'ew-resize';
+});
+window.addEventListener('mousemove', e=>{
+  if(!resizingRside){
+    return;
+  }
+  const minWidth = 220;
+  const maxWidth = 420;
+  const nextWidth = Math.min(maxWidth, Math.max(minWidth, window.innerWidth - e.clientX));
+  document.documentElement.style.setProperty('--rside-width', `${nextWidth}px`);
+});
+window.addEventListener('mouseup', ()=>{
+  if(!resizingRside){
+    return;
+  }
+  resizingRside = false;
+  document.body.style.cursor = '';
 });
 </script>
 </body></html>
