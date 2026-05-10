@@ -388,8 +388,8 @@ window.addEventListener('mousemove', e=>{
   if(!resizingRside){
     return;
   }
-  const minWidth = 220;
-  const maxWidth = 420;
+  const minWidth = 350;
+  const maxWidth = 520;
   const nextWidth = Math.min(maxWidth, Math.max(minWidth, window.innerWidth - e.clientX));
   document.documentElement.style.setProperty('--rside-width', `${nextWidth}px`);
 });
