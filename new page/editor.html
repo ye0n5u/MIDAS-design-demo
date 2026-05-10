@@ -69,8 +69,26 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
 .mode-toggle button{flex:1;height:30px;border-radius:999px;font-size:13px;font-weight:800;color:#1F6F5F;background:transparent;transition:background .2s ease,color .2s ease}
 .mode-toggle button.active{background:#2FA084;color:#fff}
 .quiz-panel,.tutor-panel{display:none}
-.rside.mode-quiz .quiz-panel{display:block}
+.rside.mode-quiz .quiz-panel{display:flex;flex-direction:column;gap:12px;min-height:0}
 .rside.mode-tutor .tutor-panel{display:flex;flex-direction:column;flex:1;min-height:0}
+.quiz-panel .qz-title{font-size:18px;font-weight:800;color:#1F6F5F}
+.quiz-panel .qz-sub{font-size:12px;color:#4b5563;margin-top:-6px}
+.qz-progress{height:7px;background:#dfe7e4;border-radius:999px;overflow:hidden}
+.qz-progress > span{display:block;height:100%;width:40%;background:linear-gradient(90deg,#2FA084,#6FCF97);border-radius:999px}
+.qz-meta{display:flex;justify-content:space-between;font-size:11px;color:#6b7280}
+.qz-card{background:#ffffff;border:1px solid rgba(31,111,95,.08);border-radius:16px;padding:14px}
+.qz-tag{display:inline-block;font-size:10px;font-weight:800;padding:4px 8px;border-radius:999px;background:#dff3ea;color:#1F6F5F;margin-bottom:10px}
+.qz-text{font-size:13px;font-weight:700;line-height:1.5;color:#1F6F5F;margin-bottom:10px}
+.qz-choice{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:1px solid rgba(31,111,95,.12);border-radius:12px;margin-bottom:8px;background:#f7f9f8}
+.qz-choice .idx{width:24px;height:24px;border-radius:50%;background:#e7efec;display:grid;place-items:center;font-size:11px;font-weight:800;color:#1F6F5F;flex-shrink:0}
+.qz-choice.active{border-color:#2FA084;background:#e6f6f0}
+.qz-feedback{background:#f0fdf4;border:1px solid #86efac;border-radius:12px;padding:12px}
+.qz-feedback strong{display:block;font-size:12px;color:#15803d;margin-bottom:6px}
+.qz-feedback p{font-size:12px;color:#166534;line-height:1.5}
+.qz-actions{display:flex;gap:8px}
+.qz-btn{flex:1;padding:9px 10px;border-radius:10px;font-size:12px;font-weight:800;text-align:center}
+.qz-btn.ghost{border:1px solid rgba(31,111,95,.2);color:#1F6F5F;background:#fff}
+.qz-btn.primary{background:#2FA084;color:#fff}
 .tutor-head{display:flex;align-items:center;justify-content:space-between;margin:8px 0 12px}
 .tutor-head .title{font-weight:800;color:#1F6F5F}
 .tutor-head .back{color:#1F6F5F;font-size:14px}
@@ -169,7 +187,38 @@ button{font-family:inherit;cursor:pointer;border:none;background:none}
     </div>
 
     <section class="quiz-panel" aria-hidden="true">
-      <!-- 퀴즈 레이아웃은 다른 페이지에서 불러올 예정 -->
+      <div class="qz-title">AI 퀴즈</div>
+      <div class="qz-sub">노트 「DFS와 BFS 정리」 기반 자동 생성 문제</div>
+      <div class="qz-progress"><span></span></div>
+      <div class="qz-meta"><span>4 / 10 문제</span><span>⏱ 02:34</span></div>
+      <div class="qz-card">
+        <div class="qz-tag">개념 이해</div>
+        <div class="qz-text">Q4. 다음 중 BFS(너비 우선 탐색)에 대한 설명으로 옳은 것은?</div>
+        <div class="qz-choice">
+          <div class="idx">1</div>
+          <div>스택을 이용해 구현하며, 가장 최근 방문한 노드부터 탐색한다.</div>
+        </div>
+        <div class="qz-choice active">
+          <div class="idx">2</div>
+          <div>큐를 이용해 구현하며, 간선 가중치가 동일할 때 최단 경로를 보장한다.</div>
+        </div>
+        <div class="qz-choice">
+          <div class="idx">3</div>
+          <div>음수 가중치 그래프에서도 항상 최단 경로를 찾을 수 있다.</div>
+        </div>
+        <div class="qz-choice">
+          <div class="idx">4</div>
+          <div>시간복잡도는 항상 O(V^2)이다.</div>
+        </div>
+      </div>
+      <div class="qz-feedback">
+        <strong>정답입니다!</strong>
+        <p>BFS는 큐(FIFO)를 사용해 가까운 노드부터 탐색하며, 동일 가중치에서 최단 경로를 보장합니다.</p>
+      </div>
+      <div class="qz-actions">
+        <div class="qz-btn ghost">이전 문제</div>
+        <div class="qz-btn primary">다음 문제</div>
+      </div>
     </section>
 
     <section class="tutor-panel" aria-hidden="false">
