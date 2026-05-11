@@ -1,161 +1,405 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>MarkLearn — AI 기반 학습 노트 플랫폼</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&family=Inter:wght@600;800&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --pink:#3B9E85;
-    --green-1:#5CBD9E;
-    --green-2:#8DD6B6;
-    --olive:#8DD6B6;
-    --gray:#F0FAF6;
-    --ink:#1f2937;
-    --sub:#4b5563;
-    --primary:#3B9E85;
-    --primary-2:#2E8A72;
-    --accent:#2E8A72;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html,body{font-family:'Pretendard','Apple SD Gothic Neo',system-ui,-apple-system,sans-serif;color:var(--ink);background:#fff;line-height:1.55;-webkit-font-smoothing:antialiased}
-  a{color:inherit;text-decoration:none}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MarkLearn — AI 기반 학습 노트 플랫폼</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&family=Inter:wght@600;800&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --pink: #3B9E85;
+      --green-1: #5CBD9E;
+      --green-2: #8DD6B6;
+      --olive: #8DD6B6;
+      --gray: #F0FAF6;
+      --ink: #1f2937;
+      --sub: #4b5563;
+      --primary: #3B9E85;
+      --primary-2: #2E8A72;
+      --accent: #2E8A72;
+    }
 
-  /* 상단 띠 (홍보문구) */
-  .promo-bar{
-    background:var(--pink);
-    text-align:center;
-    padding:10px 16px;
-    font-size:14px;
-    font-weight:600;
-    color:rgba(255,255,255,.9);
-    letter-spacing:-.2px;
-  }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
 
-  /* 네비게이션 */
-  .nav{
-    position:sticky;top:0;z-index:50;
-    background:rgba(255,255,255,.85);
-    backdrop-filter:saturate(180%) blur(10px);
-    border-bottom:1px solid #eee;
-  }
-  .nav-inner{
-    max-width:1180px;margin:0 auto;
-    display:flex;align-items:center;justify-content:space-between;
-    padding:14px 24px;
-  }
-  .logo{
-    display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;
-  }
-  .logo-mark{
-    width:30px;height:30px;border-radius:8px;
-    background:linear-gradient(135deg,var(--green-1),var(--olive));
-    display:grid;place-items:center;color:#fff;font-family:'Inter',sans-serif;font-weight:800;font-size:14px;
-    box-shadow:0 4px 12px rgba(59,158,133,.4);
-  }
-  .nav-menu{display:flex;gap:28px;font-weight:600;color:var(--sub);font-size:15px}
-  .nav-menu a:hover{color:var(--ink)}
-  .nav-cta{
-    display:inline-flex;align-items:center;gap:8px;
-    padding:9px 18px;border-radius:999px;
-    background:var(--ink);color:#fff;font-weight:700;font-size:14px;
-    transition:transform .15s ease, background .15s ease;
-  }
-  .nav-cta:hover{background:#000;transform:translateY(-1px)}
+    html,
+    body {
+      font-family: 'Pretendard', 'Apple SD Gothic Neo', system-ui, -apple-system, sans-serif;
+      color: var(--ink);
+      background: #fff;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased
+    }
 
-  /* HERO */
-  .hero{
-    background:linear-gradient(180deg,var(--green-1) 0%, #8DD6B6 100%);
-    padding:96px 24px 120px;
-    text-align:center;
-    position:relative;overflow:hidden;
-  }
-  .hero::before,.hero::after{
-    content:"";position:absolute;border-radius:50%;filter:blur(40px);opacity:.5;
-  }
-  .hero::before{width:380px;height:380px;background:#A8DFCE;top:-120px;left:-120px}
-  .hero::after{width:320px;height:320px;background:#8DD6B6;bottom:-100px;right:-80px}
-  .hero-inner{position:relative;max-width:880px;margin:0 auto}
-  .eyebrow{
-    display:inline-block;padding:6px 14px;border-radius:999px;
-    background:rgba(255,255,255,.6);color:#1f5132;font-weight:700;font-size:13px;
-    margin-bottom:24px;backdrop-filter:blur(6px);
-  }
-  .hero h1{
-    font-size:clamp(34px,5.4vw,58px);
-    font-weight:800;letter-spacing:-1.2px;line-height:1.18;color:#0f2a1a;
-  }
-  .hero h1 span{color:#fff;text-shadow:0 2px 12px rgba(15,42,26,.18)}
-  .hero p.sub{
-    margin-top:20px;font-size:clamp(15px,1.6vw,18px);color:#1f5132;font-weight:500;
-  }
-  .hero-cta{
-    margin-top:36px;display:inline-flex;align-items:center;gap:10px;
-    padding:16px 34px;border-radius:999px;
-    background:var(--primary);color:#fff;font-weight:700;font-size:17px;
-    box-shadow:0 12px 28px rgba(59,158,133,.35);
-    transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
-  }
-  .hero-cta:hover{background:var(--primary-2);transform:translateY(-2px);box-shadow:0 16px 32px rgba(59,158,133,.42)}
-  .hero-cta svg{width:18px;height:18px}
+    a {
+      color: inherit;
+      text-decoration: none
+    }
 
-  /* 섹션 공통 */
-  section.block{padding:96px 24px}
-  .container{max-width:1100px;margin:0 auto}
-  .section-title{font-size:clamp(26px,3.4vw,36px);font-weight:800;letter-spacing:-.6px}
-  .section-sub{margin-top:10px;color:var(--sub);font-size:16px}
+    /* 상단 띠 (홍보문구) */
+    .promo-bar {
+      background: var(--pink);
+      text-align: center;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, .9);
+      letter-spacing: -.2px;
+    }
 
-  /* 소개 (누가 만들었나 / 사이트 소개) */
-  .about{background:var(--olive)}
-  .about-grid{
-    display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;
-  }
-  .about-card h2{font-size:30px;font-weight:800;letter-spacing:-.6px;color:#1a3d32}
-  .about-card .tag{font-size:13px;font-weight:700;color:#2d5a4a;margin-bottom:8px;letter-spacing:.4px;text-transform:uppercase}
-  .about-card p{margin-top:14px;color:#1f3d30;font-size:16px;line-height:1.7}
-  .about-right{text-align:right}
-  @media (max-width:780px){.about-grid{grid-template-columns:1fr;gap:36px}.about-right{text-align:left}}
+    /* 네비게이션 */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(255, 255, 255, .85);
+      backdrop-filter: saturate(180%) blur(10px);
+      border-bottom: 1px solid #eee;
+    }
 
-  /* 기능(활용법) */
-  .features{background:var(--gray)}
-  .features-head{text-align:center;margin-bottom:48px}
-  .feature-grid{
-    display:grid;grid-template-columns:repeat(3,1fr);gap:22px;
-  }
-  .feature{
-    background:#fff;border-radius:18px;padding:28px;
-    box-shadow:0 6px 18px rgba(0,0,0,.05);
-    transition:transform .2s ease, box-shadow .2s ease;
-  }
-  .feature:hover{transform:translateY(-4px);box-shadow:0 14px 28px rgba(0,0,0,.08)}
-  .feature .ico{
-    width:46px;height:46px;border-radius:12px;
-    display:grid;place-items:center;margin-bottom:16px;font-size:22px;
-    background:linear-gradient(135deg,var(--green-2),var(--olive));color:#fff;
-  }
-  .feature h3{font-size:18px;font-weight:700;letter-spacing:-.3px}
-  .feature p{margin-top:8px;color:var(--sub);font-size:14.5px;line-height:1.6}
-  .notion-link{
-    display:inline-flex;align-items:center;gap:8px;
-    margin-top:48px;padding:12px 22px;border-radius:10px;
-    background:#fff;border:1px solid #cfcfcf;font-weight:600;color:var(--ink);
-  }
-  .notion-link:hover{background:#f7f7f7}
-  .features-cta-wrap{text-align:center}
-  @media (max-width:780px){.feature-grid{grid-template-columns:1fr}}
+    .nav-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 24px;
+    }
 
-  /* 푸터 */
-  footer{
-    background:var(--pink);padding:36px 24px;text-align:center;
-    color:rgba(255,255,255,.85);font-size:13.5px;
-  }
-  footer .row{display:flex;justify-content:center;gap:22px;margin-bottom:10px;font-weight:600}
-  footer .row a:hover{text-decoration:underline}
-</style>
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 18px;
+    }
+
+    .logo-mark {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, var(--green-1), var(--olive));
+      display: grid;
+      place-items: center;
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: 14px;
+      box-shadow: 0 4px 12px rgba(59, 158, 133, .4);
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 28px;
+      font-weight: 600;
+      color: var(--sub);
+      font-size: 15px
+    }
+
+    .nav-menu a:hover {
+      color: var(--ink)
+    }
+
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      border-radius: 999px;
+      background: var(--ink);
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+      transition: transform .15s ease, background .15s ease;
+    }
+
+    .nav-cta:hover {
+      background: #000;
+      transform: translateY(-1px)
+    }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(180deg, var(--green-1) 0%, #8DD6B6 100%);
+      padding: 96px 24px 120px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(40px);
+      opacity: .5;
+    }
+
+    .hero::before {
+      width: 380px;
+      height: 380px;
+      background: #A8DFCE;
+      top: -120px;
+      left: -120px
+    }
+
+    .hero::after {
+      width: 320px;
+      height: 320px;
+      background: #8DD6B6;
+      bottom: -100px;
+      right: -80px
+    }
+
+    .hero-inner {
+      position: relative;
+      max-width: 880px;
+      margin: 0 auto
+    }
+
+    .eyebrow {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .6);
+      color: #1f5132;
+      font-weight: 700;
+      font-size: 13px;
+      margin-bottom: 24px;
+      backdrop-filter: blur(6px);
+    }
+
+    .hero h1 {
+      font-size: clamp(34px, 5.4vw, 58px);
+      font-weight: 800;
+      letter-spacing: -1.2px;
+      line-height: 1.18;
+      color: #0f2a1a;
+    }
+
+    .hero h1 span {
+      color: #fff;
+      text-shadow: 0 2px 12px rgba(15, 42, 26, .18)
+    }
+
+    .hero p.sub {
+      margin-top: 20px;
+      font-size: clamp(15px, 1.6vw, 18px);
+      color: #1f5132;
+      font-weight: 500;
+    }
+
+    .hero-cta {
+      margin-top: 36px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 34px;
+      border-radius: 999px;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 700;
+      font-size: 17px;
+      box-shadow: 0 12px 28px rgba(59, 158, 133, .35);
+      transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+    }
+
+    .hero-cta:hover {
+      background: var(--primary-2);
+      transform: translateY(-2px);
+      box-shadow: 0 16px 32px rgba(59, 158, 133, .42)
+    }
+
+    .hero-cta svg {
+      width: 18px;
+      height: 18px
+    }
+
+    /* 섹션 공통 */
+    section.block {
+      padding: 96px 24px
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto
+    }
+
+    .section-title {
+      font-size: clamp(26px, 3.4vw, 36px);
+      font-weight: 800;
+      letter-spacing: -.6px
+    }
+
+    .section-sub {
+      margin-top: 10px;
+      color: var(--sub);
+      font-size: 16px
+    }
+
+    /* 소개 (누가 만들었나 / 사이트 소개) */
+    .about {
+      background: var(--olive)
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    .about-card h2 {
+      font-size: 30px;
+      font-weight: 800;
+      letter-spacing: -.6px;
+      color: #1a3d32
+    }
+
+    .about-card .tag {
+      font-size: 13px;
+      font-weight: 700;
+      color: #2d5a4a;
+      margin-bottom: 8px;
+      letter-spacing: .4px;
+      text-transform: uppercase
+    }
+
+    .about-card p {
+      margin-top: 14px;
+      color: #1f3d30;
+      font-size: 16px;
+      line-height: 1.7
+    }
+
+    .about-right {
+      text-align: right
+    }
+
+    @media (max-width:780px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 36px
+      }
+
+      .about-right {
+        text-align: left
+      }
+    }
+
+    /* 기능(활용법) */
+    .features {
+      background: var(--gray)
+    }
+
+    .features-head {
+      text-align: center;
+      margin-bottom: 48px
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+
+    .feature {
+      background: #fff;
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, .05);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .feature:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 28px rgba(0, 0, 0, .08)
+    }
+
+    .feature .ico {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 16px;
+      font-size: 22px;
+      background: linear-gradient(135deg, var(--green-2), var(--olive));
+      color: #fff;
+    }
+
+    .feature h3 {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -.3px
+    }
+
+    .feature p {
+      margin-top: 8px;
+      color: var(--sub);
+      font-size: 14.5px;
+      line-height: 1.6
+    }
+
+    .notion-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 48px;
+      padding: 12px 22px;
+      border-radius: 10px;
+      background: #fff;
+      border: 1px solid #cfcfcf;
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .notion-link:hover {
+      background: #f7f7f7
+    }
+
+    .features-cta-wrap {
+      text-align: center
+    }
+
+    @media (max-width:780px) {
+      .feature-grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    /* 푸터 */
+    footer {
+      background: var(--pink);
+      padding: 36px 24px;
+      text-align: center;
+      color: rgba(255, 255, 255, .85);
+      font-size: 13.5px;
+    }
+
+    footer .row {
+      display: flex;
+      justify-content: center;
+      gap: 22px;
+      margin-bottom: 10px;
+      font-weight: 600
+    }
+
+    footer .row a:hover {
+      text-decoration: underline
+    }
+  </style>
 </head>
+
 <body>
 
   <div class="promo-bar">시대를 선도하는 AI 학습 도우미 — 마크다운 노트와 AI 피드백을 한 곳에서</div>
@@ -172,7 +416,10 @@
         <a href="#how">방법</a>
       </div>
       <a class="nav-cta" href="login.html">
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 .5C5.73.5.99 5.24.99 11.51c0 4.85 3.14 8.96 7.5 10.41.55.1.75-.24.75-.53 0-.26-.01-.95-.01-1.86-3.05.66-3.69-1.47-3.69-1.47-.5-1.27-1.22-1.6-1.22-1.6-1-.68.07-.66.07-.66 1.1.08 1.68 1.13 1.68 1.13.98 1.68 2.57 1.19 3.2.91.1-.71.38-1.2.7-1.47-2.43-.28-4.99-1.22-4.99-5.43 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.4.11-2.92 0 0 .92-.3 3.02 1.13.88-.24 1.82-.36 2.76-.36.94 0 1.88.12 2.76.36 2.1-1.43 3.02-1.13 3.02-1.13.6 1.52.22 2.64.11 2.92.7.77 1.13 1.75 1.13 2.95 0 4.22-2.57 5.15-5.01 5.42.39.34.74 1.01.74 2.04 0 1.47-.01 2.66-.01 3.02 0 .29.2.64.76.53 4.36-1.45 7.49-5.56 7.49-10.41C23.01 5.24 18.27.5 12 .5z"/></svg>
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+          <path
+            d="M12 .5C5.73.5.99 5.24.99 11.51c0 4.85 3.14 8.96 7.5 10.41.55.1.75-.24.75-.53 0-.26-.01-.95-.01-1.86-3.05.66-3.69-1.47-3.69-1.47-.5-1.27-1.22-1.6-1.22-1.6-1-.68.07-.66.07-.66 1.1.08 1.68 1.13 1.68 1.13.98 1.68 2.57 1.19 3.2.91.1-.71.38-1.2.7-1.47-2.43-.28-4.99-1.22-4.99-5.43 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.4.11-2.92 0 0 .92-.3 3.02 1.13.88-.24 1.82-.36 2.76-.36.94 0 1.88.12 2.76.36 2.1-1.43 3.02-1.13 3.02-1.13.6 1.52.22 2.64.11 2.92.7.77 1.13 1.75 1.13 2.95 0 4.22-2.57 5.15-5.01 5.42.39.34.74 1.01.74 2.04 0 1.47-.01 2.66-.01 3.02 0 .29.2.64.76.53 4.36-1.45 7.49-5.56 7.49-10.41C23.01 5.24 18.27.5 12 .5z" />
+        </svg>
         GitHub 로그인
       </a>
     </div>
@@ -182,10 +429,13 @@
   <header class="hero">
     <div class="hero-inner">
       <div class="eyebrow">🎓 졸업 작품 프로젝트</div>
-      <h1>마크다운으로 기록하고,<br/><span>AI와 함께 복습하세요</span></h1>
-      <p class="sub">학습자 상태 인식 기반 AI 코딩 교육 도우미.<br/>노트 작성부터 퀴즈 피드백, 학습 통계까지 한 번에.</p>
+      <h1>마크다운으로 기록하고,<br /><span>AI와 함께 복습하세요</span></h1>
+      <p class="sub">학습자 상태 인식 기반 AI 코딩 교육 도우미.<br />노트 작성부터 퀴즈 피드백, 학습 통계까지 한 번에.</p>
       <a class="hero-cta" id="login" href="login.html">
-        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.99 5.24.99 11.51c0 4.85 3.14 8.96 7.5 10.41.55.1.75-.24.75-.53 0-.26-.01-.95-.01-1.86-3.05.66-3.69-1.47-3.69-1.47-.5-1.27-1.22-1.6-1.22-1.6-1-.68.07-.66.07-.66 1.1.08 1.68 1.13 1.68 1.13.98 1.68 2.57 1.19 3.2.91.1-.71.38-1.2.7-1.47-2.43-.28-4.99-1.22-4.99-5.43 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.4.11-2.92 0 0 .92-.3 3.02 1.13.88-.24 1.82-.36 2.76-.36.94 0 1.88.12 2.76.36 2.1-1.43 3.02-1.13 3.02-1.13.6 1.52.22 2.64.11 2.92.7.77 1.13 1.75 1.13 2.95 0 4.22-2.57 5.15-5.01 5.42.39.34.74 1.01.74 2.04 0 1.47-.01 2.66-.01 3.02 0 .29.2.64.76.53 4.36-1.45 7.49-5.56 7.49-10.41C23.01 5.24 18.27.5 12 .5z"/></svg>
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path
+            d="M12 .5C5.73.5.99 5.24.99 11.51c0 4.85 3.14 8.96 7.5 10.41.55.1.75-.24.75-.53 0-.26-.01-.95-.01-1.86-3.05.66-3.69-1.47-3.69-1.47-.5-1.27-1.22-1.6-1.22-1.6-1-.68.07-.66.07-.66 1.1.08 1.68 1.13 1.68 1.13.98 1.68 2.57 1.19 3.2.91.1-.71.38-1.2.7-1.47-2.43-.28-4.99-1.22-4.99-5.43 0-1.2.43-2.18 1.13-2.95-.11-.28-.49-1.4.11-2.92 0 0 .92-.3 3.02 1.13.88-.24 1.82-.36 2.76-.36.94 0 1.88.12 2.76.36 2.1-1.43 3.02-1.13 3.02-1.13.6 1.52.22 2.64.11 2.92.7.77 1.13 1.75 1.13 2.95 0 4.22-2.57 5.15-5.01 5.42.39.34.74 1.01.74 2.04 0 1.47-.01 2.66-.01 3.02 0 .29.2.64.76.53 4.36-1.45 7.49-5.56 7.49-10.41C23.01 5.24 18.27.5 12 .5z" />
+        </svg>
         GitHub으로 시작하기
       </a>
     </div>
@@ -198,13 +448,13 @@
         <div class="tag">WHO WE ARE</div>
         <h2>누가 만들었나요?</h2>
         <p>영남대학교 컴퓨터공학과 학생들이 졸업 작품으로 만든 학습 플랫폼입니다.
-        스스로 공부하며 느꼈던 불편함을 해결하기 위해, 학습자에게 가장 가까이 있는 우리가 직접 설계했습니다.</p>
+          스스로 공부하며 느꼈던 불편함을 해결하기 위해, 학습자에게 가장 가까이 있는 우리가 직접 설계했습니다.</p>
       </div>
       <div class="about-card about-right">
         <div class="tag">ABOUT THE SERVICE</div>
         <h2>어떤 사이트인가요?</h2>
         <p>마크다운 노트 작성, AI 기반 퀴즈와 피드백, 학습 시간 통계 대시보드를 제공하는 통합 학습 도구입니다.
-        IoT 기기와 연동되는 학습자 상태 인식 기능을 통해, 더 똑똑한 복습 사이클을 만들어 드립니다.</p>
+          IoT 기기와 연동되는 학습자 상태 인식 기능을 통해, 더 똑똑한 복습 사이클을 만들어 드립니다.</p>
       </div>
     </div>
   </section>
@@ -254,16 +504,17 @@
     <div>© 2026 MarkLearn — 영남대학교 컴퓨터공학과 졸업작품</div>
   </footer>
 
-<script>
-  document.querySelectorAll('a[href^="#"]').forEach(a=>{
-    a.addEventListener('click',e=>{
-      const id=a.getAttribute('href');
-      if(id.length>1){
-        const el=document.querySelector(id);
-        if(el){e.preventDefault();el.scrollIntoView({behavior:'smooth',block:'start'});}
-      }
+  <script>
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const id = a.getAttribute('href');
+        if (id.length > 1) {
+          const el = document.querySelector(id);
+          if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+        }
+      });
     });
-  });
-</script>
+  </script>
 </body>
+
 </html>

@@ -35,7 +35,6 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* 공통 레이아웃 */
     .app-layout {
       display: flex;
       min-height: 100vh;
@@ -127,7 +126,8 @@
       text-decoration: none;
     }
 
-    .s-bottom a:hover {
+    .s-bottom a:hover,
+    .s-bottom a.active {
       background: rgba(255, 255, 255, .18);
       color: #fff;
     }
@@ -139,7 +139,6 @@
       min-width: 0;
     }
 
-    /* 휠을 내려야 푸터가 보이는 핵심 코드 */
     .container {
       max-width: 1180px;
       width: 100%;
@@ -150,7 +149,6 @@
       min-height: 100vh;
     }
 
-    /* 마이페이지 컴포넌트 */
     .page-title {
       font-size: 28px;
       font-weight: 800;
@@ -314,7 +312,6 @@
       color: #dc2626;
     }
 
-    /* 공통 푸터 */
     .global-footer {
       margin-top: auto;
       padding: 30px 24px;
@@ -350,13 +347,13 @@
         <div class="s-logo">M</div><span>MarkLearn</span>
       </a>
       <nav>
-        <a href="dashboard.html">📊 대시보드</a>
-        <a href="create.html">✏️ 학습 생성</a>
-        <a href="directory.html">📝 노트</a>
+        <a href="dashboard-empty.html">📊 대시보드</a>
+        <a href="create-empty.html">✏️ 학습 생성</a>
+        <a href="directory-empty.html">📝 노트</a>
       </nav>
       <div class="s-bottom">
-        <div class="s-user">김영남</div>
-        <a href="mypage.html" class="active">👤 마이페이지</a>
+        <div class="s-user">장영락</div>
+        <a href="mypage-empty.html" class="active">👤 마이페이지</a>
       </div>
     </aside>
 

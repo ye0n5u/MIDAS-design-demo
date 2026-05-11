@@ -1,101 +1,392 @@
-<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>AI 퀴즈 · MarkLearn</title>
-<link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-:root{
-  --pink:#4DBDA3; --green-1:#7ACDB8; --green-2:#A8E0CD; --olive:#A8E0CD;
-  --gray:#F4FBF9; --ink:#1f2937; --sub:#4b5563;
-  --primary:#4DBDA3; --primary-2:#3EA990; --bg:#F6FBF9; --line:#e5e7eb;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{font-family:'Pretendard','Apple SD Gothic Neo',system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased}
-body{margin-left:200px}
-a{color:inherit;text-decoration:none}
-button{font-family:inherit;cursor:pointer;border:none;background:none}
+<!DOCTYPE html>
+<html lang="ko">
 
-.sidebar{position:fixed;top:0;left:0;width:200px;height:100vh;background:var(--pink);display:flex;flex-direction:column;z-index:100}
-.sidebar .brand{display:flex;align-items:center;gap:10px;padding:22px 16px;font-weight:800;font-size:16px;color:#fff;border-bottom:1px solid rgba(255,255,255,.15);text-decoration:none}
-.sidebar .s-logo{width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,.25);display:grid;place-items:center;font-weight:800;font-size:14px;color:#fff;flex-shrink:0}
-.sidebar nav{flex:1;padding:14px 10px;display:flex;flex-direction:column;gap:2px}
-.sidebar nav a{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:rgba(255,255,255,.7);font-weight:600;font-size:14px;text-decoration:none;transition:background .15s,color .15s}
-.sidebar nav a:hover,.sidebar nav a.active{background:rgba(255,255,255,.18);color:#fff}
-.s-bottom{padding:14px 10px;border-top:1px solid rgba(255,255,255,.15);display:flex;flex-direction:column;gap:2px}
-.s-user{font-size:12px;color:rgba(255,255,255,.5);padding:4px 14px 6px;font-weight:600}
-.s-bottom a{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:rgba(255,255,255,.7);font-weight:600;font-size:14px;text-decoration:none;transition:background .15s,color .15s}
-.s-bottom a:hover,.s-bottom a.active{background:rgba(255,255,255,.18);color:#fff}
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AI 퀴즈 · MarkLearn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --color-teal-500: #4DBDA3;
+      --color-teal-600: #3EA990;
+      --color-teal-200: #A8E0CD;
+      --color-teal-100: #D6F5EA;
+      --bg-base: #F6FBF9;
+      --bg-panel: #FFFFFF;
+      --ink: #1f2937;
+      --sub: #4b5563;
+      --line: #e5e7eb;
+    }
 
-footer{background:var(--pink);padding:30px 24px;text-align:center;color:rgba(255,255,255,.85);font-size:13.5px;margin-top:80px}
-footer .row{display:flex;justify-content:center;gap:22px;margin-bottom:8px;font-weight:600}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-.container{max-width:1180px;margin:0 auto;padding:32px 24px}
-.page-title{font-size:28px;font-weight:800;letter-spacing:-.5px;margin-bottom:6px}
-.page-sub{color:var(--sub);margin-bottom:28px}
-.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;font-weight:700;font-size:14px;transition:transform .15s ease}
-.btn-primary{background:var(--primary);color:#fff}
-.btn-primary:hover{background:var(--primary-2);transform:translateY(-1px)}
-.btn-ghost{background:#fff;border:1px solid var(--line);color:var(--ink)}
-.btn-ghost:hover{background:#f3f4f6}
-input[type=text],input[type=email],textarea,select{width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:10px;font-family:inherit;font-size:14px;background:#fff;color:var(--ink);outline:none}
-input:focus,textarea:focus,select:focus{border-color:var(--primary)}
+    html,
+    body {
+      font-family: 'Pretendard', system-ui, sans-serif;
+      color: var(--ink);
+      background: var(--bg-base);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
 
-.quiz-wrap{max-width:760px;margin:0 auto}
-.progress{height:8px;background:#e5e7eb;border-radius:999px;overflow:hidden;margin-bottom:8px}
-.progress > div{height:100%;width:40%;background:linear-gradient(90deg,var(--green-1),var(--olive));border-radius:999px;transition:width .3s ease}
-.progress-meta{display:flex;justify-content:space-between;font-size:13px;color:var(--sub);margin-bottom:24px}
-.q-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:32px;margin-bottom:18px}
-.q-tag{display:inline-block;font-size:12px;font-weight:700;padding:4px 10px;border-radius:6px;background:#D6F5EA;color:#1a3d32;margin-bottom:14px}
-.q-text{font-size:19px;font-weight:700;line-height:1.5;margin-bottom:24px}
-.choice{display:flex;align-items:center;gap:12px;padding:14px 18px;border:1.5px solid var(--line);border-radius:12px;margin-bottom:10px;cursor:pointer;transition:all .15s ease}
-.choice:hover{border-color:var(--primary);background:#EBF9F3}
-.choice.selected{border-color:var(--primary);background:#D6F5EA}
-.choice.correct{border-color:#16a34a;background:#f0fdf4}
-.choice.wrong{border-color:#dc2626;background:#fef2f2}
-.choice .idx{width:28px;height:28px;border-radius:50%;background:#f3f4f6;display:grid;place-items:center;font-weight:700;font-size:13px;color:var(--sub);flex-shrink:0}
-.choice.selected .idx{background:var(--primary);color:#fff}
+    .app-layout {
+      display: flex;
+      min-height: 100vh;
+    }
 
-.feedback{background:#f0fdf4;border:1px solid #86efac;border-radius:14px;padding:20px;margin-bottom:18px}
-.feedback h4{font-size:14px;color:#15803d;font-weight:800;margin-bottom:8px;display:flex;align-items:center;gap:6px}
-.feedback p{font-size:14px;color:#166534;line-height:1.6}
-.q-actions{display:flex;justify-content:space-between;gap:10px}
-</style></head><body>
-<aside class="sidebar">
-  <a class="brand" href="landing.html"><div class="s-logo">M</div><span>MarkLearn</span></a>
-  <nav>
-    <a href="dashboard.html">📊 대시보드</a>
-    <a href="create.html">✏️ 학습 생성</a>
-    <a href="directory.html">📝 노트</a>
-    <a href="quiz.html" class="active">🤖 퀴즈</a>
-  </nav>
-  <div class="s-bottom">
-    <div class="s-user">김영남</div>
-    <a href="mypage.html">👤 마이페이지</a>
+    .sidebar {
+      width: 200px;
+      background: var(--color-teal-500);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+
+    .sidebar .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 22px 16px;
+      font-weight: 800;
+      font-size: 16px;
+      color: #fff;
+      border-bottom: 1px solid rgba(255, 255, 255, .15);
+      text-decoration: none;
+    }
+
+    .sidebar .s-logo {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .25);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 14px;
+      color: #fff;
+    }
+
+    .sidebar nav {
+      flex: 1;
+      padding: 14px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .sidebar nav a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 14px;
+      border-radius: 10px;
+      color: rgba(255, 255, 255, .7);
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+      transition: 0.15s;
+    }
+
+    .sidebar nav a:hover,
+    .sidebar nav a.active {
+      background: rgba(255, 255, 255, .18);
+      color: #fff;
+    }
+
+    .s-bottom {
+      padding: 14px 10px;
+      border-top: 1px solid rgba(255, 255, 255, .15);
+    }
+
+    .s-user {
+      font-size: 12px;
+      color: rgba(255, 255, 255, .5);
+      padding: 4px 14px 6px;
+      font-weight: 600;
+    }
+
+    .s-bottom a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 14px;
+      border-radius: 10px;
+      color: rgba(255, 255, 255, .7);
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+      transition: 0.15s;
+    }
+
+    .s-bottom a:hover {
+      background: rgba(255, 255, 255, .18);
+      color: #fff;
+    }
+
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .container {
+      max-width: 1180px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 32px 24px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page-title {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 6px;
+      letter-spacing: -.5px;
+    }
+
+    .page-sub {
+      color: var(--sub);
+      margin-bottom: 28px;
+    }
+
+    .quiz-wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .progress {
+      height: 8px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .progress>div {
+      height: 100%;
+      width: 40%;
+      background: var(--color-teal-500);
+      transition: width .3s ease;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      color: var(--sub);
+      margin-bottom: 24px;
+    }
+
+    .q-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 32px;
+      margin-bottom: 18px;
+    }
+
+    .q-tag {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: var(--color-teal-100);
+      color: #1a3d32;
+      margin-bottom: 14px;
+    }
+
+    .q-text {
+      font-size: 19px;
+      font-weight: 700;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    .choice {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+      border: 1.5px solid var(--line);
+      border-radius: 12px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: all .15s ease;
+    }
+
+    .choice:hover {
+      border-color: var(--color-teal-500);
+      background: #EBF9F3;
+    }
+
+    .choice.selected.correct {
+      border-color: #16a34a;
+      background: #f0fdf4;
+    }
+
+    .choice .idx {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #f3f4f6;
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: 13px;
+      color: var(--sub);
+      flex-shrink: 0;
+    }
+
+    .choice.selected.correct .idx {
+      background: #16a34a;
+      color: #fff;
+    }
+
+    .feedback {
+      background: #f0fdf4;
+      border: 1px solid #86efac;
+      border-radius: 14px;
+      padding: 20px;
+      margin-bottom: 18px;
+    }
+
+    .feedback h4 {
+      font-size: 14px;
+      color: #15803d;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .feedback p {
+      font-size: 14px;
+      color: #166534;
+      line-height: 1.6;
+    }
+
+    .q-actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .btn {
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .btn-primary {
+      background: var(--color-teal-500);
+      color: #fff;
+      border: none;
+    }
+
+    .global-footer {
+      margin-top: auto;
+      padding: 30px 24px;
+      text-align: center;
+      background: var(--color-teal-500);
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 13.5px;
+    }
+
+    .global-footer .row {
+      display: flex;
+      justify-content: center;
+      gap: 22px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .global-footer a {
+      color: inherit;
+      transition: color 0.15s ease;
+      text-decoration: none;
+    }
+
+    .global-footer a:hover {
+      color: #ffffff;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <a class="brand" href="landing.html">
+        <div class="s-logo">M</div><span>MarkLearn</span>
+      </a>
+      <nav>
+        <a href="dashboard.html">📊 대시보드</a>
+        <a href="create.html">✏️ 학습 생성</a>
+        <a href="directory.html">📝 노트</a>
+      </nav>
+      <div class="s-bottom">
+        <div class="s-user">김영남</div>
+        <a href="mypage.html">👤 마이페이지</a>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="container quiz-wrap">
+        <div class="page-title">AI 퀴즈</div>
+        <div class="page-sub">노트 「DFS와 BFS 정리」 기반 자동 생성 문제</div>
+        <div class="progress">
+          <div></div>
+        </div>
+        <div class="progress-meta"><span>4 / 10 문제</span><span>⏱ 02:34</span></div>
+        <div class="q-card">
+          <span class="q-tag">개념 이해</span>
+          <div class="q-text">Q4. 다음 중 BFS(너비 우선 탐색)에 대한 설명으로 <u>옳은 것</u>은?</div>
+          <div class="choice">
+            <div class="idx">1</div>
+            <div>스택을 이용해 구현하며, 가장 최근 방문한 노드부터 탐색한다.</div>
+          </div>
+          <div class="choice selected correct">
+            <div class="idx">2</div>
+            <div>큐를 이용해 구현하며, 간선 가중치가 동일할 때 최단 경로를 보장한다.</div>
+          </div>
+          <div class="choice">
+            <div class="idx">3</div>
+            <div>음수 가중치 그래프에서도 항상 최단 경로를 찾을 수 있다.</div>
+          </div>
+          <div class="choice">
+            <div class="idx">4</div>
+            <div>시간복잡도는 항상 O(V²)이다.</div>
+          </div>
+        </div>
+        <div class="feedback">
+          <h4>✅ 정답입니다!</h4>
+          <p>BFS는 큐(FIFO)를 사용하여 시작 노드로부터 가까운 노드부터 차례로 탐색합니다. 모든 간선의 가중치가 동일한 경우 최단 경로를 보장하지만, 음수 가중치가 포함된 그래프에서는 다익스트라나
+            벨만-포드 알고리즘을 사용해야 합니다.</p>
+        </div>
+        <div class="q-actions">
+          <button class="btn">← 이전 문제</button>
+          <button class="btn btn-primary">다음 문제 →</button>
+        </div>
+      </div>
+      <footer class="global-footer">
+        <div class="row"><a href="#">이용약관</a><a href="#">개인정보처리방침</a><a href="#">GitHub</a></div>
+        <div>© 2026 MarkLearn — 영남대학교 컴퓨터공학과 졸업작품</div>
+      </footer>
+    </main>
   </div>
-</aside>
+</body>
 
-<div class="container quiz-wrap">
-  <div class="page-title">AI 퀴즈</div>
-  <div class="page-sub">노트 「DFS와 BFS 정리」 기반 자동 생성 문제</div>
-  <div class="progress"><div></div></div>
-  <div class="progress-meta"><span>4 / 10 문제</span><span>⏱ 02:34</span></div>
-  <div class="q-card">
-    <span class="q-tag">개념 이해</span>
-    <div class="q-text">Q4. 다음 중 BFS(너비 우선 탐색)에 대한 설명으로 <u>옳은 것</u>은?</div>
-    <div class="choice"><div class="idx">1</div><div>스택을 이용해 구현하며, 가장 최근 방문한 노드부터 탐색한다.</div></div>
-    <div class="choice selected correct"><div class="idx">2</div><div>큐를 이용해 구현하며, 간선 가중치가 동일할 때 최단 경로를 보장한다.</div></div>
-    <div class="choice"><div class="idx">3</div><div>음수 가중치 그래프에서도 항상 최단 경로를 찾을 수 있다.</div></div>
-    <div class="choice"><div class="idx">4</div><div>시간복잡도는 항상 O(V²)이다.</div></div>
-  </div>
-  <div class="feedback">
-    <h4>✅ 정답입니다!</h4>
-    <p>BFS는 큐(FIFO)를 사용하여 시작 노드로부터 가까운 노드부터 차례로 탐색합니다. 모든 간선의 가중치가 동일한 경우 최단 경로를 보장하지만, 음수 가중치가 포함된 그래프에서는 다익스트라나 벨만-포드 알고리즘을 사용해야 합니다.</p>
-  </div>
-  <div class="q-actions">
-    <button class="btn btn-ghost">← 이전 문제</button>
-    <button class="btn btn-primary">다음 문제 →</button>
-  </div>
-</div>
-
-<footer><div class="row"><a href="#">이용약관</a><a href="#">개인정보처리방침</a><a href="#">GitHub</a></div>
-<div>© 2026 MarkLearn — 영남대학교 컴퓨터공학과 졸업작품</div></footer>
-</body></html>
+</html>
