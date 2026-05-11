@@ -1,108 +1,435 @@
-<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>학습 통계 · MarkLearn</title>
-<link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-:root{
-  --pink:#4DBDA3; --green-1:#7ACDB8; --green-2:#A8E0CD; --olive:#A8E0CD;
-  --gray:#F4FBF9; --ink:#1f2937; --sub:#4b5563;
-  --primary:#4DBDA3; --primary-2:#3EA990; --bg:#F6FBF9; --line:#e5e7eb;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{font-family:'Pretendard','Apple SD Gothic Neo',system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased}
-body{margin-left:200px}
-a{color:inherit;text-decoration:none}
-button{font-family:inherit;cursor:pointer;border:none;background:none}
+<!DOCTYPE html>
+<html lang="ko">
 
-.sidebar{position:fixed;top:0;left:0;width:200px;height:100vh;background:var(--pink);display:flex;flex-direction:column;z-index:100}
-.sidebar .brand{display:flex;align-items:center;gap:10px;padding:22px 16px;font-weight:800;font-size:16px;color:#fff;border-bottom:1px solid rgba(255,255,255,.15);text-decoration:none}
-.sidebar .s-logo{width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,.25);display:grid;place-items:center;font-weight:800;font-size:14px;color:#fff;flex-shrink:0}
-.sidebar nav{flex:1;padding:14px 10px;display:flex;flex-direction:column;gap:2px}
-.sidebar nav a{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:rgba(255,255,255,.7);font-weight:600;font-size:14px;text-decoration:none;transition:background .15s,color .15s}
-.sidebar nav a:hover,.sidebar nav a.active{background:rgba(255,255,255,.18);color:#fff}
-.s-bottom{padding:14px 10px;border-top:1px solid rgba(255,255,255,.15);display:flex;flex-direction:column;gap:2px}
-.s-user{font-size:12px;color:rgba(255,255,255,.5);padding:4px 14px 6px;font-weight:600}
-.s-bottom a{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:rgba(255,255,255,.7);font-weight:600;font-size:14px;text-decoration:none;transition:background .15s,color .15s}
-.s-bottom a:hover,.s-bottom a.active{background:rgba(255,255,255,.18);color:#fff}
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>학습 통계 · MarkLearn</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --color-teal-500: #4DBDA3;
+            --color-teal-600: #3EA990;
+            --color-teal-200: #A8E0CD;
+            --color-teal-100: #D6F5EA;
+            --bg-base: #F6FBF9;
+            --bg-panel: #FFFFFF;
+            --ink: #1f2937;
+            --sub: #4b5563;
+            --line: #e5e7eb;
+        }
 
-footer{background:var(--pink);padding:30px 24px;text-align:center;color:rgba(255,255,255,.85);font-size:13.5px;margin-top:80px}
-footer .row{display:flex;justify-content:center;gap:22px;margin-bottom:8px;font-weight:600}
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-.container{max-width:1180px;margin:0 auto;padding:32px 24px}
-.page-title{font-size:28px;font-weight:800;letter-spacing:-.5px;margin-bottom:6px}
-.page-sub{color:var(--sub);margin-bottom:28px}
-.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px}
-.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 18px;border-radius:10px;font-weight:700;font-size:14px;transition:transform .15s ease}
-.btn-primary{background:var(--primary);color:#fff}
-.btn-primary:hover{background:var(--primary-2);transform:translateY(-1px)}
-.btn-ghost{background:#fff;border:1px solid var(--line);color:var(--ink)}
-.btn-ghost:hover{background:#f3f4f6}
-input[type=text],input[type=email],textarea,select{width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:10px;font-family:inherit;font-size:14px;background:#fff;color:var(--ink);outline:none}
-input:focus,textarea:focus,select:focus{border-color:var(--primary)}
+        html,
+        body {
+            font-family: 'Pretendard', system-ui, sans-serif;
+            color: var(--ink);
+            background: var(--bg-base);
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
+        }
 
-.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
-.kpi{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px}
-.kpi .label{font-size:13px;color:var(--sub);font-weight:600}
-.kpi .value{font-size:28px;font-weight:800;margin-top:6px;letter-spacing:-.5px}
-.kpi .delta{font-size:12px;font-weight:700;margin-top:4px}
-.kpi .delta.up{color:#16a34a}
-.kpi .delta.down{color:#dc2626}
-.charts{display:grid;grid-template-columns:2fr 1fr;gap:16px}
-.chart-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:24px}
-.chart-card h3{font-size:16px;font-weight:700;margin-bottom:18px}
-.bar-chart{display:flex;align-items:flex-end;gap:14px;height:220px;padding:0 6px}
-.bar-chart .col{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px}
-.bar-chart .bar{width:100%;background:linear-gradient(180deg,var(--green-1),var(--olive));border-radius:8px 8px 0 0;min-height:6px;transition:height .3s ease}
-.bar-chart .lbl{font-size:12px;color:var(--sub);font-weight:600}
-.bar-chart .val{font-size:11px;color:#9ca3af}
-.donut{display:flex;align-items:center;gap:20px}
-.donut svg{width:140px;height:140px;flex-shrink:0}
-.legend{display:flex;flex-direction:column;gap:8px;font-size:13px}
-.legend .dot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:8px;vertical-align:middle}
-@media(max-width:900px){.kpi-grid{grid-template-columns:repeat(2,1fr)}.charts{grid-template-columns:1fr}}
-</style></head><body>
-<aside class="sidebar">
-  <a class="brand" href="landing.html"><div class="s-logo">M</div><span>MarkLearn</span></a>
-  <nav>
-    <a href="dashboard.html" class="active">📊 대시보드</a>
-    <a href="create.html">✏️ 학습 생성</a>
-    <a href="directory.html">📝 노트</a>
-    <a href="quiz.html">🤖 퀴즈</a>
-  </nav>
-  <div class="s-bottom">
-    <div class="s-user">김영남</div>
-    <a href="mypage.html">👤 마이페이지</a>
-  </div>
-</aside>
+        /* 공통 레이아웃 */
+        .app-layout {
+            display: flex;
+            min-height: 100vh;
+        }
 
-<div class="container">
-  <div class="page-title">학습 통계</div>
-  <div class="page-sub">최근 7일 학습 기록</div>
-  <div class="kpi-grid">
-    <div class="kpi"><div class="label">총 학습 시간</div><div class="value">23.5h</div><div class="delta up">▲ 12% vs 지난주</div></div>
-    <div class="kpi"><div class="label">작성한 노트</div><div class="value">14개</div><div class="delta up">▲ 4개</div></div>
-    <div class="kpi"><div class="label">퀴즈 정답률</div><div class="value">78%</div><div class="delta up">▲ 5%p</div></div>
-    <div class="kpi"><div class="label">연속 학습일</div><div class="value">12일 🔥</div><div class="delta up">목표까지 3일</div></div>
-  </div>
-  <div class="charts">
-    <div class="chart-card"><h3>요일별 학습 시간</h3><div class="bar-chart"><div class="col"><div class="val">2.5h</div><div class="bar" style="height:84px"></div><div class="lbl">월</div></div><div class="col"><div class="val">3.2h</div><div class="bar" style="height:108px"></div><div class="lbl">화</div></div><div class="col"><div class="val">1.8h</div><div class="bar" style="height:61px"></div><div class="lbl">수</div></div><div class="col"><div class="val">4.1h</div><div class="bar" style="height:139px"></div><div class="lbl">목</div></div><div class="col"><div class="val">2.9h</div><div class="bar" style="height:98px"></div><div class="lbl">금</div></div><div class="col"><div class="val">5.3h</div><div class="bar" style="height:180px"></div><div class="lbl">토</div></div><div class="col"><div class="val">3.7h</div><div class="bar" style="height:125px"></div><div class="lbl">일</div></div></div></div>
-    <div class="chart-card"><h3>주제별 비중</h3>
-      <div class="donut">
-        <svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15.9" fill="none" stroke="#e5e7eb" stroke-width="4"/>
-          <circle cx="18" cy="18" r="15.9" fill="none" stroke="#7ACDB8" stroke-width="4" stroke-dasharray="40 100" stroke-dashoffset="0" transform="rotate(-90 18 18)"/>
-          <circle cx="18" cy="18" r="15.9" fill="none" stroke="#A8E0CD" stroke-width="4" stroke-dasharray="30 100" stroke-dashoffset="-40" transform="rotate(-90 18 18)"/>
-          <circle cx="18" cy="18" r="15.9" fill="none" stroke="#4DBDA3" stroke-width="4" stroke-dasharray="20 100" stroke-dashoffset="-70" transform="rotate(-90 18 18)"/>
-        </svg>
-        <div class="legend">
-          <div><span class="dot" style="background:#7ACDB8"></span>알고리즘 40%</div>
-          <div><span class="dot" style="background:#A8E0CD"></span>React 30%</div>
-          <div><span class="dot" style="background:#4DBDA3"></span>Python 20%</div>
-          <div><span class="dot" style="background:#e5e7eb"></span>기타 10%</div>
-        </div>
-      </div>
+        .sidebar {
+            width: 200px;
+            background: var(--color-teal-500);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+
+        .sidebar .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 22px 16px;
+            font-weight: 800;
+            font-size: 16px;
+            color: #fff;
+            border-bottom: 1px solid rgba(255, 255, 255, .15);
+            text-decoration: none;
+        }
+
+        .sidebar .s-logo {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, .25);
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            font-size: 14px;
+            color: #fff;
+        }
+
+        .sidebar nav {
+            flex: 1;
+            padding: 14px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .sidebar nav a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 14px;
+            border-radius: 10px;
+            color: rgba(255, 255, 255, .7);
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            transition: 0.15s;
+        }
+
+        .sidebar nav a:hover,
+        .sidebar nav a.active {
+            background: rgba(255, 255, 255, .18);
+            color: #fff;
+        }
+
+        .s-bottom {
+            padding: 14px 10px;
+            border-top: 1px solid rgba(255, 255, 255, .15);
+        }
+
+        .s-user {
+            font-size: 12px;
+            color: rgba(255, 255, 255, .5);
+            padding: 4px 14px 6px;
+            font-weight: 600;
+        }
+
+        .s-bottom a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 14px;
+            border-radius: 10px;
+            color: rgba(255, 255, 255, .7);
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .s-bottom a:hover {
+            background: rgba(255, 255, 255, .18);
+            color: #fff;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+
+        .container {
+            max-width: 1180px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 32px 24px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* 대시보드 컴포넌트 */
+        .page-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            letter-spacing: -.5px;
+        }
+
+        .page-sub {
+            color: var(--sub);
+            margin-bottom: 28px;
+        }
+
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .kpi {
+            background: var(--bg-panel);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 20px;
+        }
+
+        .kpi .label {
+            font-size: 13px;
+            color: var(--sub);
+            font-weight: 600;
+        }
+
+        .kpi .value {
+            font-size: 28px;
+            font-weight: 800;
+            margin-top: 6px;
+            letter-spacing: -.5px;
+        }
+
+        .kpi .delta {
+            font-size: 12px;
+            font-weight: 700;
+            margin-top: 4px;
+        }
+
+        .kpi .delta.up {
+            color: #16a34a;
+        }
+
+        .charts {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 16px;
+        }
+
+        .chart-card {
+            background: var(--bg-panel);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 24px;
+        }
+
+        .chart-card h3 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 18px;
+        }
+
+        .bar-chart {
+            display: flex;
+            align-items: flex-end;
+            gap: 14px;
+            height: 220px;
+            padding: 0 6px;
+        }
+
+        .bar-chart .col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .bar-chart .bar {
+            width: 100%;
+            background: linear-gradient(180deg, var(--color-teal-100), var(--color-teal-500));
+            border-radius: 8px 8px 0 0;
+            min-height: 6px;
+        }
+
+        .bar-chart .lbl {
+            font-size: 12px;
+            color: var(--sub);
+            font-weight: 600;
+        }
+
+        .bar-chart .val {
+            font-size: 11px;
+            color: #9ca3af;
+        }
+
+        .donut {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .donut svg {
+            width: 140px;
+            height: 140px;
+            flex-shrink: 0;
+        }
+
+        .legend {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            font-size: 13px;
+        }
+
+        .legend .dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        /* 공통 푸터 */
+        .global-footer {
+            margin-top: auto;
+            padding: 30px 24px;
+            text-align: center;
+            background: var(--color-teal-500);
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 13.5px;
+        }
+
+        .global-footer .row {
+            display: flex;
+            justify-content: center;
+            gap: 22px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .global-footer a {
+            color: inherit;
+            transition: color 0.15s ease;
+            text-decoration: none;
+        }
+
+        .global-footer a:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-layout">
+        <aside class="sidebar">
+            <a class="brand" href="landing.html">
+                <div class="s-logo">M</div><span>MarkLearn</span>
+            </a>
+            <nav>
+                <a href="dashboard.html" class="active">📊 대시보드</a>
+                <a href="create.html">✏️ 학습 생성</a>
+                <a href="directory.html">📝 노트</a>
+            </nav>
+            <div class="s-bottom">
+                <div class="s-user">김영남</div>
+                <a href="mypage.html">👤 마이페이지</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="container">
+                <div class="page-title">학습 통계</div>
+                <div class="page-sub">최근 7일 학습 기록</div>
+
+                <div class="kpi-grid">
+                    <div class="kpi">
+                        <div class="label">총 학습 시간</div>
+                        <div class="value">23.5h</div>
+                        <div class="delta up">▲ 12% vs 지난주</div>
+                    </div>
+                    <div class="kpi">
+                        <div class="label">작성한 노트</div>
+                        <div class="value">14개</div>
+                        <div class="delta up">▲ 4개</div>
+                    </div>
+                    <div class="kpi">
+                        <div class="label">퀴즈 정답률</div>
+                        <div class="value">78%</div>
+                        <div class="delta up">▲ 5%p</div>
+                    </div>
+                    <div class="kpi">
+                        <div class="label">연속 학습일</div>
+                        <div class="value">12일 🔥</div>
+                        <div class="delta up">목표까지 3일</div>
+                    </div>
+                </div>
+
+                <div class="charts">
+                    <div class="chart-card">
+                        <h3>요일별 학습 시간</h3>
+                        <div class="bar-chart">
+                            <div class="col">
+                                <div class="val">2.5h</div>
+                                <div class="bar" style="height:84px"></div>
+                                <div class="lbl">월</div>
+                            </div>
+                            <div class="col">
+                                <div class="val">3.2h</div>
+                                <div class="bar" style="height:108px"></div>
+                                <div class="lbl">화</div>
+                            </div>
+                            <div class="col">
+                                <div class="val">1.8h</div>
+                                <div class="bar" style="height:61px"></div>
+                                <div class="lbl">수</div>
+                            </div>
+                            <div class="col">
+                                <div class="val">4.1h</div>
+                                <div class="bar" style="height:139px"></div>
+                                <div class="lbl">목</div>
+                            </div>
+                            <div class="col">
+                                <div class="val">2.9h</div>
+                                <div class="bar" style="height:98px"></div>
+                                <div class="lbl">금</div>
+                            </div>
+                            <div class="col">
+                                <div class="val">5.3h</div>
+                                <div class="bar" style="height:180px"></div>
+                                <div class="lbl">토</div>
+                            </div>
+                            <div class="col">
+                                <div class="val">3.7h</div>
+                                <div class="bar" style="height:125px"></div>
+                                <div class="lbl">일</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <h3>주제별 비중</h3>
+                        <div class="donut">
+                            <svg viewBox="0 0 36 36">
+                                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#e5e7eb" stroke-width="4" />
+                                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#A8E0CD" stroke-width="4"
+                                    stroke-dasharray="40 100" stroke-dashoffset="0" transform="rotate(-90 18 18)" />
+                                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#3EA990" stroke-width="4"
+                                    stroke-dasharray="30 100" stroke-dashoffset="-40" transform="rotate(-90 18 18)" />
+                                <circle cx="18" cy="18" r="15.9" fill="none" stroke="#4DBDA3" stroke-width="4"
+                                    stroke-dasharray="20 100" stroke-dashoffset="-70" transform="rotate(-90 18 18)" />
+                            </svg>
+                            <div class="legend">
+                                <div><span class="dot" style="background:#A8E0CD"></span>알고리즘 40%</div>
+                                <div><span class="dot" style="background:#3EA990"></span>React 30%</div>
+                                <div><span class="dot" style="background:#4DBDA3"></span>Python 20%</div>
+                                <div><span class="dot" style="background:#e5e7eb"></span>기타 10%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="global-footer">
+                <div class="row">
+                    <a href="#">이용약관</a>
+                    <a href="#">개인정보처리방침</a>
+                    <a href="#">GitHub</a>
+                </div>
+                <div>© 2026 MarkLearn — 영남대학교 컴퓨터공학과 졸업작품</div>
+            </footer>
+        </main>
     </div>
-  </div>
-</div>
+</body>
 
-<footer><div class="row"><a href="#">이용약관</a><a href="#">개인정보처리방침</a><a href="#">GitHub</a></div>
-<div>© 2026 MarkLearn — 영남대학교 컴퓨터공학과 졸업작품</div></footer>
-</body></html>
+</html>

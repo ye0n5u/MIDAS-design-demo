@@ -1,257 +1,916 @@
-<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>노트 편집 · MarkLearn</title>
-<link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-:root{--pink:#4DBDA3;--green-1:#7ACDB8;--olive:#A8E0CD;--ink:#1f2937;--sub:#4b5563;--primary:#4DBDA3;--line:#e5e7eb;--teal:#4DBDA3;--orange:#7ACDB8;--lavender:#A8E0CD;--leaf:#4DBDA3;--rside-width:280px}
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{font-family:'Pretendard','Apple SD Gothic Neo',system-ui,sans-serif;color:var(--ink);background:#F4FBF9;line-height:1.55;height:100%}
-a{color:inherit;text-decoration:none}
-button{font-family:inherit;cursor:pointer;border:none;background:none}
+<!DOCTYPE html>
+<html lang="ko">
 
-.app{position:relative;height:100vh;overflow:hidden;background:#F4FBF9}
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>노트 편집 · MarkLearn</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --pink: #4DBDA3;
+      --green-1: #7ACDB8;
+      --olive: #A8E0CD;
+      --ink: #1f2937;
+      --sub: #4b5563;
+      --primary: #4DBDA3;
+      --line: #e5e7eb;
+      --teal: #4DBDA3;
+      --orange: #7ACDB8;
+      --lavender: #A8E0CD;
+      --leaf: #4DBDA3;
+      --rside-width: 280px
+    }
 
-/* 상단 헤더 */
-.topbar{position:absolute;top:0;left:0;right:0;height:54px;background:transparent;display:flex;align-items:center;justify-content:space-between;padding:0 28px;z-index:30}
-.path{display:flex;align-items:center;gap:6px;font-size:14.5px;color:var(--pink);font-weight:600}
-.path .dir{color:var(--pink)}
-.path .sep{color:var(--pink)}
-.path input{font:inherit;color:var(--pink);background:transparent;border:none;border-bottom:1px dashed transparent;outline:none;padding:2px 4px;font-weight:700;min-width:120px}
-.path input:hover{border-bottom-color:rgba(77,189,163,.6)}
-.path input:focus{border-bottom-color:rgba(77,189,163,.9);background:rgba(77,189,163,.12)}
-.path .ext{color:var(--pink)}
-.back{font-size:14px;color:var(--pink);font-weight:600}
-.back:hover{text-decoration:underline}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
 
-/* 마크다운 툴바 (teal) */
-.toolbar{position:absolute;top:74px;left:50%;transform:translateX(-50%);height:44px;background:var(--teal);border-radius:6px;display:flex;align-items:center;gap:2px;padding:0 10px;box-shadow:0 4px 12px rgba(59,158,133,.3);z-index:25;width:min(640px,80%)}
-.toolbar button{color:#fff;padding:6px 10px;border-radius:4px;font-size:14px;font-weight:600;opacity:.92;min-width:32px}
-.toolbar button:hover{background:rgba(255,255,255,.2);opacity:1}
-.toolbar .div{width:1px;height:18px;background:rgba(255,255,255,.4);margin:0 4px}
-.toolbar .label{margin-left:auto;font-size:12px;color:rgba(255,255,255,.85);font-weight:600;letter-spacing:.5px}
+    html,
+    body {
+      font-family: 'Pretendard', 'Apple SD Gothic Neo', system-ui, sans-serif;
+      color: var(--ink);
+      background: #F4FBF9;
+      line-height: 1.55;
+      height: 100%
+    }
 
-/* 본문 영역 */
-.workspace{position:absolute;top:140px;bottom:90px;left:0;right:0;display:flex;transition:padding .3s ease}
-.workspace.l-open{padding-left:280px}
-.workspace.r-open{padding-right:var(--rside-width)}
-.editor-area,.preview-area{flex:1;height:100%;overflow:auto;padding:32px 48px}
-.editor-area textarea{width:100%;height:100%;border:none;outline:none;resize:none;background:transparent;font-family:'JetBrains Mono','Consolas',monospace;font-size:15px;line-height:1.8;color:#374151}
-.preview-area{display:none;background:#f3f3f3;border-left:1px solid #c4c4c4}
-.app.preview .editor-area{display:none}
-.app.preview .preview-area{display:block;flex:1}
-.app.split .preview-area{display:block;border-left:1px solid #c4c4c4;background:#f3f3f3}
-.preview-area h1{font-size:26px;font-weight:800;margin-bottom:14px;border-bottom:1px solid #cfcfcf;padding-bottom:10px}
-.preview-area h2{font-size:20px;font-weight:700;margin:20px 0 10px}
-.preview-area p{margin:10px 0;color:#374151}
-.preview-area code{background:#C5EEE0;color:var(--primary);padding:2px 6px;border-radius:4px;font-size:13px;font-family:'JetBrains Mono',monospace}
-.preview-area pre{background:#1f2937;color:#e5e7eb;padding:16px;border-radius:10px;overflow:auto;font-size:13px;font-family:'JetBrains Mono',monospace;line-height:1.6;margin:14px 0}
-.preview-area ul{margin:10px 0 10px 22px}
+    a {
+      color: inherit;
+      text-decoration: none
+    }
 
-/* 좌/우 사이드바 (열렸을 때만) */
-.lside,.rside{position:absolute;top:54px;bottom:0;width:280px;padding:30px 20px;overflow:auto;z-index:15;transform:translateX(0);transition:transform .3s ease;border-radius:0 22px 0 0}
-.lside{left:0;background:var(--lavender);border-radius:0 22px 22px 0}
-.rside{right:0;background:#EEEEEE;border-radius:22px 0 0 22px;display:flex;flex-direction:column;width:var(--rside-width)}
-.lside.hidden{transform:translateX(-100%)}
-.rside.hidden{transform:translateX(100%)}
-.lside h4,.rside h4{font-size:12px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;margin-bottom:14px;opacity:.75}
-.lside h4{color:#1a3d32}
-.rside h4{color:#1F6F5F}
-.lside ul,.rside ul{list-style:none;display:flex;flex-direction:column;gap:6px}
-.lside li,.rside li{padding:9px 12px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px}
-.lside li{color:#1a3d32;background:rgba(255,255,255,.35)}
-.lside li:hover,.lside li.active{background:rgba(255,255,255,.7)}
-.rside li{color:#1F6F5F;background:rgba(47,160,132,.15)}
-.rside li:hover{background:rgba(47,160,132,.28)}
-.rside .toc-h2{padding-left:24px;font-weight:500;font-size:13px}
-/* 우측 사이드바: 토글 + 채팅 */
-.rside .mode-switch{position:sticky;top:0;background:#EEEEEE;padding-bottom:12px;margin-bottom:10px;z-index:2}
-.mode-toggle{width:100%;height:38px;border-radius:999px;background:#dfe7e4;padding:4px;display:flex;align-items:center;gap:6px;box-shadow:inset 0 0 0 1px rgba(31,111,95,.2)}
-.mode-toggle button{flex:1;height:30px;border-radius:999px;font-size:13px;font-weight:800;color:#1F6F5F;background:transparent;transition:background .2s ease,color .2s ease}
-.mode-toggle button.active{background:#2FA084;color:#fff}
-.quiz-panel,.tutor-panel{display:none}
-.rside.mode-quiz .quiz-panel{display:flex;flex-direction:column;gap:12px;min-height:0}
-.rside.mode-tutor .tutor-panel{display:flex;flex-direction:column;flex:1;min-height:0}
-.quiz-panel .qz-title{font-size:18px;font-weight:800;color:#1F6F5F}
-.quiz-panel .qz-sub{font-size:12px;color:#4b5563;margin-top:-6px}
-.qz-progress{height:7px;background:#dfe7e4;border-radius:999px;overflow:hidden}
-.qz-progress > span{display:block;height:100%;width:40%;background:linear-gradient(90deg,#2FA084,#6FCF97);border-radius:999px}
-.qz-meta{display:flex;justify-content:space-between;font-size:11px;color:#6b7280}
-.qz-card{background:#ffffff;border:1px solid rgba(31,111,95,.08);border-radius:16px;padding:14px}
-.qz-tag{display:inline-block;font-size:10px;font-weight:800;padding:4px 8px;border-radius:999px;background:#dff3ea;color:#1F6F5F;margin-bottom:10px}
-.qz-text{font-size:13px;font-weight:700;line-height:1.5;color:#1F6F5F;margin-bottom:10px}
-.qz-choice{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:1px solid rgba(31,111,95,.12);border-radius:12px;margin-bottom:8px;background:#f7f9f8}
-.qz-choice .idx{width:24px;height:24px;border-radius:50%;background:#e7efec;display:grid;place-items:center;font-size:11px;font-weight:800;color:#1F6F5F;flex-shrink:0}
-.qz-choice.active{border-color:#2FA084;background:#e6f6f0}
-.qz-feedback{background:#f0fdf4;border:1px solid #86efac;border-radius:12px;padding:12px}
-.qz-feedback strong{display:block;font-size:12px;color:#15803d;margin-bottom:6px}
-.qz-feedback p{font-size:12px;color:#166534;line-height:1.5}
-.qz-actions{display:flex;gap:8px}
-.qz-btn{flex:1;padding:9px 10px;border-radius:10px;font-size:12px;font-weight:800;text-align:center}
-.qz-btn.ghost{border:1px solid rgba(31,111,95,.2);color:#1F6F5F;background:#fff}
-.qz-btn.primary{background:#2FA084;color:#fff}
-.tutor-head{display:flex;align-items:center;justify-content:space-between;margin:8px 0 12px}
-.tutor-head .title{font-weight:800;color:#1F6F5F}
-.tutor-head .back{color:#1F6F5F;font-size:14px}
-.chat-window{background:transparent;border-radius:18px;padding:14px;min-height:320px;display:flex;flex-direction:column;gap:12px;flex:1;overflow:auto}
-.bubble{max-width:78%;padding:12px 14px;border-radius:16px;font-size:13px;line-height:1.5;box-shadow:0 6px 14px rgba(31,111,95,.08)}
-.bubble .time{display:block;font-size:11px;opacity:.6;margin-top:6px}
-.bubble.left{align-self:flex-start;background:#ffffff;color:#1F6F5F;border:1px solid rgba(31,111,95,.08)}
-.bubble.right{align-self:flex-end;background:#2FA084;color:#fff}
-.chat-input{margin-top:auto;display:flex;align-items:center;gap:8px;background:#ffffff;border-radius:999px;padding:10px 12px;border:1px solid rgba(31,111,95,.12)}
-.chat-input input{flex:1;border:none;outline:none;background:transparent;font-size:13px;color:#1F6F5F}
-.chat-input button{width:32px;height:32px;border-radius:50%;background:#6FCF97;color:#fff;font-weight:800}
-.rside-resizer{position:absolute;left:0;top:0;bottom:0;width:8px;cursor:ew-resize;background:transparent}
-.rside-resizer:after{content:"";position:absolute;left:3px;top:16px;bottom:16px;width:2px;border-radius:2px;background:rgba(31,111,95,.25)}
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none
+    }
 
-/* 하단 버튼 라벨 */
-.dock-labels{position:absolute;bottom:78px;left:50%;transform:translateX(-50%);display:flex;gap:14px;z-index:20;pointer-events:none}
-.dock-labels span{width:60px;text-align:center;font-size:14px;font-weight:800;color:var(--primary);transition:opacity .2s ease}
-.app.l-open .dock-labels span:nth-child(1),
-.app.r-open .dock-labels span:nth-child(2){opacity:0}
+    .app {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+      background: #F4FBF9
+    }
 
-/* 하단 도크 (오렌지 알약) */
-.dock{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);background:var(--orange);border-radius:999px;padding:10px 16px;display:flex;gap:14px;box-shadow:0 8px 24px rgba(59,158,133,.4);z-index:20}
-.dock button{width:36px;height:36px;border-radius:50%;background:var(--primary);transition:transform .15s ease, box-shadow .15s ease;position:relative}
-.dock button:hover{transform:translateY(-2px);box-shadow:0 4px 10px rgba(36,56,214,.5)}
-.dock button.on{background:#96C9A8;box-shadow:0 0 0 3px rgba(150,201,168,.25)}
-.dock button .tip{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#1f2937;color:#fff;font-size:11px;font-weight:600;padding:4px 8px;border-radius:6px;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .15s}
-.dock button:hover .tip{opacity:1}
+    /* 상단 헤더 */
+    .topbar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 54px;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 28px;
+      z-index: 30
+    }
 
-@media(max-width:780px){
-  .lside,.rside{width:240px}
-  .workspace.l-open{padding-left:240px}
-  .workspace.r-open{padding-right:240px}
-  .editor-area,.preview-area{padding:20px 22px}
-}
-</style></head><body>
+    .path {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14.5px;
+      color: var(--pink);
+      font-weight: 600
+    }
 
-<div class="app" id="app">
+    .path .dir {
+      color: var(--pink)
+    }
 
-  <!-- 상단 -->
-  <div class="topbar">
-    <div class="path">
-      <span class="dir">📁 알고리즘</span>
-      <span class="sep">/</span>
-      <input type="text" value="DFS와 BFS 정리" id="filename"/>
-      <span class="ext">.md</span>
+    .path .sep {
+      color: var(--pink)
+    }
+
+    .path input {
+      font: inherit;
+      color: var(--pink);
+      background: transparent;
+      border: none;
+      border-bottom: 1px dashed transparent;
+      outline: none;
+      padding: 2px 4px;
+      font-weight: 700;
+      min-width: 120px
+    }
+
+    .path input:hover {
+      border-bottom-color: rgba(77, 189, 163, .6)
+    }
+
+    .path input:focus {
+      border-bottom-color: rgba(77, 189, 163, .9);
+      background: rgba(77, 189, 163, .12)
+    }
+
+    .path .ext {
+      color: var(--pink)
+    }
+
+    .back {
+      font-size: 14px;
+      color: var(--pink);
+      font-weight: 600
+    }
+
+    .back:hover {
+      text-decoration: underline
+    }
+
+    /* 마크다운 툴바 (teal) */
+    .toolbar {
+      position: absolute;
+      top: 74px;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 44px;
+      background: var(--teal);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      padding: 0 10px;
+      box-shadow: 0 4px 12px rgba(59, 158, 133, .3);
+      z-index: 25;
+      width: min(640px, 80%)
+    }
+
+    .toolbar button {
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 600;
+      opacity: .92;
+      min-width: 32px
+    }
+
+    .toolbar button:hover {
+      background: rgba(255, 255, 255, .2);
+      opacity: 1
+    }
+
+    .toolbar .div {
+      width: 1px;
+      height: 18px;
+      background: rgba(255, 255, 255, .4);
+      margin: 0 4px
+    }
+
+    .toolbar .label {
+      margin-left: auto;
+      font-size: 12px;
+      color: rgba(255, 255, 255, .85);
+      font-weight: 600;
+      letter-spacing: .5px
+    }
+
+    /* 본문 영역 */
+    .workspace {
+      position: absolute;
+      top: 140px;
+      bottom: 90px;
+      left: 0;
+      right: 0;
+      display: flex;
+      transition: padding .3s ease
+    }
+
+    .workspace.l-open {
+      padding-left: 280px
+    }
+
+    .workspace.r-open {
+      padding-right: var(--rside-width)
+    }
+
+    .editor-area,
+    .preview-area {
+      flex: 1;
+      height: 100%;
+      overflow: auto;
+      padding: 32px 48px
+    }
+
+    .editor-area textarea {
+      width: 100%;
+      height: 100%;
+      border: none;
+      outline: none;
+      resize: none;
+      background: transparent;
+      font-family: 'JetBrains Mono', 'Consolas', monospace;
+      font-size: 15px;
+      line-height: 1.8;
+      color: #374151
+    }
+
+    .preview-area {
+      display: none;
+      background: #f3f3f3;
+      border-left: 1px solid #c4c4c4
+    }
+
+    .app.preview .editor-area {
+      display: none
+    }
+
+    .app.preview .preview-area {
+      display: block;
+      flex: 1
+    }
+
+    .app.split .preview-area {
+      display: block;
+      border-left: 1px solid #c4c4c4;
+      background: #f3f3f3
+    }
+
+    .preview-area h1 {
+      font-size: 26px;
+      font-weight: 800;
+      margin-bottom: 14px;
+      border-bottom: 1px solid #cfcfcf;
+      padding-bottom: 10px
+    }
+
+    .preview-area h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 20px 0 10px
+    }
+
+    .preview-area p {
+      margin: 10px 0;
+      color: #374151
+    }
+
+    .preview-area code {
+      background: #C5EEE0;
+      color: var(--primary);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-family: 'JetBrains Mono', monospace
+    }
+
+    .preview-area pre {
+      background: #1f2937;
+      color: #e5e7eb;
+      padding: 16px;
+      border-radius: 10px;
+      overflow: auto;
+      font-size: 13px;
+      font-family: 'JetBrains Mono', monospace;
+      line-height: 1.6;
+      margin: 14px 0
+    }
+
+    .preview-area ul {
+      margin: 10px 0 10px 22px
+    }
+
+    /* 좌/우 사이드바 (열렸을 때만) */
+    .lside,
+    .rside {
+      position: absolute;
+      top: 54px;
+      bottom: 0;
+      width: 280px;
+      padding: 30px 20px;
+      overflow: auto;
+      z-index: 15;
+      transform: translateX(0);
+      transition: transform .3s ease;
+      border-radius: 0 22px 0 0
+    }
+
+    .lside {
+      left: 0;
+      background: var(--lavender);
+      border-radius: 0 22px 22px 0
+    }
+
+    .rside {
+      right: 0;
+      background: #EEEEEE;
+      border-radius: 22px 0 0 22px;
+      display: flex;
+      flex-direction: column;
+      width: var(--rside-width)
+    }
+
+    .lside.hidden {
+      transform: translateX(-100%)
+    }
+
+    .rside.hidden {
+      transform: translateX(100%)
+    }
+
+    .lside h4,
+    .rside h4 {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      opacity: .75
+    }
+
+    .lside h4 {
+      color: #1a3d32
+    }
+
+    .rside h4 {
+      color: #1F6F5F
+    }
+
+    .lside ul,
+    .rside ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px
+    }
+
+    .lside li,
+    .rside li {
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px
+    }
+
+    .lside li {
+      color: #1a3d32;
+      background: rgba(255, 255, 255, .35)
+    }
+
+    .lside li:hover,
+    .lside li.active {
+      background: rgba(255, 255, 255, .7)
+    }
+
+    .rside li {
+      color: #1F6F5F;
+      background: rgba(47, 160, 132, .15)
+    }
+
+    .rside li:hover {
+      background: rgba(47, 160, 132, .28)
+    }
+
+    .rside .toc-h2 {
+      padding-left: 24px;
+      font-weight: 500;
+      font-size: 13px
+    }
+
+    /* 우측 사이드바: 토글 + 채팅 */
+    .rside .mode-switch {
+      position: sticky;
+      top: 0;
+      background: #EEEEEE;
+      padding-bottom: 12px;
+      margin-bottom: 10px;
+      z-index: 2
+    }
+
+    .mode-toggle {
+      width: 100%;
+      height: 38px;
+      border-radius: 999px;
+      background: #dfe7e4;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: inset 0 0 0 1px rgba(31, 111, 95, .2)
+    }
+
+    .mode-toggle button {
+      flex: 1;
+      height: 30px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 800;
+      color: #1F6F5F;
+      background: transparent;
+      transition: background .2s ease, color .2s ease
+    }
+
+    .mode-toggle button.active {
+      background: #2FA084;
+      color: #fff
+    }
+
+    .quiz-panel,
+    .tutor-panel {
+      display: none
+    }
+
+    .rside.mode-quiz .quiz-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 0
+    }
+
+    .rside.mode-tutor .tutor-panel {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0
+    }
+
+    .quiz-panel .qz-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #1F6F5F
+    }
+
+    .quiz-panel .qz-sub {
+      font-size: 12px;
+      color: #4b5563;
+      margin-top: -6px
+    }
+
+    .qz-progress {
+      height: 7px;
+      background: #dfe7e4;
+      border-radius: 999px;
+      overflow: hidden
+    }
+
+    .qz-progress>span {
+      display: block;
+      height: 100%;
+      width: 40%;
+      background: linear-gradient(90deg, #2FA084, #6FCF97);
+      border-radius: 999px
+    }
+
+    .qz-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #6b7280
+    }
+
+    .qz-card {
+      background: #ffffff;
+      border: 1px solid rgba(31, 111, 95, .08);
+      border-radius: 16px;
+      padding: 14px
+    }
+
+    .qz-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 4px 8px;
+      border-radius: 999px;
+      background: #dff3ea;
+      color: #1F6F5F;
+      margin-bottom: 10px
+    }
+
+    .qz-text {
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.5;
+      color: #1F6F5F;
+      margin-bottom: 10px
+    }
+
+    .qz-choice {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 1px solid rgba(31, 111, 95, .12);
+      border-radius: 12px;
+      margin-bottom: 8px;
+      background: #f7f9f8
+    }
+
+    .qz-choice .idx {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #e7efec;
+      display: grid;
+      place-items: center;
+      font-size: 11px;
+      font-weight: 800;
+      color: #1F6F5F;
+      flex-shrink: 0
+    }
+
+    .qz-choice.active {
+      border-color: #2FA084;
+      background: #e6f6f0
+    }
+
+    .qz-feedback {
+      background: #f0fdf4;
+      border: 1px solid #86efac;
+      border-radius: 12px;
+      padding: 12px
+    }
+
+    .qz-feedback strong {
+      display: block;
+      font-size: 12px;
+      color: #15803d;
+      margin-bottom: 6px
+    }
+
+    .qz-feedback p {
+      font-size: 12px;
+      color: #166534;
+      line-height: 1.5
+    }
+
+    .qz-actions {
+      display: flex;
+      gap: 8px
+    }
+
+    .qz-btn {
+      flex: 1;
+      padding: 9px 10px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 800;
+      text-align: center
+    }
+
+    .qz-btn.ghost {
+      border: 1px solid rgba(31, 111, 95, .2);
+      color: #1F6F5F;
+      background: #fff
+    }
+
+    .qz-btn.primary {
+      background: #2FA084;
+      color: #fff
+    }
+
+    .tutor-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 8px 0 12px
+    }
+
+    .tutor-head .title {
+      font-weight: 800;
+      color: #1F6F5F
+    }
+
+    .tutor-head .back {
+      color: #1F6F5F;
+      font-size: 14px
+    }
+
+    .chat-window {
+      background: transparent;
+      border-radius: 18px;
+      padding: 14px;
+      min-height: 320px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+      overflow: auto
+    }
+
+    .bubble {
+      max-width: 78%;
+      padding: 12px 14px;
+      border-radius: 16px;
+      font-size: 13px;
+      line-height: 1.5;
+      box-shadow: 0 6px 14px rgba(31, 111, 95, .08)
+    }
+
+    .bubble .time {
+      display: block;
+      font-size: 11px;
+      opacity: .6;
+      margin-top: 6px
+    }
+
+    .bubble.left {
+      align-self: flex-start;
+      background: #ffffff;
+      color: #1F6F5F;
+      border: 1px solid rgba(31, 111, 95, .08)
+    }
+
+    .bubble.right {
+      align-self: flex-end;
+      background: #2FA084;
+      color: #fff
+    }
+
+    .chat-input {
+      margin-top: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #ffffff;
+      border-radius: 999px;
+      padding: 10px 12px;
+      border: 1px solid rgba(31, 111, 95, .12)
+    }
+
+    .chat-input input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 13px;
+      color: #1F6F5F
+    }
+
+    .chat-input button {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #6FCF97;
+      color: #fff;
+      font-weight: 800
+    }
+
+    .rside-resizer {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 8px;
+      cursor: ew-resize;
+      background: transparent
+    }
+
+    .rside-resizer:after {
+      content: "";
+      position: absolute;
+      left: 3px;
+      top: 16px;
+      bottom: 16px;
+      width: 2px;
+      border-radius: 2px;
+      background: rgba(31, 111, 95, .25)
+    }
+
+    /* 하단 버튼 라벨 */
+    .dock-labels {
+      position: absolute;
+      bottom: 78px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 14px;
+      z-index: 20;
+      pointer-events: none
+    }
+
+    .dock-labels span {
+      width: 60px;
+      text-align: center;
+      font-size: 14px;
+      font-weight: 800;
+      color: var(--primary);
+      transition: opacity .2s ease
+    }
+
+    .app.l-open .dock-labels span:nth-child(1),
+    .app.r-open .dock-labels span:nth-child(2) {
+      opacity: 0
+    }
+
+    /* 하단 도크 (오렌지 알약) */
+    .dock {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--orange);
+      border-radius: 999px;
+      padding: 10px 16px;
+      display: flex;
+      gap: 14px;
+      box-shadow: 0 8px 24px rgba(59, 158, 133, .4);
+      z-index: 20
+    }
+
+    .dock button {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--primary);
+      transition: transform .15s ease, box-shadow .15s ease;
+      position: relative
+    }
+
+    .dock button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(36, 56, 214, .5)
+    }
+
+    .dock button.on {
+      background: #96C9A8;
+      box-shadow: 0 0 0 3px rgba(150, 201, 168, .25)
+    }
+
+    .dock button .tip {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1f2937;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .15s
+    }
+
+    .dock button:hover .tip {
+      opacity: 1
+    }
+
+    @media(max-width:780px) {
+
+      .lside,
+      .rside {
+        width: 240px
+      }
+
+      .workspace.l-open {
+        padding-left: 240px
+      }
+
+      .workspace.r-open {
+        padding-right: 240px
+      }
+
+      .editor-area,
+      .preview-area {
+        padding: 20px 22px
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="app" id="app">
+
+    <!-- 상단 -->
+    <div class="topbar">
+      <div class="path">
+        <span class="dir">📁 알고리즘</span>
+        <span class="sep">/</span>
+        <input type="text" value="DFS와 BFS 정리" id="filename" />
+        <span class="ext">.md</span>
+      </div>
+      <a class="back" href="directory.html">✕ 취소하고 돌아가기</a>
     </div>
-    <a class="back" href="directory.html">✕ 취소하고 돌아가기</a>
-  </div>
 
-  <!-- 툴바 -->
-  <div class="toolbar">
-    <button title="굵게"><b>B</b></button>
-    <button title="기울임"><i>I</i></button>
-    <button title="취소선"><s>S</s></button>
-    <span class="div"></span>
-    <button title="제목 1">H1</button>
-    <button title="제목 2">H2</button>
-    <button title="인용">❝</button>
-    <span class="div"></span>
-    <button title="목록">• 목록</button>
-    <button title="번호 목록">1.</button>
-    <button title="체크박스">☐</button>
-    <span class="div"></span>
-    <button title="링크">🔗</button>
-    <button title="이미지">🖼</button>
-    <button title="코드">{ }</button>
-    <span class="label">마크다운 툴바</span>
-  </div>
-
-  <!-- 좌측 사이드바: 디렉토리/파일 -->
-  <aside class="lside hidden" id="lside">
-    <h4>📂 디렉토리</h4>
-    <ul>
-      <li class="active">📁 알고리즘</li>
-      <li>📁 React</li>
-      <li>📁 Python</li>
-      <li>📁 자료구조</li>
-    </ul>
-    <h4 style="margin-top:22px">📄 파일</h4>
-    <ul>
-      <li class="active">DFS와 BFS 정리</li>
-      <li>다익스트라</li>
-      <li>이분 탐색</li>
-      <li>+ 새 파일</li>
-    </ul>
-  </aside>
-
-  <!-- 우측 사이드바: 퀴즈/AI 튜터 -->
-  <aside class="rside hidden mode-tutor" id="rside">
-    <div class="rside-resizer" id="rside-resizer" aria-hidden="true"></div>
-    <div class="mode-switch">
-      <div class="mode-toggle" role="tablist" aria-label="오른쪽 패널 모드">
-        <button type="button" id="btn-quiz" role="tab" aria-selected="false">퀴즈</button>
-        <button type="button" id="btn-tutor" role="tab" aria-selected="true" class="active">AI 튜터</button>
-      </div>
+    <!-- 툴바 -->
+    <div class="toolbar">
+      <button title="굵게"><b>B</b></button>
+      <button title="기울임"><i>I</i></button>
+      <button title="취소선"><s>S</s></button>
+      <span class="div"></span>
+      <button title="제목 1">H1</button>
+      <button title="제목 2">H2</button>
+      <button title="인용">❝</button>
+      <span class="div"></span>
+      <button title="목록">• 목록</button>
+      <button title="번호 목록">1.</button>
+      <button title="체크박스">☐</button>
+      <span class="div"></span>
+      <button title="링크">🔗</button>
+      <button title="이미지">🖼</button>
+      <button title="코드">{ }</button>
+      <span class="label">마크다운 툴바</span>
     </div>
 
-    <section class="quiz-panel" aria-hidden="true">
-      <div class="qz-title">AI 퀴즈</div>
-      <div class="qz-sub">노트 「DFS와 BFS 정리」 기반 자동 생성 문제</div>
-      <div class="qz-progress"><span></span></div>
-      <div class="qz-meta"><span>4 / 10 문제</span><span>⏱ 02:34</span></div>
-      <div class="qz-card">
-        <div class="qz-tag">개념 이해</div>
-        <div class="qz-text">Q4. 다음 중 BFS(너비 우선 탐색)에 대한 설명으로 옳은 것은?</div>
-        <div class="qz-choice">
-          <div class="idx">1</div>
-          <div>스택을 이용해 구현하며, 가장 최근 방문한 노드부터 탐색한다.</div>
-        </div>
-        <div class="qz-choice active">
-          <div class="idx">2</div>
-          <div>큐를 이용해 구현하며, 간선 가중치가 동일할 때 최단 경로를 보장한다.</div>
-        </div>
-        <div class="qz-choice">
-          <div class="idx">3</div>
-          <div>음수 가중치 그래프에서도 항상 최단 경로를 찾을 수 있다.</div>
-        </div>
-        <div class="qz-choice">
-          <div class="idx">4</div>
-          <div>시간복잡도는 항상 O(V^2)이다.</div>
-        </div>
-      </div>
-      <div class="qz-feedback">
-        <strong>정답입니다!</strong>
-        <p>BFS는 큐(FIFO)를 사용해 가까운 노드부터 탐색하며, 동일 가중치에서 최단 경로를 보장합니다.</p>
-      </div>
-      <div class="qz-actions">
-        <div class="qz-btn ghost">이전 문제</div>
-        <div class="qz-btn primary">다음 문제</div>
-      </div>
-    </section>
+    <!-- 좌측 사이드바: 디렉토리/파일 -->
+    <aside class="lside hidden" id="lside">
+      <h4>📂 디렉토리</h4>
+      <ul>
+        <li class="active">📁 알고리즘</li>
+        <li>📁 React</li>
+        <li>📁 Python</li>
+        <li>📁 자료구조</li>
+      </ul>
+      <h4 style="margin-top:22px">📄 파일</h4>
+      <ul>
+        <li class="active">DFS와 BFS 정리</li>
+        <li>다익스트라</li>
+        <li>이분 탐색</li>
+        <li>+ 새 파일</li>
+      </ul>
+    </aside>
 
-    <section class="tutor-panel" aria-hidden="false">
-      <div class="tutor-head">
-        <span class="title">AI Tutor</span>
-        <span class="back">‹</span>
-      </div>
-      <div class="chat-window">
-        <div class="bubble left">
-          Hello there? sup?
-          <span class="time">19:30</span>
-        </div>
-        <div class="bubble right">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-          sed do eiusmod tempor
-          <span class="time">19:30</span>
-        </div>
-        <div class="bubble right">
-          PINGGG !!!
-          <span class="time">19:32</span>
+    <!-- 우측 사이드바: 퀴즈/AI 튜터 -->
+    <aside class="rside hidden mode-tutor" id="rside">
+      <div class="rside-resizer" id="rside-resizer" aria-hidden="true"></div>
+      <div class="mode-switch">
+        <div class="mode-toggle" role="tablist" aria-label="오른쪽 패널 모드">
+          <button type="button" id="btn-quiz" role="tab" aria-selected="false">퀴즈</button>
+          <button type="button" id="btn-tutor" role="tab" aria-selected="true" class="active">AI 튜터</button>
         </div>
       </div>
-      <div class="chat-input">
-        <input type="text" placeholder="type something" />
-        <button type="button">↻</button>
-      </div>
-    </section>
-  </aside>
 
-  <!-- 본문 -->
-  <div class="workspace" id="workspace">
-    <div class="editor-area">
-      <textarea spellcheck="false" id="md"># DFS와 BFS 정리
+      <section class="quiz-panel" aria-hidden="true">
+        <div class="qz-title">AI 퀴즈</div>
+        <div class="qz-sub">노트 「DFS와 BFS 정리」 기반 자동 생성 문제</div>
+        <div class="qz-progress"><span></span></div>
+        <div class="qz-meta"><span>4 / 10 문제</span><span>⏱ 02:34</span></div>
+        <div class="qz-card">
+          <div class="qz-tag">개념 이해</div>
+          <div class="qz-text">Q4. 다음 중 BFS(너비 우선 탐색)에 대한 설명으로 옳은 것은?</div>
+          <div class="qz-choice">
+            <div class="idx">1</div>
+            <div>스택을 이용해 구현하며, 가장 최근 방문한 노드부터 탐색한다.</div>
+          </div>
+          <div class="qz-choice active">
+            <div class="idx">2</div>
+            <div>큐를 이용해 구현하며, 간선 가중치가 동일할 때 최단 경로를 보장한다.</div>
+          </div>
+          <div class="qz-choice">
+            <div class="idx">3</div>
+            <div>음수 가중치 그래프에서도 항상 최단 경로를 찾을 수 있다.</div>
+          </div>
+          <div class="qz-choice">
+            <div class="idx">4</div>
+            <div>시간복잡도는 항상 O(V^2)이다.</div>
+          </div>
+        </div>
+        <div class="qz-feedback">
+          <strong>정답입니다!</strong>
+          <p>BFS는 큐(FIFO)를 사용해 가까운 노드부터 탐색하며, 동일 가중치에서 최단 경로를 보장합니다.</p>
+        </div>
+        <div class="qz-actions">
+          <div class="qz-btn ghost">이전 문제</div>
+          <div class="qz-btn primary">다음 문제</div>
+        </div>
+      </section>
+
+      <section class="tutor-panel" aria-hidden="false">
+        <div class="tutor-head">
+          <span class="title">AI Tutor</span>
+          <span class="back">‹</span>
+        </div>
+        <div class="chat-window">
+          <div class="bubble left">
+            Hello there? sup?
+            <span class="time">19:30</span>
+          </div>
+          <div class="bubble right">
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+            sed do eiusmod tempor
+            <span class="time">19:30</span>
+          </div>
+          <div class="bubble right">
+            PINGGG !!!
+            <span class="time">19:32</span>
+          </div>
+        </div>
+        <div class="chat-input">
+          <input type="text" placeholder="type something" />
+          <button type="button">↻</button>
+        </div>
+      </section>
+    </aside>
+
+    <!-- 본문 -->
+    <div class="workspace" id="workspace">
+      <div class="editor-area">
+        <textarea spellcheck="false" id="md"># DFS와 BFS 정리
 
 그래프 탐색의 두 가지 기본 알고리즘.
 
@@ -276,129 +935,134 @@ def dfs(graph, v, visited):
 - 시간복잡도: `O(V + E)`
 - 공간복잡도: `O(V)`
 </textarea>
-    </div>
-    <div class="preview-area" id="preview">
-      <h1>DFS와 BFS 정리</h1>
-      <p>그래프 탐색의 두 가지 기본 알고리즘.</p>
-      <h2>DFS (깊이 우선 탐색)</h2>
-      <p>스택 또는 재귀로 구현한다. 한 경로를 끝까지 파고든 뒤 되돌아온다.</p>
-      <pre><code>def dfs(graph, v, visited):
+      </div>
+      <div class="preview-area" id="preview">
+        <h1>DFS와 BFS 정리</h1>
+        <p>그래프 탐색의 두 가지 기본 알고리즘.</p>
+        <h2>DFS (깊이 우선 탐색)</h2>
+        <p>스택 또는 재귀로 구현한다. 한 경로를 끝까지 파고든 뒤 되돌아온다.</p>
+        <pre><code>def dfs(graph, v, visited):
     visited[v] = True
     for u in graph[v]:
         if not visited[u]:
             dfs(graph, u, visited)</code></pre>
-      <h2>BFS (너비 우선 탐색)</h2>
-      <p>큐를 사용해 가까운 노드부터 방문한다. <strong>최단 경로</strong>(간선 가중치 동일) 탐색에 적합.</p>
-      <h2>시간복잡도 비교</h2>
-      <ul><li>시간복잡도: <code>O(V + E)</code></li><li>공간복잡도: <code>O(V)</code></li></ul>
+        <h2>BFS (너비 우선 탐색)</h2>
+        <p>큐를 사용해 가까운 노드부터 방문한다. <strong>최단 경로</strong>(간선 가중치 동일) 탐색에 적합.</p>
+        <h2>시간복잡도 비교</h2>
+        <ul>
+          <li>시간복잡도: <code>O(V + E)</code></li>
+          <li>공간복잡도: <code>O(V)</code></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- 하단 도크 -->
+    <div class="dock">
+      <button id="btn-l" title="L 사이드바"><span class="tip">L 사이드바</span></button>
+      <button id="btn-r" title="R 사이드바"><span class="tip">R 사이드바</span></button>
+      <button id="btn-edit" title="편집/미리보기"><span class="tip">편집 ↔ 미리보기</span></button>
+      <button id="btn-send" title="전송 (저장)"><span class="tip">저장 / 전송</span></button>
     </div>
   </div>
 
-  <!-- 하단 도크 -->
-  <div class="dock">
-    <button id="btn-l" title="L 사이드바"><span class="tip">L 사이드바</span></button>
-    <button id="btn-r" title="R 사이드바"><span class="tip">R 사이드바</span></button>
-    <button id="btn-edit" title="편집/미리보기"><span class="tip">편집 ↔ 미리보기</span></button>
-    <button id="btn-send" title="전송 (저장)"><span class="tip">저장 / 전송</span></button>
-  </div>
-</div>
+  <script>
+    const app = document.getElementById('app');
+    const ws = document.getElementById('workspace');
+    const lside = document.getElementById('lside');
+    const rside = document.getElementById('rside');
+    const btnL = document.getElementById('btn-l');
+    const btnR = document.getElementById('btn-r');
+    const btnQuiz = document.getElementById('btn-quiz');
+    const btnTutor = document.getElementById('btn-tutor');
+    const rsideResizer = document.getElementById('rside-resizer');
+    let resizingRside = false;
 
-<script>
-const app = document.getElementById('app');
-const ws = document.getElementById('workspace');
-const lside = document.getElementById('lside');
-const rside = document.getElementById('rside');
-const btnL = document.getElementById('btn-l');
-const btnR = document.getElementById('btn-r');
-const btnQuiz = document.getElementById('btn-quiz');
-const btnTutor = document.getElementById('btn-tutor');
-const rsideResizer = document.getElementById('rside-resizer');
-let resizingRside = false;
+    btnL.addEventListener('click', e => {
+      const open = lside.classList.toggle('hidden') === false;
+      e.currentTarget.classList.toggle('on', open);
+      ws.classList.toggle('l-open', open);
+      app.classList.toggle('l-open', open);
+    });
+    btnR.addEventListener('click', e => {
+      const open = rside.classList.toggle('hidden') === false;
+      e.currentTarget.classList.toggle('on', open);
+      ws.classList.toggle('r-open', open);
+      app.classList.toggle('r-open', open);
+    });
+    document.getElementById('btn-edit').addEventListener('click', e => {
+      const states = ['', 'preview', 'split'];
+      const cur = states.findIndex(s => app.classList.contains(s) || s === '');
+      let idx = 0;
+      if (app.classList.contains('split')) idx = 0;
+      else if (app.classList.contains('preview')) idx = 2;
+      else idx = 1;
+      app.classList.remove('preview', 'split');
+      if (states[idx]) app.classList.add(states[idx]);
+      e.currentTarget.classList.toggle('on', idx !== 0);
+    });
+    document.getElementById('btn-send').addEventListener('click', e => {
+      if (!lside.classList.contains('hidden')) {
+        lside.classList.add('hidden');
+        ws.classList.remove('l-open');
+        app.classList.remove('l-open');
+        btnL.classList.remove('on');
+      }
+      if (rside.classList.contains('hidden')) {
+        rside.classList.remove('hidden');
+      }
+      ws.classList.add('r-open');
+      app.classList.add('r-open');
+      btnR.classList.add('on');
+      e.currentTarget.classList.add('on');
+      setTimeout(() => {
+        alert('💾 저장되었습니다');
+        e.currentTarget.classList.remove('on');
+      }, 150);
+    });
 
-btnL.addEventListener('click', e=>{
-  const open = lside.classList.toggle('hidden') === false;
-  e.currentTarget.classList.toggle('on', open);
-  ws.classList.toggle('l-open', open);
-  app.classList.toggle('l-open', open);
-});
-btnR.addEventListener('click', e=>{
-  const open = rside.classList.toggle('hidden') === false;
-  e.currentTarget.classList.toggle('on', open);
-  ws.classList.toggle('r-open', open);
-  app.classList.toggle('r-open', open);
-});
-document.getElementById('btn-edit').addEventListener('click', e=>{
-  const states = ['', 'preview', 'split'];
-  const cur = states.findIndex(s => app.classList.contains(s) || s==='');
-  let idx = 0;
-  if(app.classList.contains('split')) idx = 0;
-  else if(app.classList.contains('preview')) idx = 2;
-  else idx = 1;
-  app.classList.remove('preview','split');
-  if(states[idx]) app.classList.add(states[idx]);
-  e.currentTarget.classList.toggle('on', idx!==0);
-});
-document.getElementById('btn-send').addEventListener('click', e=>{
-  if(!lside.classList.contains('hidden')){
-    lside.classList.add('hidden');
-    ws.classList.remove('l-open');
-    app.classList.remove('l-open');
-    btnL.classList.remove('on');
-  }
-  if(rside.classList.contains('hidden')){
-    rside.classList.remove('hidden');
-  }
-  ws.classList.add('r-open');
-  app.classList.add('r-open');
-  btnR.classList.add('on');
-  e.currentTarget.classList.add('on');
-  setTimeout(()=>{
-    alert('💾 저장되었습니다');
-    e.currentTarget.classList.remove('on');
-  }, 150);
-});
+    btnQuiz.addEventListener('click', () => {
+      rside.classList.add('mode-quiz');
+      rside.classList.remove('mode-tutor');
+      btnQuiz.classList.add('active');
+      btnTutor.classList.remove('active');
+      btnQuiz.setAttribute('aria-selected', 'true');
+      btnTutor.setAttribute('aria-selected', 'false');
+      document.querySelector('.quiz-panel').setAttribute('aria-hidden', 'false');
+      document.querySelector('.tutor-panel').setAttribute('aria-hidden', 'true');
+    });
+    btnTutor.addEventListener('click', () => {
+      rside.classList.add('mode-tutor');
+      rside.classList.remove('mode-quiz');
+      btnTutor.classList.add('active');
+      btnQuiz.classList.remove('active');
+      btnTutor.setAttribute('aria-selected', 'true');
+      btnQuiz.setAttribute('aria-selected', 'false');
+      document.querySelector('.tutor-panel').setAttribute('aria-hidden', 'false');
+      document.querySelector('.quiz-panel').setAttribute('aria-hidden', 'true');
+    });
 
-btnQuiz.addEventListener('click', ()=>{
-  rside.classList.add('mode-quiz');
-  rside.classList.remove('mode-tutor');
-  btnQuiz.classList.add('active');
-  btnTutor.classList.remove('active');
-  btnQuiz.setAttribute('aria-selected', 'true');
-  btnTutor.setAttribute('aria-selected', 'false');
-  document.querySelector('.quiz-panel').setAttribute('aria-hidden', 'false');
-  document.querySelector('.tutor-panel').setAttribute('aria-hidden', 'true');
-});
-btnTutor.addEventListener('click', ()=>{
-  rside.classList.add('mode-tutor');
-  rside.classList.remove('mode-quiz');
-  btnTutor.classList.add('active');
-  btnQuiz.classList.remove('active');
-  btnTutor.setAttribute('aria-selected', 'true');
-  btnQuiz.setAttribute('aria-selected', 'false');
-  document.querySelector('.tutor-panel').setAttribute('aria-hidden', 'false');
-  document.querySelector('.quiz-panel').setAttribute('aria-hidden', 'true');
-});
+    rsideResizer.addEventListener('mousedown', e => {
+      e.preventDefault();
+      resizingRside = true;
+      document.body.style.cursor = 'ew-resize';
+    });
+    window.addEventListener('mousemove', e => {
+      if (!resizingRside) {
+        return;
+      }
+      const minWidth = 350;
+      const maxWidth = 520;
+      const nextWidth = Math.min(maxWidth, Math.max(minWidth, window.innerWidth - e.clientX));
+      document.documentElement.style.setProperty('--rside-width', `${nextWidth}px`);
+    });
+    window.addEventListener('mouseup', () => {
+      if (!resizingRside) {
+        return;
+      }
+      resizingRside = false;
+      document.body.style.cursor = '';
+    });
+  </script>
+</body>
 
-rsideResizer.addEventListener('mousedown', e=>{
-  e.preventDefault();
-  resizingRside = true;
-  document.body.style.cursor = 'ew-resize';
-});
-window.addEventListener('mousemove', e=>{
-  if(!resizingRside){
-    return;
-  }
-  const minWidth = 350;
-  const maxWidth = 520;
-  const nextWidth = Math.min(maxWidth, Math.max(minWidth, window.innerWidth - e.clientX));
-  document.documentElement.style.setProperty('--rside-width', `${nextWidth}px`);
-});
-window.addEventListener('mouseup', ()=>{
-  if(!resizingRside){
-    return;
-  }
-  resizingRside = false;
-  document.body.style.cursor = '';
-});
-</script>
-</body></html>
+</html>

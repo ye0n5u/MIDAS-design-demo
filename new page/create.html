@@ -1,206 +1,497 @@
-<!DOCTYPE html><html lang="ko"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>학습 생성 · MarkLearn</title>
-<link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-:root{
-  --pink:#4DBDA3; --green-1:#7ACDB8; --green-2:#A8E0CD; --olive:#A8E0CD;
-  --gray:#F4FBF9; --ink:#1f2937; --sub:#4b5563;
-  --primary:#4DBDA3; --primary-2:#3EA990; --bg:#F6FBF9; --line:#e5e7eb;
-}
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{font-family:'Pretendard','Apple SD Gothic Neo',system-ui,sans-serif;color:var(--ink);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased}
-body{margin-left:200px}
-a{color:inherit;text-decoration:none}
-button{font-family:inherit;cursor:pointer;border:none;background:none}
+<!DOCTYPE html>
+<html lang="ko">
 
-.sidebar{position:fixed;top:0;left:0;width:200px;height:100vh;background:var(--pink);display:flex;flex-direction:column;z-index:100}
-.sidebar .brand{display:flex;align-items:center;gap:10px;padding:22px 16px;font-weight:800;font-size:16px;color:#fff;border-bottom:1px solid rgba(255,255,255,.15);text-decoration:none}
-.sidebar .s-logo{width:30px;height:30px;border-radius:8px;background:rgba(255,255,255,.25);display:grid;place-items:center;font-weight:800;font-size:14px;color:#fff;flex-shrink:0}
-.sidebar nav{flex:1;padding:14px 10px;display:flex;flex-direction:column;gap:2px}
-.sidebar nav a{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:rgba(255,255,255,.7);font-weight:600;font-size:14px;text-decoration:none;transition:background .15s,color .15s}
-.sidebar nav a:hover,.sidebar nav a.active{background:rgba(255,255,255,.18);color:#fff}
-.s-bottom{padding:14px 10px;border-top:1px solid rgba(255,255,255,.15);display:flex;flex-direction:column;gap:2px}
-.s-user{font-size:12px;color:rgba(255,255,255,.5);padding:4px 14px 6px;font-weight:600}
-.s-bottom a{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:10px;color:rgba(255,255,255,.7);font-weight:600;font-size:14px;text-decoration:none;transition:background .15s,color .15s}
-.s-bottom a:hover,.s-bottom a.active{background:rgba(255,255,255,.18);color:#fff}
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>학습 생성 · MarkLearn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --color-teal-500: #4DBDA3;
+      --color-teal-600: #3EA990;
+      --color-teal-200: #A8E0CD;
+      --color-teal-100: #D6F5EA;
+      --bg-base: #F6FBF9;
+      --bg-panel: #FFFFFF;
+      --ink: #1f2937;
+      --sub: #4b5563;
+      --line: #e5e7eb;
+    }
 
-footer{background:var(--pink);padding:30px 24px;text-align:center;color:rgba(255,255,255,.85);font-size:13.5px;margin-top:80px}
-footer .row{display:flex;justify-content:center;gap:22px;margin-bottom:8px;font-weight:600}
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-.container{max-width:1180px;margin:0 auto;padding:32px 24px}
-.page-title{font-size:28px;font-weight:800;letter-spacing:-.5px;margin-bottom:6px}
-.page-sub{color:var(--sub);margin-bottom:32px}
+    html,
+    body {
+      font-family: 'Pretendard', system-ui, sans-serif;
+      color: var(--ink);
+      background: var(--bg-base);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
 
-/* 폼 카드 */
-.create-wrap{max-width:700px;margin:0 auto}
-.form-card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:44px 40px;box-shadow:0 4px 24px rgba(0,0,0,.04)}
+    /* 공통 레이아웃 */
+    .app-layout {
+      display: flex;
+      min-height: 100vh;
+    }
 
-.form-section{margin-bottom:28px}
-.form-label{font-size:13px;font-weight:700;color:var(--sub);margin-bottom:8px;display:block;letter-spacing:.1px;text-transform:uppercase}
-.form-input{width:100%;padding:13px 16px;border:1.5px solid var(--line);border-radius:12px;font-family:inherit;font-size:15px;background:#fff;color:var(--ink);outline:none;transition:border-color .15s}
-.form-input:focus{border-color:var(--primary)}
-.form-input::placeholder{color:#9ca3af}
+    .sidebar {
+      width: 200px;
+      background: var(--color-teal-500);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
 
-/* 예시 칩 */
-.chips-label{font-size:12px;color:#9ca3af;font-weight:600;margin:12px 0 8px;display:block}
-.chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{padding:7px 15px;border-radius:8px;border:1.5px solid var(--line);font-size:13px;font-weight:600;color:var(--sub);cursor:pointer;transition:all .15s;background:#fff;user-select:none}
-.chip:hover{border-color:var(--primary);color:var(--primary);background:#EBF9F5}
-.chip.active{border-color:var(--primary);color:#fff;background:var(--primary)}
+    .sidebar .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 22px 16px;
+      font-weight: 800;
+      font-size: 16px;
+      color: #fff;
+      border-bottom: 1px solid rgba(255, 255, 255, .15);
+      text-decoration: none;
+    }
 
-/* 시간 입력 */
-.time-row{display:flex;align-items:center;gap:12px;margin-bottom:16px}
-.time-input{width:90px;padding:11px 14px;border:1.5px solid var(--line);border-radius:10px;font-family:inherit;font-size:17px;font-weight:800;text-align:center;color:var(--ink);outline:none;transition:border-color .15s;background:#fff}
-.time-input:focus{border-color:var(--primary)}
-.time-unit{font-size:14px;font-weight:600;color:var(--sub)}
-.time-hint{font-size:12px;color:#9ca3af;margin-left:auto}
+    .sidebar .s-logo {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, .25);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 14px;
+      color: #fff;
+    }
 
-/* 슬라이더 */
-.slider-wrap{position:relative}
-.slider{width:100%;-webkit-appearance:none;appearance:none;height:6px;border-radius:999px;outline:none;cursor:pointer;background:var(--line)}
-.slider::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--primary);box-shadow:0 2px 8px rgba(77,189,163,.45);cursor:pointer;transition:transform .1s}
-.slider::-webkit-slider-thumb:hover{transform:scale(1.15)}
-.slider::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--primary);border:none;box-shadow:0 2px 8px rgba(77,189,163,.45);cursor:pointer}
-.slider-marks{display:flex;justify-content:space-between;margin-top:8px;font-size:11px;color:#9ca3af;font-weight:600}
+    .sidebar nav {
+      flex: 1;
+      padding: 14px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
 
-/* 구분선 */
-.divider{height:1px;background:var(--line);margin:32px 0}
+    .sidebar nav a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 14px;
+      border-radius: 10px;
+      color: rgba(255, 255, 255, .7);
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+      transition: 0.15s;
+    }
 
-/* 생성 버튼 */
-.btn-create{width:100%;padding:17px;background:var(--primary);color:#fff;border-radius:14px;font-size:16px;font-weight:800;border:none;cursor:pointer;font-family:inherit;transition:background .15s,transform .1s,box-shadow .15s;box-shadow:0 4px 14px rgba(77,189,163,.35)}
-.btn-create:hover{background:var(--primary-2);transform:translateY(-1px);box-shadow:0 6px 18px rgba(77,189,163,.45)}
-.btn-create:active{transform:translateY(0)}
-</style></head><body>
+    .sidebar nav a:hover,
+    .sidebar nav a.active {
+      background: rgba(255, 255, 255, .18);
+      color: #fff;
+    }
 
-<aside class="sidebar">
-  <a class="brand" href="landing.html"><div class="s-logo">M</div><span>MarkLearn</span></a>
-  <nav>
-    <a href="dashboard.html">📊 대시보드</a>
-    <a href="create.html" class="active">✏️ 학습 생성</a>
-    <a href="directory.html">📝 노트</a>
-    <a href="quiz.html">🤖 퀴즈</a>
-  </nav>
-  <div class="s-bottom">
-    <div class="s-user">김영남</div>
-    <a href="mypage.html">👤 마이페이지</a>
-  </div>
-</aside>
+    .s-bottom {
+      padding: 14px 10px;
+      border-top: 1px solid rgba(255, 255, 255, .15);
+    }
 
-<div class="container">
-  <div class="page-title">학습 생성</div>
-  <div class="page-sub">새로운 학습 세션을 설정하세요</div>
+    .s-user {
+      font-size: 12px;
+      color: rgba(255, 255, 255, .5);
+      padding: 4px 14px 6px;
+      font-weight: 600;
+    }
 
-  <div class="create-wrap">
-    <div class="form-card">
+    .s-bottom a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 11px 14px;
+      border-radius: 10px;
+      color: rgba(255, 255, 255, .7);
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+    }
 
-      <!-- 제목 -->
-      <div class="form-section">
-        <label class="form-label">제목</label>
-        <input type="text" class="form-input" placeholder="학습 제목을 입력하세요" id="title-input"/>
+    .s-bottom a:hover {
+      background: rgba(255, 255, 255, .18);
+      color: #fff;
+    }
+
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    /* 휠을 내려야 푸터가 보이는 핵심 코드 */
+    .container {
+      max-width: 1180px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 32px 24px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* 폼 영역 디자인 */
+    .page-title {
+      font-size: 28px;
+      font-weight: 800;
+      margin-bottom: 6px;
+      letter-spacing: -.5px;
+    }
+
+    .page-sub {
+      color: var(--sub);
+      margin-bottom: 32px;
+    }
+
+    .create-wrap {
+      max-width: 700px;
+      margin: 0 auto;
+      width: 100%;
+      flex: 1;
+    }
+
+    .form-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 44px 40px;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, .04);
+    }
+
+    .form-section {
+      margin-bottom: 28px;
+    }
+
+    .form-label {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--sub);
+      margin-bottom: 8px;
+      display: block;
+      text-transform: uppercase;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 13px 16px;
+      border: 1.5px solid var(--line);
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 15px;
+      color: var(--ink);
+      outline: none;
+      transition: border-color .15s;
+    }
+
+    .form-input:focus {
+      border-color: var(--color-teal-500);
+    }
+
+    .form-input::placeholder {
+      color: #9ca3af;
+    }
+
+    .chips-label {
+      font-size: 12px;
+      color: #9ca3af;
+      font-weight: 600;
+      margin: 12px 0 8px;
+      display: block;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      padding: 7px 15px;
+      border-radius: 8px;
+      border: 1.5px solid var(--line);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--sub);
+      cursor: pointer;
+      transition: all .15s;
+      user-select: none;
+    }
+
+    .chip:hover {
+      border-color: var(--color-teal-500);
+      color: var(--color-teal-500);
+      background: var(--color-teal-100);
+    }
+
+    .chip.active {
+      border-color: var(--color-teal-500);
+      color: #fff;
+      background: var(--color-teal-500);
+    }
+
+    .time-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .time-input {
+      width: 90px;
+      padding: 11px 14px;
+      border: 1.5px solid var(--line);
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 17px;
+      font-weight: 800;
+      text-align: center;
+      color: var(--ink);
+      outline: none;
+      transition: border-color .15s;
+    }
+
+    .time-input:focus {
+      border-color: var(--color-teal-500);
+    }
+
+    .time-unit {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--sub);
+    }
+
+    .time-hint {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-left: auto;
+    }
+
+    .slider-wrap {
+      position: relative;
+    }
+
+    .slider {
+      width: 100%;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 6px;
+      border-radius: 999px;
+      outline: none;
+      cursor: pointer;
+      background: var(--line);
+    }
+
+    .slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--color-teal-500);
+      box-shadow: 0 2px 8px rgba(77, 189, 163, .45);
+      cursor: pointer;
+      transition: transform .1s;
+    }
+
+    .slider::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+    }
+
+    .slider-marks {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 8px;
+      font-size: 11px;
+      color: #9ca3af;
+      font-weight: 600;
+    }
+
+    .divider {
+      height: 1px;
+      background: var(--line);
+      margin: 32px 0;
+    }
+
+    .btn-create {
+      width: 100%;
+      padding: 17px;
+      background: var(--color-teal-500);
+      color: #fff;
+      border-radius: 14px;
+      font-size: 16px;
+      font-weight: 800;
+      border: none;
+      cursor: pointer;
+      transition: 0.15s;
+      box-shadow: 0 4px 14px rgba(77, 189, 163, .35);
+    }
+
+    .btn-create:hover {
+      background: var(--color-teal-600);
+      transform: translateY(-1px);
+    }
+
+    .global-footer {
+      margin-top: auto;
+      padding: 30px 24px;
+      text-align: center;
+      background: var(--color-teal-500);
+      color: rgba(255, 255, 255, 0.85);
+      font-size: 13.5px;
+    }
+
+    .global-footer .row {
+      display: flex;
+      justify-content: center;
+      gap: 22px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .global-footer a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .global-footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <a class="brand" href="landing.html">
+        <div class="s-logo">M</div><span>MarkLearn</span>
+      </a>
+      <nav>
+        <a href="dashboard.html">📊 대시보드</a>
+        <a href="create.html" class="active">✏️ 학습 생성</a>
+        <a href="directory.html">📝 노트</a>
+      </nav>
+      <div class="s-bottom">
+        <div class="s-user">김영남</div>
+        <a href="mypage.html">👤 마이페이지</a>
       </div>
+    </aside>
 
-      <!-- 학습 주제 -->
-      <div class="form-section">
-        <label class="form-label">학습 주제</label>
-        <input type="text" class="form-input" placeholder="ex. 언어, 기술 스택 등등" id="topic-input"/>
-        <span class="chips-label">기본 예시에서 선택하기</span>
-        <div class="chips" id="chips">
-          <div class="chip" data-value="React">React</div>
-          <div class="chip" data-value="Spring">Spring</div>
-          <div class="chip" data-value="Python">Python</div>
-          <div class="chip" data-value="JavaScript">JavaScript</div>
-          <div class="chip" data-value="Java">Java</div>
-          <div class="chip" data-value="TypeScript">TypeScript</div>
-          <div class="chip" data-value="Vue">Vue</div>
-          <div class="chip" data-value="Node.js">Node.js</div>
-          <div class="chip" data-value="알고리즘">알고리즘</div>
-          <div class="chip" data-value="자료구조">자료구조</div>
-          <div class="chip" data-value="데이터베이스">데이터베이스</div>
-          <div class="chip" data-value="운영체제">운영체제</div>
+    <main class="main-content">
+      <div class="container">
+        <div>
+          <div class="page-title">학습 생성</div>
+          <div class="page-sub">새로운 학습 세션을 설정하세요</div>
         </div>
-      </div>
 
-      <div class="divider"></div>
+        <div class="create-wrap">
+          <div class="form-card">
+            <div class="form-section">
+              <label class="form-label">제목</label>
+              <input type="text" class="form-input" placeholder="학습 제목을 입력하세요" id="title-input" />
+            </div>
 
-      <!-- 목표 학습 시간 -->
-      <div class="form-section">
-        <label class="form-label">목표 학습 시간</label>
-        <div class="time-row">
-          <input type="number" class="time-input" id="time-input" value="60" min="5" max="300" step="5"/>
-          <span class="time-unit">분</span>
-          <span class="time-hint">5 ~ 300분</span>
-        </div>
-        <div class="slider-wrap">
-          <input type="range" class="slider" id="time-slider" min="5" max="300" step="5" value="60"/>
-          <div class="slider-marks">
-            <span>5분</span><span>1시간</span><span>2시간</span><span>3시간</span><span>5시간</span>
+            <div class="form-section">
+              <label class="form-label">학습 주제</label>
+              <input type="text" class="form-input" placeholder="ex. 언어, 기술 스택 등등" id="topic-input" />
+              <span class="chips-label">기본 예시에서 선택하기</span>
+              <div class="chips" id="chips">
+                <div class="chip" data-value="React">React</div>
+                <div class="chip" data-value="Spring">Spring</div>
+                <div class="chip" data-value="Python">Python</div>
+                <div class="chip" data-value="JavaScript">JavaScript</div>
+                <div class="chip" data-value="Java">Java</div>
+                <div class="chip" data-value="TypeScript">TypeScript</div>
+                <div class="chip" data-value="Vue">Vue</div>
+                <div class="chip" data-value="Node.js">Node.js</div>
+                <div class="chip" data-value="알고리즘">알고리즘</div>
+                <div class="chip" data-value="자료구조">자료구조</div>
+                <div class="chip" data-value="데이터베이스">데이터베이스</div>
+                <div class="chip" data-value="운영체제">운영체제</div>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="form-section">
+              <label class="form-label">목표 학습 시간</label>
+              <div class="time-row">
+                <input type="number" class="time-input" id="time-input" value="60" min="5" max="300" step="5" />
+                <span class="time-unit">분</span>
+                <span class="time-hint">5 ~ 300분</span>
+              </div>
+              <div class="slider-wrap">
+                <input type="range" class="slider" id="time-slider" min="5" max="300" step="5" value="60" />
+                <div class="slider-marks">
+                  <span>5분</span><span>1시간</span><span>2시간</span><span>3시간</span><span>5시간</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+            <button class="btn-create" id="btn-create">생성</button>
           </div>
         </div>
       </div>
 
-      <div class="divider"></div>
-
-      <!-- 생성 버튼 -->
-      <button class="btn-create" id="btn-create">생성</button>
-
-    </div>
+      <footer class="global-footer">
+        <div class="row">
+          <a href="#">이용약관</a>
+          <a href="#">개인정보처리방침</a>
+          <a href="#">GitHub</a>
+        </div>
+        <div>© 2026 MarkLearn — 영남대학교 컴퓨터공학과 졸업작품</div>
+      </footer>
+    </main>
   </div>
-</div>
 
-<footer><div class="row"><a href="#">이용약관</a><a href="#">개인정보처리방침</a><a href="#">GitHub</a></div>
-<div>© 2026 MarkLearn — 영남대학교 컴퓨터공학과 졸업작품</div></footer>
+  <script>
+    const slider = document.getElementById('time-slider');
+    const timeInput = document.getElementById('time-input');
+    const topicInput = document.getElementById('topic-input');
 
-<script>
-const slider = document.getElementById('time-slider');
-const timeInput = document.getElementById('time-input');
-const topicInput = document.getElementById('topic-input');
+    function updateSliderBackground() {
+      const pct = ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
+      slider.style.background = `linear-gradient(90deg, var(--color-teal-500) ${pct}%, var(--line) ${pct}%)`;
+    }
+    slider.addEventListener('input', () => { timeInput.value = slider.value; updateSliderBackground(); });
+    timeInput.addEventListener('input', () => { let v = Math.max(5, Math.min(300, Number(timeInput.value) || 5)); slider.value = v; updateSliderBackground(); });
+    timeInput.addEventListener('blur', () => { let v = Math.max(5, Math.min(300, Number(timeInput.value) || 5)); const rounded = Math.round(v / 5) * 5; timeInput.value = rounded; slider.value = rounded; updateSliderBackground(); });
 
-function updateSliderBackground() {
-  const pct = ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
-  slider.style.background = `linear-gradient(90deg, var(--primary) ${pct}%, var(--line) ${pct}%)`;
-}
+    document.querySelectorAll('.chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        chip.classList.toggle('active');
+        const active = [...document.querySelectorAll('.chip.active')].map(c => c.dataset.value);
+        topicInput.value = active.join(', ');
+      });
+    });
 
-slider.addEventListener('input', () => {
-  timeInput.value = slider.value;
-  updateSliderBackground();
-});
+    document.getElementById('btn-create').addEventListener('click', () => {
+      const title = document.getElementById('title-input').value.trim();
+      if (!title) { document.getElementById('title-input').focus(); document.getElementById('title-input').style.borderColor = '#f87171'; return; }
+      alert(`✅ 학습 세션 생성 완료!\n제목: ${title}\n주제: ${topicInput.value || '없음'}\n목표: ${timeInput.value}분`);
+    });
+    document.getElementById('title-input').addEventListener('input', function () { this.style.borderColor = ''; });
+    updateSliderBackground();
+  </script>
+</body>
 
-timeInput.addEventListener('input', () => {
-  let v = Math.max(5, Math.min(300, Number(timeInput.value) || 5));
-  slider.value = v;
-  updateSliderBackground();
-});
-
-timeInput.addEventListener('blur', () => {
-  let v = Math.max(5, Math.min(300, Number(timeInput.value) || 5));
-  const rounded = Math.round(v / 5) * 5;
-  timeInput.value = rounded;
-  slider.value = rounded;
-  updateSliderBackground();
-});
-
-document.querySelectorAll('.chip').forEach(chip => {
-  chip.addEventListener('click', () => {
-    chip.classList.toggle('active');
-    const active = [...document.querySelectorAll('.chip.active')].map(c => c.dataset.value);
-    topicInput.value = active.join(', ');
-  });
-});
-
-document.getElementById('btn-create').addEventListener('click', () => {
-  const title = document.getElementById('title-input').value.trim();
-  if (!title) {
-    document.getElementById('title-input').focus();
-    document.getElementById('title-input').style.borderColor = '#f87171';
-    return;
-  }
-  alert(`✅ 학습 세션 생성 완료!\n제목: ${title}\n주제: ${topicInput.value || '없음'}\n목표: ${timeInput.value}분`);
-});
-
-document.getElementById('title-input').addEventListener('input', function() {
-  this.style.borderColor = '';
-});
-
-updateSliderBackground();
-</script>
-</body></html>
+</html>
