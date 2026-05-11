@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>대시보드 · MarkLearn</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --color-teal-500: #4DBDA3;
+            --color-teal-600: #3EA990;
+            --color-teal-200: #A8E0CD;
+            --color-teal-100: #D6F5EA;
+            --bg-base: #F6FBF9;
+            --bg-panel: #FFFFFF;
+            --ink: #1f2937;
+            --sub: #4b5563;
+            --line: #e5e7eb;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            font-family: 'Pretendard', system-ui, sans-serif;
+            color: var(--ink);
+            background: var(--bg-base);
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 앱 레이아웃 및 사이드바 (디자인 깨짐 수정) */
+        .app-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 200px;
+            background: var(--color-teal-500);
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+
+        .sidebar .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 22px 16px;
+            font-weight: 800;
+            font-size: 16px;
+            color: #fff;
+            border-bottom: 1px solid rgba(255, 255, 255, .15);
+            text-decoration: none;
+        }
+
+        .sidebar .s-logo {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, .25);
+            display: grid;
+            place-items: center;
+            font-weight: 800;
+            font-size: 14px;
+            color: #fff;
+        }
+
+        .sidebar nav {
+            flex: 1;
+            padding: 14px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .sidebar nav a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 14px;
+            border-radius: 10px;
+            color: rgba(255, 255, 255, .7);
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            transition: 0.15s;
+        }
+
+        .sidebar nav a:hover,
+        .sidebar nav a.active {
+            background: rgba(255, 255, 255, .18);
+            color: #fff;
+        }
+
+        /* 하단 사용자 영역 (파란색 링크 고침) */
+        .s-bottom {
+            padding: 14px 10px;
+            border-top: 1px solid rgba(255, 255, 255, .15);
+        }
+
+        .s-user {
+            font-size: 12px;
+            color: rgba(255, 255, 255, .5);
+            padding: 4px 14px 6px;
+            font-weight: 600;
+        }
+
+        .s-bottom a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 14px;
+            border-radius: 10px;
+            color: rgba(255, 255, 255, .7);
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            transition: 0.15s;
+        }
+
+        .s-bottom a:hover,
+        .s-bottom a.active {
+            background: rgba(255, 255, 255, .18);
+            color: #fff;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        .container {
+            max-width: 1180px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 32px 24px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 6px;
+            letter-spacing: -.5px;
+        }
+
+        .page-sub {
+            color: var(--sub);
+            margin-bottom: 28px;
+            font-size: 14px;
+        }
+
+        /* 빈 화면 디자인 */
+        .empty-state {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-panel);
+            border: 1px dashed var(--line);
+            border-radius: 16px;
+            padding: 60px 20px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .empty-mascot {
+            width: 80px;
+            height: 80px;
+            background: var(--color-teal-100);
+            border-radius: 50%;
+            display: grid;
+            place-items: center;
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .empty-state h2 {
+            font-size: 20px;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: var(--ink);
+        }
+
+        .empty-state p {
+            font-size: 15px;
+            color: var(--sub);
+            margin-bottom: 24px;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: var(--color-teal-500);
+            color: #fff;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 15px;
+            text-decoration: none;
+            transition: 0.15s;
+        }
+
+        .btn-primary:hover {
+            background: var(--color-teal-600);
+            transform: translateY(-2px);
+        }
+
+        /* 푸터 */
+        .global-footer {
+            margin-top: auto;
+            padding: 30px 24px;
+            text-align: center;
+            background: var(--color-teal-500);
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 13.5px;
+        }
+
+        .global-footer .row {
+            display: flex;
+            justify-content: center;
+            gap: 22px;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .global-footer a {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.15s ease;
+        }
+
+        .global-footer a:hover {
+            color: #ffffff;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-layout">
+        <aside class="sidebar">
+            <a class="brand" href="landing.html">
+                <div class="s-logo">M</div><span>MarkLearn</span>
+            </a>
+            <nav>
+                <a href="dashboard-empty.html" class="active">📊 대시보드</a>
+                <a href="create-empty.html">✏️ 학습 생성</a>
+                <a href="directory-empty.html">📝 노트</a>
+            </nav>
+            <div class="s-bottom">
+                <div class="s-user">장영락</div>
+                <a href="mypage-empty.html">👤 마이페이지</a>
+            </div>
+        </aside>
+        <main class="main-content">
+            <div class="container">
+                <div>
+                    <div class="page-title">학습 통계</div>
+                    <div class="page-sub">최근 7일 학습 기록</div>
+                </div>
+                <div class="empty-state">
+                    <div class="empty-mascot">💡</div>
+                    <h2>학습 내역이 없어요!</h2>
+                    <p>지금 바로 새로운 목표를 설정하고 학습을 시작해보세요.</p>
+                    <a href="create-empty.html" class="btn-primary">+ 첫 학습 생성하기</a>
+                </div>
+            </div>
+            <footer class="global-footer">
+                <div class="row"><a href="#">이용약관</a><a href="#">개인정보처리방침</a><a href="#">GitHub</a></div>
+                <div>© 2026 MarkLearn — 영남대학교 컴퓨터공학과 졸업작품</div>
+            </footer>
+        </main>
+    </div>
+</body>
+
+</html>
